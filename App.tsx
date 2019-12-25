@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button, AsyncStorage } from "react-native";
-import axios from "axios";
+import { StyleSheet, Text, View, Button, AsyncStorage, StatusBar } from "react-native";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import Firebase from "./firebase";
+import LoginScreen from "./screens/LoginScreen";
+import SelectionScreen from "./screens/SelectionScreen";
 import { IUser } from "./type/user";
 
 interface IState {
@@ -10,24 +12,41 @@ interface IState {
 }
 
 export default class App extends Component<any, IState> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedIn: false,
-      user: {
-        email: "",
-        name: ""
-      }
-    };
-    console.log("constructor");
-    try {
-      // firebase 操作の初期化 と Firebase class のインスタンス化
-      Firebase.firebaseInitialize();
-      console.log("firebaseInitialize");
-    } catch {
-      console.log("release");
-    }
+  render() {
+    const NavigatorTab = createAppContainer(
+      createSwitchNavigator({
+        login: { screen: LoginScreen },
+        selection: { screen: SelectionScreen }
+      })
+    );
+
+    return (
+      // <Provider store={store}>
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
+        <NavigatorTab />
+      </View>
+      // </Provider>
+    );
   }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     isLoggedIn: false,
+  //     user: {
+  //       email: "",
+  //       name: ""
+  //     }
+  //   };
+  //   console.log("constructor");
+  //   try {
+  //     // firebase 操作の初期化 と Firebase class のインスタンス化
+  //     Firebase.firebaseInitialize();
+  //     console.log("firebaseInitialize");
+  //   } catch {
+  //     console.log("release");
+  //   }
+  // }
 
   // async componentDidMount() {
   //   const user = await Firebase.fetchCurrentUser();
@@ -41,71 +60,72 @@ export default class App extends Component<any, IState> {
   //   console.log("componentDidMount", user);
   // }
 
-  async componentDidMount() {
-    this.fetchCurrentLoggedInUser();
-  }
 
-  fetchCurrentLoggedInUser = () => {
-    Firebase.fetchCurrentUser().then(firebaseUser => {
-      this.setState({
-        isLoggedIn: !!firebaseUser,
-        user: {
-          email: firebaseUser ? firebaseUser.email : "",
-          name: firebaseUser ? firebaseUser.displayName : ""
-        }
-      });
-    });
-  };
+  // async componentDidMount() {
+  //   this.fetchCurrentLoggedInUser();
+  // }
 
-  handleLogIn = () => {
-    Firebase.handleLogIn().then(
-      (firebaseUser: firebase.auth.UserCredential) => {
-        this.setState({
-          isLoggedIn: true,
-          user: {
-            email: firebaseUser.user.email,
-            name: firebaseUser.user.displayName
-          }
-        });
-      }
-    );
-  };
+  // fetchCurrentLoggedInUser = () => {
+  //   Firebase.fetchCurrentUser().then(firebaseUser => {
+  //     this.setState({
+  //       isLoggedIn: !!firebaseUser,
+  //       user: {
+  //         email: firebaseUser ? firebaseUser.email : "",
+  //         name: firebaseUser ? firebaseUser.displayName : ""
+  //       }
+  //     });
+  //   });
+  // };
 
-  handleLogout = () => {
-    Firebase.handleLogOut().then(() => {
-      this.setState({
-        isLoggedIn: false,
-        user: {
-          email: "",
-          name: ""
-        }
-      });
-    });
-  };
+  // handleLogIn = () => {
+  //   Firebase.handleLogIn().then(
+  //     (firebaseUser: firebase.auth.UserCredential) => {
+  //       this.setState({
+  //         isLoggedIn: true,
+  //         user: {
+  //           email: firebaseUser.user.email,
+  //           name: firebaseUser.user.displayName
+  //         }
+  //       });
+  //     }
+  //   );
+  // };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Button
-          onPress={this.handleLogIn}
-          title="Login With Google"
-          color="#ff0000"
-        />
-        {this.state.isLoggedIn && (
-          <>
-            <Text>
-              Hello, {this.state.user.name}({this.state.user.email})
-            </Text>
-            <Button
-              onPress={this.handleLogout}
-              title="Logout from Google"
-              color="#0000ff"
-            />
-          </>
-        )}
-      </View>
-    );
-  }
+  // handleLogout = () => {
+  //   Firebase.handleLogOut().then(() => {
+  //     this.setState({
+  //       isLoggedIn: false,
+  //       user: {
+  //         email: "",
+  //         name: ""
+  //       }
+  //     });
+  //   });
+  // };
+
+  // render() {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Button
+  //         onPress={this.handleLogIn}
+  //         title="Login With Google"
+  //         color="#ff0000"
+  //       />
+  //       {this.state.isLoggedIn && (
+  //         <>
+  //           <Text>
+  //             Hello, {this.state.user.name}({this.state.user.email})
+  //           </Text>
+  //           <Button
+  //             onPress={this.handleLogout}
+  //             title="Logout from Google"
+  //             color="#0000ff"
+  //           />
+  //         </>
+  //       )}
+  //     </View>
+  //   );
+  // }
 }
 
 const styles = StyleSheet.create({

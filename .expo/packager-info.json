@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 50115,
-  "expoServerNgrokUrl": "https://6w-7b8.extrastudio.calendar-front.exp.direct",
-  "packagerNgrokUrl": "https://packager.6w-7b8.extrastudio.calendar-front.exp.direct",
-  "ngrokPid": 50129
+  "packagerPort": 19004,
+  "packagerPid": 94597,
+  "expoServerNgrokUrl": "https://2v-4dj.extrastudio.calendar-front.exp.direct",
+  "packagerNgrokUrl": "https://packager.2v-4dj.extrastudio.calendar-front.exp.direct",
+  "ngrokPid": 94608
 }

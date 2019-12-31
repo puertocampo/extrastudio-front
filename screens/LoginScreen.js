@@ -102,14 +102,14 @@ export default class LoginScreen extends Component {
           title="Logout from Google"
           color="#0000ff"
       />
-      </View>
-      )
-    }
       <Button
         onPress={() => this.props.navigation.navigate('selection')}
         title="Go to pick up event!"
         color="#00ff00"
       />
+      </View>
+      )
+    }
       </View>
     );
   }

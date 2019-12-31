@@ -3,6 +3,7 @@ import styled from 'styled-components/native'
 import { css } from 'styled-components'
 import { StyleSheet, Text, View, Button, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
 import Firebase from "../firebase";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const events = [
   { eventId: "event01", uri: require('../assets/image/baseball.jpeg') },
@@ -27,8 +28,40 @@ const Wrapper = styled.View`
 `;
 
 const ButtonContainer = styled.View`
-  height: 110;
+  display: flex;
+  position: relative;
 `;
+
+const ReactionContainer = (handleLike, handleDislike) => {
+  return (
+    <View style={{ height: 130, width: 300, position: "relative", justifyContent: "space-between", paddingLeft: "30%", paddingRight: "30%" }}>
+      <View style={{ position: "relative" }} onPress={handleLike}>
+        <Icon
+          name='circle'
+          color="#FF5D5A"
+          style={{ position: "absolute" }}
+          size={70} />
+        <Icon
+          name='heart'
+          color="#FFFFFF"
+          style={{ position: "absolute", top: 20, left: 15 }}
+          size={30} />
+      </View>
+      <View style={{ position: "relative"}} onPress={handleDislike}>
+        <Icon
+          name='circle'
+          color="#FFFFFF"
+          style={{ position: "absolute", top: 1, left: 1 }}
+          size={68} />
+        <Icon
+          name='times-circle'
+          color="#4D7DF9"
+          style={{ position: "absolute" }}
+          size={70} />
+      </View>
+    </View>
+    );
+}
 
 export default class SelectionScreen extends Component {
   constructor() {
@@ -105,6 +138,14 @@ export default class SelectionScreen extends Component {
     };
 }
 
+  handleLike = () => {
+    console.log('いいね！');
+  }
+
+  handleDislike = () => {
+    console.log('よくないね！');
+  }
+
   renderEventCards = () => {
     return events.map((item, index) => {
       console.log(item);
@@ -117,7 +158,7 @@ export default class SelectionScreen extends Component {
             key={item.eventId}
             style={[this.rotateAndTranslate,
               {
-                height: SCREEN_HEIGHT - 170,
+                height: SCREEN_HEIGHT - 190,
                 width: SCREEN_WIDTH,
                 padding: 10,
                 position: "absolute",
@@ -190,7 +231,7 @@ export default class SelectionScreen extends Component {
             style={{
               opacity: this.nextCardOpacity,
               transform: [{ scale: this.nextCardScale }],
-              height: SCREEN_HEIGHT - 170,
+              height: SCREEN_HEIGHT - 190,
               width: SCREEN_WIDTH,
               padding: 10,
               position: "absolute",
@@ -219,7 +260,10 @@ export default class SelectionScreen extends Component {
         <View style={{ flex: 1, marginTop: 60 }}>
           {this.renderEventCards()}
         </View>
-        <ButtonContainer><Text>あ</Text></ButtonContainer>
+        <ReactionContainer
+          handleLike={this.handleLike}
+          handleDislike={this.handleDislike}
+        />
       </Wrapper>
     );
   }

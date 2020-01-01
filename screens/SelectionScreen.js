@@ -219,7 +219,8 @@ export default class SelectionScreen extends Component {
           <Animated.View
             {...this.PanResponder.panHandlers}
             key={item.eventId}
-            style={[this.rotateAndTranslate,
+            style={[
+              this.rotateAndTranslate,
               {
                 height: SCREEN_HEIGHT - 190,
                 width: SCREEN_WIDTH,
@@ -237,13 +238,22 @@ export default class SelectionScreen extends Component {
             />
             <Image
               style={{
-                flex: 1,
+                flex: 3,
                 height: null,
                 width: null,
                 resizeMode: "cover",
-                borderRadius: 20
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20
               }}
               source={item.uri}
+            />
+            <View
+              style={{
+                flex: 2,
+                backgroundColor: "#FFFFFF",
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20
+              }}
             />
           </Animated.View>
         );
@@ -263,13 +273,22 @@ export default class SelectionScreen extends Component {
           >
             <Image
               style={{
-                flex: 1,
+                flex: 3,
                 height: null,
                 width: null,
                 resizeMode: "cover",
-                borderRadius: 20
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20
               }}
               source={item.uri}
+            />
+            <View
+              style={{
+                flex: 2,
+                backgroundColor: "#FFFFFF",
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20
+              }}
             />
           </Animated.View>
         );

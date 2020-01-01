@@ -71,6 +71,62 @@ const ReactionContainer = props => {
     );
 }
 
+const LikeLabel = props => {
+  return (
+    <Animated.View
+      style={{
+        opacity: props.opacity,
+        transform: [{ rotate: "-30deg" }],
+        position: "absolute",
+        top: 50,
+        left: 40,
+        zIndex: 1000
+      }}
+    >
+      <Text
+        style={{
+          borderWidth: 1,
+          borderColor: "green",
+          color: "green",
+          fontSize: 32,
+          fontWeight: "800",
+          padding: 10
+        }}
+      >
+        LIKE
+      </Text>
+    </Animated.View>
+  )
+}
+
+const DislikeLabel = props => {
+  return (
+    <Animated.View
+      style={{
+        opacity: props.opacity,
+        transform: [{ rotate: "30deg" }],
+        position: "absolute",
+        top: 50,
+        right: 40,
+        zIndex: 1000
+      }}
+    >
+      <Text
+        style={{
+          borderWidth: 1,
+          borderColor: "red",
+          color: "red",
+          fontSize: 32,
+          fontWeight: "800",
+          padding: 10
+        }}
+      >
+        NOPE
+      </Text>
+    </Animated.View>
+  )
+}
+
 export default class SelectionScreen extends Component {
   constructor() {
     super();
@@ -88,7 +144,7 @@ export default class SelectionScreen extends Component {
       outputRange: [0, 0, 1],
       extrapolate: 'clamp'
     });
-    this.nopeOpacity = this.position.x.interpolate({
+    this.dislikeOpacity = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
       outputRange: [1, 0, 0],
       extrapolate: 'clamp'
@@ -173,52 +229,12 @@ export default class SelectionScreen extends Component {
               }
             ]}
           >
-            <Animated.View
-              style={{
-                opacity: this.likeOpacity,
-                transform: [{ rotate: "-30deg" }],
-                position: "absolute",
-                top: 50,
-                left: 40,
-                zIndex: 1000
-              }}
-            >
-              <Text
-                style={{
-                  borderWidth: 1,
-                  borderColor: "green",
-                  color: "green",
-                  fontSize: 32,
-                  fontWeight: "800",
-                  padding: 10
-                }}
-              >
-                LIKE
-              </Text>
-            </Animated.View>
-            <Animated.View
-              style={{
-                opacity: this.nopeOpacity,
-                transform: [{ rotate: "30deg" }],
-                position: "absolute",
-                top: 50,
-                right: 40,
-                zIndex: 1000
-              }}
-            >
-              <Text
-                style={{
-                  borderWidth: 1,
-                  borderColor: "red",
-                  color: "red",
-                  fontSize: 32,
-                  fontWeight: "800",
-                  padding: 10
-                }}
-              >
-                NOPE
-              </Text>
-            </Animated.View>
+            <LikeLabel
+              opacity={this.likeOpacity}
+            />
+            <DislikeLabel
+              opacity={this.dislikeOpacity}
+            />
             <Image
               style={{
                 flex: 1,

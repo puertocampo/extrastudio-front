@@ -6,11 +6,11 @@ import Firebase from "../firebase";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const events = [
-  { eventId: "event01", uri: require('../assets/image/baseball.jpeg') },
-  { eventId: "event02", uri: require('../assets/image/halloween.jpeg') },
-  { eventId: "event03", uri: require('../assets/image/soccer.jpeg') },
-  { eventId: "event04", uri: require('../assets/image/theater.jpeg') },
-  { eventId: "event05", uri: require('../assets/image/togei.jpeg') },
+  { eventId: "event01", title: "野球イベント", uri: require('../assets/image/baseball.jpeg') },
+  { eventId: "event02", title: "ハロウィンイベント", uri: require('../assets/image/halloween.jpeg') },
+  { eventId: "event03", title: "サッカーイベント", uri: require('../assets/image/soccer.jpeg') },
+  { eventId: "event04", title: "映画イベント", uri: require('../assets/image/theater.jpeg') },
+  { eventId: "event05", title: "陶芸教室イベント", uri: require('../assets/image/togei.jpeg') },
 ];
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -213,7 +213,7 @@ export default class SelectionScreen extends Component {
 }
 
   handleLike = () => {
-    this.setState({currentIndex: this.state.currentIndex + 1});
+    this.setState({currentIndex: this.state.currentIndex - 1});
   }
 
   handleDislike = () => {
@@ -264,7 +264,71 @@ export default class SelectionScreen extends Component {
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20
               }}
-            />
+            >
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 24,
+                  fontWeight: "bold",
+                  padding: 12,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "inline-block",
+                  lineHeight: "40%",
+                  verticalAlign: "middle"
+                }}
+              >
+                {item.title}
+              </Text>
+              <View
+                style={{
+                  flex: 5,
+                  borderTopColor: "#BBC3CE",
+                  borderTopWidth: 0.2,
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    padding: 10
+                  }}
+                >
+                  <Icon
+                    name="clock"
+                    color="#000000"
+                    style={{ marginRight: 7 }}
+                    size={20}
+                  />
+                    2020/01/01 00:00 ~ 2020/01/01 23:59
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    padding: 10
+                  }}
+                >
+                  <Icon
+                    name="map-marker-alt"
+                    color="#000000"
+                    style={{ marginRight: 7 }}
+                    size={20}
+                  />
+                  place
+                </Text>
+                <Text
+                  style={{
+                    flex: 3,
+                    fontSize: 14,
+                    padding: 10
+                  }}
+                >
+                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事…
+                </Text>
+              </View>
+            </View>
           </Animated.View>
         );
       } else {
@@ -299,7 +363,71 @@ export default class SelectionScreen extends Component {
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20
               }}
-            />
+            >
+              <Text
+                style={{
+                  flex: 1,
+                  fontSize: 24,
+                  fontWeight: "bold",
+                  padding: 12,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "inline-block",
+                  lineHeight: "40%",
+                  verticalAlign: "middle"
+                }}
+              >
+                {item.title}
+              </Text>
+              <View
+                style={{
+                  flex: 5,
+                  borderTopColor: "#BBC3CE",
+                  borderTopWidth: 0.2,
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    padding: 10
+                  }}
+                >
+                  <Icon
+                    name="clock"
+                    color="#000000"
+                    style={{ marginRight: 7 }}
+                    size={20}
+                  />
+                    2020/01/01 00:00 ~ 2020/01/01 23:59
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    padding: 10
+                  }}
+                >
+                  <Icon
+                    name="map-marker-alt"
+                    color="#000000"
+                    style={{ marginRight: 7 }}
+                    size={20}
+                  />
+                  place
+                </Text>
+                <Text
+                  style={{
+                    flex: 3,
+                    fontSize: 14,
+                    padding: 10
+                  }}
+                >
+                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事…
+                </Text>
+              </View>
+            </View>
           </Animated.View>
         );
       }

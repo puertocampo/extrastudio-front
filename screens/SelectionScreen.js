@@ -32,32 +32,40 @@ const ButtonContainer = styled.View`
   position: relative;
 `;
 
-const ReactionContainer = (handleLike, handleDislike) => {
+const ReactionContainer = props => {
   return (
-    <View style={{ height: 130, width: 300, position: "relative", justifyContent: "space-between", paddingLeft: "30%", paddingRight: "30%" }}>
-      <View style={{ position: "relative" }} onPress={handleLike}>
+    <View style={{ height: 130, width: "100%", justifyContent: "space-between", paddingLeft: "30%", paddingRight: "30%", flexDirection: 'row' }}>
+      <View style={{ position: "relative", left: 0 }} >
         <Icon
           name='circle'
           color="#FF5D5A"
           style={{ position: "absolute" }}
-          size={70} />
+          size={70}
+          onPress={() => {props.handleLike();}}
+        />
         <Icon
           name='heart'
           color="#FFFFFF"
           style={{ position: "absolute", top: 20, left: 15 }}
-          size={30} />
+          size={30}
+          onPress={() => {props.handleLike();}}
+        />
       </View>
-      <View style={{ position: "relative"}} onPress={handleDislike}>
+      <View style={{ position: "relative", right: 60}}>
         <Icon
           name='circle'
           color="#FFFFFF"
           style={{ position: "absolute", top: 1, left: 1 }}
-          size={68} />
+          size={68}
+          onPress={() => {props.handleDislike();}}
+        />
         <Icon
           name='times-circle'
           color="#4D7DF9"
           style={{ position: "absolute" }}
-          size={70} />
+          size={70}
+          onPress={() => {props.handleDislike();}}
+        />
       </View>
     </View>
     );
@@ -139,16 +147,15 @@ export default class SelectionScreen extends Component {
 }
 
   handleLike = () => {
-    console.log('いいね！');
+    this.setState({currentIndex: this.state.currentIndex + 1});
   }
 
   handleDislike = () => {
-    console.log('よくないね！');
+    this.setState({currentIndex: this.state.currentIndex + 1});
   }
 
   renderEventCards = () => {
     return events.map((item, index) => {
-      console.log(item);
       if (index < this.state.currentIndex) {
         return null;
       } else if (index === this.state.currentIndex) {

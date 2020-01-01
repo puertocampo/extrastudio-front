@@ -76,20 +76,25 @@ const LikeLabel = props => {
     <Animated.View
       style={{
         opacity: props.opacity,
-        transform: [{ rotate: "-30deg" }],
+        transform: [{ rotate: "-20deg" }],
         position: "absolute",
-        top: 50,
-        left: 40,
+        top: "47%",
+        left: "20%",
+        width: 190,
         zIndex: 1000
       }}
     >
       <Text
         style={{
-          borderWidth: 1,
-          borderColor: "green",
-          color: "green",
+          borderWidth: 5,
+          borderColor: "#FF5D5A",
+          borderRadius: 10,
+          color: "#FF5D5A",
+          backgroundColor: "#ffffff",
+          overflow: "hidden",
           fontSize: 32,
           fontWeight: "800",
+          textAlign: "center",
           padding: 10
         }}
       >
@@ -104,20 +109,25 @@ const DislikeLabel = props => {
     <Animated.View
       style={{
         opacity: props.opacity,
-        transform: [{ rotate: "30deg" }],
+        transform: [{ rotate: "20deg" }],
         position: "absolute",
-        top: 50,
-        right: 40,
+        top: "47%",
+        right: "20%",
+        width: 190,
         zIndex: 1000
       }}
     >
       <Text
         style={{
-          borderWidth: 1,
-          borderColor: "red",
-          color: "red",
+          borderWidth: 5,
+          borderColor: "#0094D5",
+          borderRadius: 10,
+          color: "#0094D5",
+          backgroundColor: "#ffffff",
+          overflow: "hidden",
           fontSize: 32,
           fontWeight: "800",
+          textAlign: "center",
           padding: 10
         }}
       >

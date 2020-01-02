@@ -7,10 +7,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const events = [
   { eventId: "event01", title: "野球イベント", uri: require('../assets/image/baseball.jpeg') },
-  { eventId: "event02", title: "ハロウィンイベント", uri: require('../assets/image/halloween.jpeg') },
-  { eventId: "event03", title: "サッカーイベント", uri: require('../assets/image/soccer.jpeg') },
-  { eventId: "event04", title: "映画イベント", uri: require('../assets/image/theater.jpeg') },
-  { eventId: "event05", title: "陶芸教室イベント", uri: require('../assets/image/togei.jpeg') },
+  { eventId: "event02", title: "サッカーイベント", uri: require('../assets/image/soccer.jpeg') },
+  { eventId: "event03", title: "映画イベント", uri: require('../assets/image/theater.jpeg') },
+  { eventId: "event04", title: "陶芸教室イベント", uri: require('../assets/image/togei.jpeg') },
+  { eventId: "event05", title: "ハロウィンイベント", uri: require('../assets/image/halloween.jpeg') }
 ];
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -273,12 +273,12 @@ export default class SelectionScreen extends Component {
                   padding: 12,
                   justifyContent: "center",
                   alignItems: "center",
-                  display: "inline-block",
-                  lineHeight: "40%",
-                  verticalAlign: "middle"
+                  lineHeight: "40%"
                 }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
               >
-                {item.title}
+                {item.title}これは蛇足ですこれは蛇足ですこれは蛇足ですこれは蛇足です
               </Text>
               <View
                 style={{
@@ -286,52 +286,73 @@ export default class SelectionScreen extends Component {
                   borderTopColor: "#BBC3CE",
                   borderTopWidth: 0.2,
                 }}>
-                <Text
+                <View
                   style={{
                     flex: 1,
-                    fontSize: 14,
-                    fontWeight: "bold",
-                    padding: 10
+                    padding: 10,
+                    flexDirection: "row",
+                    alignItems: "center"
                   }}
                 >
                   <Icon
-                    name="clock"
+                    name="clock-o"
                     color="#000000"
                     style={{ marginRight: 7 }}
                     size={20}
                   />
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "bold"
+                    }}
+                  >
                     2020/01/01 00:00 ~ 2020/01/01 23:59
-                </Text>
-                <Text
+                  </Text>
+                </View>
+                <View
                   style={{
                     flex: 1,
-                    fontSize: 14,
-                    fontWeight: "bold",
-                    padding: 10
+                    width: "100%",
+                    padding: 10,
+                    flexDirection: "row",
+                    alignItems: "center"
                   }}
                 >
                   <Icon
-                    name="map-marker-alt"
+                    name="map-marker"
                     color="#000000"
-                    style={{ marginRight: 7 }}
-                    size={20}
+                    style={{ marginLeft: 2, marginRight: 9 }}
+                    size={23}
                   />
-                  place
-                </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      paddingRight: 20,
+                      fontWeight: "bold"
+                    }}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    広島県広島市中区基町6-78 NTTクレド基町ビル11階広島県広島市中区基町6-78 NTTクレド基町ビル11階
+                  </Text>
+                </View>
                 <Text
                   style={{
                     flex: 3,
                     fontSize: 14,
-                    padding: 10
+                    padding: 10,
+                    lineHeight: 24
                   }}
+                  numberOfLines={3}
+                  ellipsizeMode="tail"
                 >
-                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事…
+                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。なぜそんな無闇をしたと聞く人があるかも知れぬ。別段深い理由でもない。新築の二階から首を出していたら、同級生の一人が冗談じょうだんに、いくら威張いばっても、そこから飛び降りる事は出来まい。弱虫やーい。と囃はやしたからである。小使こづかいに負ぶさって帰って来た時、おやじが大きな眼めをして二階ぐらいから飛び降りて腰を抜かす奴やつがあるかと云いったから、この次は抜かさずに飛んで見せますと答えた。
                 </Text>
               </View>
             </View>
           </Animated.View>
         );
-      } else {
+      } else if (index === this.state.currentIndex + 1) {
         return (
           <Animated.View
             key={item.eventId}
@@ -372,12 +393,12 @@ export default class SelectionScreen extends Component {
                   padding: 12,
                   justifyContent: "center",
                   alignItems: "center",
-                  display: "inline-block",
-                  lineHeight: "40%",
-                  verticalAlign: "middle"
+                  lineHeight: "40%"
                 }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
               >
-                {item.title}
+                {item.title}これは蛇足ですこれは蛇足ですこれは蛇足ですこれは蛇足です
               </Text>
               <View
                 style={{
@@ -385,51 +406,74 @@ export default class SelectionScreen extends Component {
                   borderTopColor: "#BBC3CE",
                   borderTopWidth: 0.2,
                 }}>
-                <Text
+                <View
                   style={{
                     flex: 1,
-                    fontSize: 14,
-                    fontWeight: "bold",
-                    padding: 10
+                    padding: 10,
+                    flexDirection: "row",
+                    alignItems: "center"
                   }}
                 >
                   <Icon
-                    name="clock"
+                    name="clock-o"
                     color="#000000"
                     style={{ marginRight: 7 }}
                     size={20}
                   />
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "bold"
+                    }}
+                  >
                     2020/01/01 00:00 ~ 2020/01/01 23:59
-                </Text>
-                <Text
+                  </Text>
+                </View>
+                <View
                   style={{
                     flex: 1,
-                    fontSize: 14,
-                    fontWeight: "bold",
-                    padding: 10
+                    width: "100%",
+                    padding: 10,
+                    flexDirection: "row",
+                    alignItems: "center"
                   }}
                 >
                   <Icon
-                    name="map-marker-alt"
+                    name="map-marker"
                     color="#000000"
-                    style={{ marginRight: 7 }}
-                    size={20}
+                    style={{ marginLeft: 2, marginRight: 9 }}
+                    size={23}
                   />
-                  place
-                </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      paddingRight: 20,
+                      fontWeight: "bold"
+                    }}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    広島県広島市中区基町6-78 NTTクレド基町ビル11階広島県広島市中区基町6-78 NTTクレド基町ビル11階
+                  </Text>
+                </View>
                 <Text
                   style={{
                     flex: 3,
                     fontSize: 14,
-                    padding: 10
+                    padding: 10,
+                    lineHeight: 24
                   }}
+                  numberOfLines={3}
+                  ellipsizeMode="tail"
                 >
-                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事…
+                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。なぜそんな無闇をしたと聞く人があるかも知れぬ。別段深い理由でもない。新築の二階から首を出していたら、同級生の一人が冗談じょうだんに、いくら威張いばっても、そこから飛び降りる事は出来まい。弱虫やーい。と囃はやしたからである。小使こづかいに負ぶさって帰って来た時、おやじが大きな眼めをして二階ぐらいから飛び降りて腰を抜かす奴やつがあるかと云いったから、この次は抜かさずに飛んで見せますと答えた。
                 </Text>
               </View>
             </View>
           </Animated.View>
         );
+      } else {
+        return null;
       }
     }).reverse();
   };

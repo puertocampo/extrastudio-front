@@ -548,22 +548,3 @@ export default class SelectionScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: "#000000",
-    backgroundColor: "rgb(135, 135, 135)",
-    width: "100%",
-    paddingTop: 15,
-    paddingRight: 5,
-    paddingBottom: 7,
-    paddingLeft: 5,
-    // padding: "15% 1% 7% 1%"
-    // "73px 1px 30px"
-    alignItems: "center",
-    flexDirection: "row"
-    // justifyContent: "center"
-  }
-});
-

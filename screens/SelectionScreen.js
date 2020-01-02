@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import styled from 'styled-components/native'
 import { css } from 'styled-components'
-import { StyleSheet, Text, View, Button, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
+import { StyleSheet, Text, View, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
+import { Button } from "react-native-elements";
 import Firebase from "../firebase";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -479,15 +480,70 @@ export default class SelectionScreen extends Component {
   };
 
   render() {
+    const renderLastCard = this.state.currentIndex === events.length || this.state.currentIndex === events.length - 1;
+    const renderReactionContainer = this.state.currentIndex !== events.length;
     return (
       <Wrapper>
         <View style={{ flex: 1, marginTop: 60 }}>
+          {renderLastCard && 
+            <View
+              style={{
+                height: SCREEN_HEIGHT - 210,
+                width: SCREEN_WIDTH - 20,
+                padding: 32,
+                paddingTop: "50%",
+                margin: 10,
+                backgroundColor: "#ffffff",
+                position: "absolute",
+                left: 0,
+                borderRadius: 20,
+                alignItems: "center"
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  marginBottom: 20
+                }}
+              >
+                オススメできるコンテンツがありません！
+              </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  textAlign: "center",
+                  marginBottom: 40,
+                  lineHeight: 25
+                }}
+              >
+                検索画面からコンテンツを検索していただくか、{"\n"}登録しているタグを変更するとオススメの{"\n"}コンテンツが見つかるかもしれません。
+              </Text>
+              <Button
+                title="OK"
+                color="#FFFFFF"
+                buttonStyle={{
+                  width: 160,
+                  height: 50,
+                  backgroundColor: "#4D7DF9",
+                  borderRadius: 25,
+                  justifyContent: "center",
+                }}
+                titleStyle={{
+                  fontWeight: "bold"
+                }}
+              />
+            </View>
+          }
           {this.renderEventCards()}
         </View>
-        <ReactionContainer
-          handleLike={this.handleLike}
-          handleDislike={this.handleDislike}
-        />
+        {renderReactionContainer &&
+          <ReactionContainer
+            handleLike={this.handleLike}
+            handleDislike={this.handleDislike}
+          />
+        }
       </Wrapper>
     );
   }

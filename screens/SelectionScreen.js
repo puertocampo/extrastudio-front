@@ -533,6 +533,9 @@ export default class SelectionScreen extends Component {
                 titleStyle={{
                   fontWeight: "bold"
                 }}
+                onPress={() => {
+                  this.setState({ currentIndex: 0 });
+                }}
               />
             </View>
           }

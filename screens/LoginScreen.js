@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Button, AsyncStorage } from "react-native";
+import { StyleSheet, Text, View, AsyncStorage } from "react-native";
+import { Button } from "react-native-elements";
 import Firebase from "../firebase";
 // import { IUser } from "./type/user";
 
@@ -87,25 +88,62 @@ export default class LoginScreen extends Component {
     return (
       <View style= { styles.container } >
         <Button
-          onPress={ this.handleLogIn }
-          title = "Login With Google"
-          color = "#ff0000"
+          title="Login With Google"
+          style={{marginBottom: 20}}
+          buttonStyle={{
+            width: 200,
+            height: 50,
+            backgroundColor: "#FF0000",
+            borderRadius: 25,
+            justifyContent: "center",
+          }}
+          titleStyle={{
+            fontWeight: "bold"
+          }}
+          onPress={this.handleLogIn}
         />
         {
           this.state.isLoggedIn && (
-            <View>
-              <Text>
-                Hello, { this.state.user.name }({ this.state.user.email })
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Text
+                style={{marginBottom: 20}}
+              >
+                Hello, { this.state.user.name } ({ this.state.user.email })
               </Text>
-              < Button
-                onPress={ this.handleLogout }
-                title="Logout from Google"
-                color="#0000ff"
+              <Button
+                title="Logout With Google"
+                style={{marginBottom: 20}}
+                buttonStyle={{
+                  width: 200,
+                  height: 50,
+                  backgroundColor: "#0000FF",
+                  borderRadius: 25,
+                  justifyContent: "center",
+                }}
+                titleStyle={{
+                  fontWeight: "bold"
+                }}
+                onPress={this.handleLogout}
               />
               <Button
-                onPress={() => this.props.navigation.navigate('selection')}
                 title="Go to pick up event!"
-                color="#00ff00"
+                style={{marginBottom: 20}}
+                buttonStyle={{
+                  width: 200,
+                  height: 50,
+                  backgroundColor: "#00FF00",
+                  borderRadius: 25,
+                  justifyContent: "center",
+                }}
+                titleStyle={{
+                  fontWeight: "bold"
+                }}
+                onPress={() => this.props.navigation.navigate('selection')}
               />
             </View>
           )

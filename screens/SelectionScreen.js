@@ -536,7 +536,7 @@ export default class SelectionScreen extends Component {
                   fontWeight: "bold"
                 }}
                 onPress={() => {
-                  this.setState({ currentIndex: 0 });
+                  this.props.navigation.navigate('login');
                 }}
               />
             </View>

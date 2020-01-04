@@ -86,30 +86,30 @@ export default class LoginScreen extends Component {
   render() {
     return (
       <View style= { styles.container } >
-      <Button
-        onPress={ this.handleLogIn }
-    title = "Login With Google"
-    color = "#ff0000"
-      />
-    {
-      this.state.isLoggedIn && (
-        <View>
-        <Text>
-        Hello, { this.state.user.name }({ this.state.user.email })
-        </Text>
-        < Button
-          onPress={ this.handleLogout }
-          title="Logout from Google"
-          color="#0000ff"
-      />
-      <Button
-        onPress={() => this.props.navigation.navigate('selection')}
-        title="Go to pick up event!"
-        color="#00ff00"
-      />
-      </View>
-      )
-    }
+        <Button
+          onPress={ this.handleLogIn }
+          title = "Login With Google"
+          color = "#ff0000"
+        />
+        {
+          this.state.isLoggedIn && (
+            <View>
+              <Text>
+                Hello, { this.state.user.name }({ this.state.user.email })
+              </Text>
+              < Button
+                onPress={ this.handleLogout }
+                title="Logout from Google"
+                color="#0000ff"
+              />
+              <Button
+                onPress={() => this.props.navigation.navigate('selection')}
+                title="Go to pick up event!"
+                color="#00ff00"
+              />
+            </View>
+          )
+        }
       </View>
     );
   }

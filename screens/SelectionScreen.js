@@ -42,14 +42,14 @@ const ReactionContainer = props => {
           color="#FF5D5A"
           style={{ position: "absolute" }}
           size={70}
-          onPress={() => {props.handleLike();}}
+          onPress={() => {props.handleLikeSwipe();}}
         />
         <Icon
           name='heart'
           color="#FFFFFF"
           style={{ position: "absolute", top: 20, left: 15 }}
           size={30}
-          onPress={() => {props.handleLike();}}
+          onPress={() => {props.handleLikeSwipe();}}
         />
       </View>
       <View style={{ position: "relative", right: 60}}>
@@ -58,14 +58,14 @@ const ReactionContainer = props => {
           color="#FFFFFF"
           style={{ position: "absolute", top: 1, left: 1 }}
           size={68}
-          onPress={() => {props.handleDislike();}}
+          onPress={() => {props.handleDislikeSwipe();}}
         />
         <Icon
           name='times-circle'
           color="#4D7DF9"
           style={{ position: "absolute" }}
           size={70}
-          onPress={() => {props.handleDislike();}}
+          onPress={() => {props.handleDislikeSwipe();}}
         />
       </View>
     </View>
@@ -180,21 +180,9 @@ export default class SelectionScreen extends Component {
       },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx > 120) {
-          Animated.spring(this.position, {
-            toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
-          }).start(() => {
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 })
-            })
-          })
+          this.handleLikeSwipe(gestureState.dy);
         } else if (gestureState.dx < -120) {
-          Animated.spring(this.position, {
-            toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy }
-          }).start(() => {
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 })
-            })
-          })
+          this.handleDislikeSwipe(gestureState.dy);
         } else {
           Animated.spring(this.position, {
             toValue: { x: 0, y: 0 },
@@ -213,12 +201,26 @@ export default class SelectionScreen extends Component {
     };
 }
 
-  handleLike = () => {
-    this.setState({currentIndex: this.state.currentIndex - 1});
+  handleLikeSwipe = (positionY) => {
+    Animated.spring(this.position, {
+      toValue: { x: 1.5 * SCREEN_WIDTH, y: positionY || 60 },
+      tension: 1
+    }).start(() => {
+      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+        this.position.setValue({ x: 0, y: 0 })
+      })
+    });
   }
 
-  handleDislike = () => {
-    this.setState({currentIndex: this.state.currentIndex + 1});
+  handleDislikeSwipe = (positionY) => {
+    Animated.spring(this.position, {
+      toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
+      tension: 1
+    }).start(() => {
+      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+        this.position.setValue({ x: 0, y: 0 })
+      })
+    })
   }
 
   renderEventCards = () => {
@@ -543,8 +545,8 @@ export default class SelectionScreen extends Component {
         </View>
         {renderReactionContainer &&
           <ReactionContainer
-            handleLike={this.handleLike}
-            handleDislike={this.handleDislike}
+            handleLikeSwipe={this.handleLikeSwipe}
+            handleDislikeSwipe={this.handleDislikeSwipe}
           />
         }
       </Wrapper>

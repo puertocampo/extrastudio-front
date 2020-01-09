@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import styled from 'styled-components/native'
 import { css } from 'styled-components'
 import { StyleSheet, Text, View, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
@@ -45,14 +45,22 @@ const ReactionContainer = props => {
           color="#FF5D5A"
           style={{ position: "absolute" }}
           size={70}
-          onPress={() => {props.handleLikeSwipe();}}
+          // onPress={() => {props.handleLikeSwipe();}}
+          // onPress={()=> {
+          //   props.fetchCalendarEvents();
+          // }}
+          onPress={() => {props.createEvent();}}
         />
         <Icon
           name='heart'
           color="#FFFFFF"
           style={{ position: "absolute", top: 20, left: 15 }}
           size={30}
-          onPress={() => {props.handleLikeSwipe();}}
+          // onPress={() => {props.handleLikeSwipe();}}
+          // onPress={()=> {
+          //   props.fetchCalendarEvents();
+          // }}
+          onPress={() => {props.createEvent();}}
         />
       </View>
       <View style={{ position: "relative", right: 60}}>
@@ -202,7 +210,7 @@ class SelectionScreen extends Component {
         ...this.position.getTranslateTransform()
         ]
     };
-}
+  }
 
   handleLikeSwipe = (positionY) => {
     Animated.spring(this.position, {
@@ -224,6 +232,14 @@ class SelectionScreen extends Component {
         this.position.setValue({ x: 0, y: 0 })
       })
     })
+  }
+
+  fetchCalendarEvents = () => {
+    Firebase.fetchCalendarEvents();
+  }
+
+  createEvent = () => {
+    Firebase.createEvent();
   }
 
   renderEventCards = () => {
@@ -279,7 +295,7 @@ class SelectionScreen extends Component {
                   padding: 12,
                   justifyContent: "center",
                   alignItems: "center",
-                  lineHeight: "40%"
+                  // lineHeight: "40%"
                 }}
                 numberOfLines={1}
                 ellipsizeMode="tail"
@@ -399,7 +415,7 @@ class SelectionScreen extends Component {
                   padding: 12,
                   justifyContent: "center",
                   alignItems: "center",
-                  lineHeight: "40%"
+                  // lineHeight: "40%"
                 }}
                 numberOfLines={1}
                 ellipsizeMode="tail"
@@ -485,6 +501,7 @@ class SelectionScreen extends Component {
   };
 
   render() {
+    console.log('selection user', this.props.user);
     const renderLastCard = this.state.currentIndex === events.length || this.state.currentIndex === events.length - 1;
     const renderReactionContainer = this.state.currentIndex !== events.length;
     return (
@@ -550,6 +567,8 @@ class SelectionScreen extends Component {
           <ReactionContainer
             handleLikeSwipe={this.handleLikeSwipe}
             handleDislikeSwipe={this.handleDislikeSwipe}
+            // fetchCalendarEvents={this.fetchCalendarEvents}
+            createEvent={this.createEvent}
           />
         }
       </Wrapper>

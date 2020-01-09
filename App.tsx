@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Button, AsyncStorage, StatusBar } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import Firebase from "./firebase";
+import { Provider } from "react-redux";
+import store from "./store";
+
 import LoginScreen from "./screens/LoginScreen";
 import SelectionScreen from "./screens/SelectionScreen";
+
 import { IUser } from "./type/user";
 
 interface IState {
@@ -21,12 +25,12 @@ export default class App extends Component<any, IState> {
     );
 
     return (
-      // <Provider store={store}>
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
-        <NavigatorTab />
-      </View>
-      // </Provider>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <StatusBar barStyle="light-content" />
+          <NavigatorTab />
+        </View>
+      </Provider>
     );
   }
   // constructor(props) {

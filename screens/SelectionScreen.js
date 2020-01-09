@@ -4,6 +4,9 @@ import { css } from 'styled-components'
 import { StyleSheet, Text, View, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
 import { Button } from "react-native-elements";
 import Firebase from "../firebase";
+
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const events = [
@@ -138,7 +141,7 @@ const DislikeLabel = props => {
   )
 }
 
-export default class SelectionScreen extends Component {
+class SelectionScreen extends Component {
   constructor() {
     super();
     this.position = new Animated.ValueXY();
@@ -553,3 +556,12 @@ export default class SelectionScreen extends Component {
     );
   }
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(SelectionScreen);

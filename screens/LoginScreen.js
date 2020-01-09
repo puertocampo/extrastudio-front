@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, AsyncStorage } from "react-native";
 import { Button } from "react-native-elements";
 import Firebase from "../firebase";
+
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 // import { IUser } from "./type/user";
 
 // interface IState {
@@ -10,7 +13,7 @@ import Firebase from "../firebase";
 // }
 
 // export default class LoginScreen extends Component<any, IState> {
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +47,10 @@ export default class LoginScreen extends Component {
 
   async componentDidMount() {
     this.fetchCurrentLoggedInUser();
+    const user = this.props.fetchUser();
+    console.log('user', user);
+    await this.props.updateUser({mail: "puertocampo@gmail.com", name: "ore"});
+    console.log('this.props.user', this.props.user);
   }
 
   fetchCurrentLoggedInUser = () => {
@@ -161,3 +168,29 @@ export default class LoginScreen extends Component {
       justifyContent: "center"
     }
   });
+
+
+const mapStateToProps = (state) => { // `state`を引数として受け取るアロー関数
+  return {
+    // `state.review.allReviews`を → `this.props.allReviews`にコピー
+    user: state.user
+  };
+};
+
+// const mapDispatchToProps = (dispatch) => ({
+//   fetchUser: (obj) => dispatch(fetchUser(obj))
+// });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUser(value) {
+      dispatch(actions.fetchUser(value))
+    },
+    updateUser(value) {
+      dispatch(actions.updateUser(value))
+    }
+  }
+}
+
+// export default connect(mapStateToProps, actions)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

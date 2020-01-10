@@ -5,6 +5,7 @@ import Firebase from "../firebase";
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import { bindActionCreators } from 'redux';
 // import { IUser } from "./type/user";
 
 // interface IState {
@@ -175,12 +176,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateUser(value) {
-      dispatch(actions.updateUser(value))
-    }
-  }
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(actions, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

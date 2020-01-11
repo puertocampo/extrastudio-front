@@ -8,4 +8,5 @@ export interface IUser {
   profession: string;
   address: string;
   interests: string[];
+  idToken: string;
 }

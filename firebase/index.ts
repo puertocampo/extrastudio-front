@@ -19,7 +19,7 @@ export default class Firebase {
     }
   }
 
-  static async handleLogIn(): Promise<any> {
+  static async handleLogIn() {
     const result = await Google.logInAsync({
       behavior: "web",
       clientId:
@@ -42,7 +42,8 @@ export default class Firebase {
           userId: result.user.uid,
           email: result.user.email,
           name: result.user.displayName,
-          iconUrl: result.user.photoURL
+          iconUrl: result.user.photoURL,
+          idToken
         }
       };
     } catch (err) {

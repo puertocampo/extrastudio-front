@@ -5,14 +5,19 @@ import {
 const INITIAL_STATE = {
   user: {
     email: "",
-    name: ""
+    name: "",
+    iconUrl: "",
+    birthDate: new Date(),
+    sex: "male",
+    profession: "",
+    address: "",
+    interests: []
   }
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPDATE_USER:
-      console.log('REDUCER UPDATE_USER');
       return {
         ...state, user: action.payload
       };

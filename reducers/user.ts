@@ -1,7 +1,7 @@
 import {
   UPDATE_USER,
   INITIALIZE_USER
-} from '../actions/types';
+} from '../actions/types/user';
 
 const INITIAL_STATE = {
   user: {

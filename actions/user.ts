@@ -3,7 +3,7 @@ import {
   LOGOUT,
   UPDATE_USER,
   INITIALIZE_USER
-} from './types';
+} from './types/user';
 import { IUser } from "../type/user";
 
 export const login = () => {

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 
-import UserReducer from './user'; // `review_reducer.js`は後ほど作ります
+import UserReducer from './user';
+import EventReducer from './event';
 
 
-export default combineReducers({ // 本来はここで複数のReducerをひとまとめにする
-  user: UserReducer, // `ReviewReducer`(review_reducer.js)を`review`とする
+export default combineReducers({
+  user: UserReducer,
+  events: EventReducer
 });

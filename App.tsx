@@ -19,7 +19,7 @@ export default class App extends Component<any, IState> {
   render() {
     const NavigatorTab = createAppContainer(
       createSwitchNavigator({
-        // login: { screen: LoginScreen },
+        login: { screen: LoginScreen },
         selection: { screen: SelectionScreen }
       })
     );

@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import Firebase from "../firebase";
 import {
   LOGIN,
@@ -21,8 +21,8 @@ function* handleLogout() {
 }
 
 const watchUserAsync = [
-  takeEvery(LOGIN, handleLogin),
-  takeEvery(LOGOUT, handleLogout)
+  takeLatest(LOGIN, handleLogin),
+  takeLatest(LOGOUT, handleLogout)
 ];
 
 export default watchUserAsync;

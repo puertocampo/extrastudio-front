@@ -4,6 +4,7 @@ import {
 
 const INITIAL_STATE = {
   user: {
+    userId: "",
     email: "",
     name: "",
     iconUrl: "",

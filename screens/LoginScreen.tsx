@@ -10,13 +10,6 @@ import { bindActionCreators } from 'redux';
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isLoggedIn: false,
-      user: {
-        email: "",
-        name: ""
-      }
-    };
   }
 
   async componentDidMount() {
@@ -47,6 +40,8 @@ class LoginScreen extends Component {
   };
 
   render() {
+    const stateUser = this.props.user.user;
+    const isLoggedIn = !!stateUser.userId;
     return (
       <View style={styles.container} >
         <Button
@@ -65,7 +60,7 @@ class LoginScreen extends Component {
           onPress={this.props.login}
         />
         {
-          this.state.isLoggedIn && (
+          isLoggedIn && (
             <View
               style={{
                 alignItems: "center",
@@ -75,7 +70,7 @@ class LoginScreen extends Component {
               <Text
                 style={{ marginBottom: 20 }}
               >
-                Hello, {this.state.user.name} ({this.state.user.email})
+                Hello, {stateUser.name} ({stateUser.email})
               </Text>
               <Button
                 title="Logout With Google"

@@ -6,14 +6,7 @@ import Firebase from "../firebase";
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { bindActionCreators } from 'redux';
-// import { IUser } from "./type/user";
 
-// interface IState {
-//   isLoggedIn: Boolean;
-//   user: IUser;
-// }
-
-// export default class LoginScreen extends Component<any, IState> {
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -24,33 +17,9 @@ class LoginScreen extends Component {
         name: ""
       }
     };
-    console.log("constructor");
-    try {
-      // firebase 操作の初期化 と Firebase class のインスタンス化
-      Firebase.firebaseInitialize();
-      console.log("firebaseInitialize");
-    } catch {
-      console.log("release");
-    }
   }
 
-  // async componentDidMount() {
-  //   const user = await Firebase.fetchCurrentUser();
-  //   this.setState({
-  //     isLoggedIn: !!user,
-  //     user: {
-  //       email: user ? user.email : "",
-  //       name: user ? user.displayName : ""
-  //     }
-  //   });
-  //   console.log("componentDidMount", user);
-  // }
-
   async componentDidMount() {
-    // this.fetchCurrentLoggedInUser();
-    // console.log('user', user);
-    // await this.props.updateUser({ mail: "puertocampo@gmail.com", name: "ore" });
-    // console.log('this.props.user', this.props.user);
   }
 
   fetchCurrentLoggedInUser = () => {
@@ -64,23 +33,6 @@ class LoginScreen extends Component {
       });
     });
   };
-
-  // handleLogIn = () => {
-  //   Firebase.handleLogIn().then(
-  //     firebaseUser => {
-  //       this.setState({
-  //         isLoggedIn: true,
-  //         user: {
-  //           email: firebaseUser.user.email,
-  //           name: firebaseUser.user.displayName
-  //         }
-  //       });
-  //     })
-  // };
-
-  handleLogIn = () => {
-    this.props.handleLogin();
-  }
 
   handleLogout = () => {
     Firebase.handleLogOut().then(() => {
@@ -110,7 +62,7 @@ class LoginScreen extends Component {
           titleStyle={{
             fontWeight: "bold"
           }}
-          onPress={this.handleLogIn}
+          onPress={this.props.login}
         />
         {
           this.state.isLoggedIn && (

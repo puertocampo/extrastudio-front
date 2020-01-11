@@ -5,8 +5,8 @@ import {
 } from '../actions/types';
 import { updateUser } from "../actions";
 
-export function* handleLogin () {
-  const{ user, err } = yield call(Firebase.handleLogIn);
+export function* handleLogin() {
+  const { user, err } = yield call(Firebase.handleLogIn);
   if (user) {
     yield put(updateUser(user));
   } else {
@@ -19,7 +19,7 @@ export function* watchHandleLogin() {
 }
 
 export default function* rootSaga() {
-    yield all([
-      watchHandleLogin()
-    ])
+  yield all([
+    watchHandleLogin()
+  ])
 }

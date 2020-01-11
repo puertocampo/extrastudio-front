@@ -2,8 +2,8 @@
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://2v-4dj.extrastudio.extrastudio-front.exp.direct",
   "packagerNgrokUrl": "https://packager.2v-4dj.extrastudio.extrastudio-front.exp.direct",
-  "ngrokPid": 97840,
+  "ngrokPid": 99301,
   "devToolsPort": 19002,
   "packagerPort": 19005,
-  "packagerPid": 97829
+  "packagerPid": 99275
 }

@@ -47,10 +47,10 @@ class LoginScreen extends Component {
   // }
 
   async componentDidMount() {
-    this.fetchCurrentLoggedInUser();
-    console.log('user', user);
-    await this.props.updateUser({mail: "puertocampo@gmail.com", name: "ore"});
-    console.log('this.props.user', this.props.user);
+    // this.fetchCurrentLoggedInUser();
+    // console.log('user', user);
+    // await this.props.updateUser({ mail: "puertocampo@gmail.com", name: "ore" });
+    // console.log('this.props.user', this.props.user);
   }
 
   fetchCurrentLoggedInUser = () => {
@@ -65,19 +65,22 @@ class LoginScreen extends Component {
     });
   };
 
+  // handleLogIn = () => {
+  //   Firebase.handleLogIn().then(
+  //     firebaseUser => {
+  //       this.setState({
+  //         isLoggedIn: true,
+  //         user: {
+  //           email: firebaseUser.user.email,
+  //           name: firebaseUser.user.displayName
+  //         }
+  //       });
+  //     })
+  // };
+
   handleLogIn = () => {
-    Firebase.handleLogIn().then(
-      // (firebaseUser: firebase.auth.UserCredential) => {
-      firebaseUser => {
-        this.setState({
-          isLoggedIn: true,
-          user: {
-            email: firebaseUser.user.email,
-            name: firebaseUser.user.displayName
-          }
-        });
-      })
-  };
+    this.props.handleLogin();
+  }
 
   handleLogout = () => {
     Firebase.handleLogOut().then(() => {
@@ -93,10 +96,10 @@ class LoginScreen extends Component {
 
   render() {
     return (
-      <View style= { styles.container } >
+      <View style={styles.container} >
         <Button
           title="Login With Google"
-          style={{marginBottom: 20}}
+          style={{ marginBottom: 20 }}
           buttonStyle={{
             width: 200,
             height: 50,
@@ -118,13 +121,13 @@ class LoginScreen extends Component {
               }}
             >
               <Text
-                style={{marginBottom: 20}}
+                style={{ marginBottom: 20 }}
               >
-                Hello, { this.state.user.name } ({ this.state.user.email })
+                Hello, {this.state.user.name} ({this.state.user.email})
               </Text>
               <Button
                 title="Logout With Google"
-                style={{marginBottom: 20}}
+                style={{ marginBottom: 20 }}
                 buttonStyle={{
                   width: 200,
                   height: 50,
@@ -139,7 +142,7 @@ class LoginScreen extends Component {
               />
               <Button
                 title="Go to pick up event!"
-                style={{marginBottom: 20}}
+                style={{ marginBottom: 20 }}
                 buttonStyle={{
                   width: 200,
                   height: 50,
@@ -160,14 +163,14 @@ class LoginScreen extends Component {
   }
 }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center"
-    }
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+});
 
 
 const mapStateToProps = (state) => {

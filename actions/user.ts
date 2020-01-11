@@ -2,10 +2,9 @@ import {
   UPDATE_USER,
   LOGIN
 } from './types';
+import { IUser } from "../type/user";
 
-// import { IUser } from "../type/user";
-
-export const updateUser = (user) => {
+export const updateUser = (user: IUser) => {
   return { type: UPDATE_USER, payload: user };
 }
 

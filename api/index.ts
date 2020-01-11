@@ -1,11 +1,22 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 export default class Api {
-  fetchSample = () => {
+  static fetchSample() {
     return fetch('https://facebook.github.io/react-native/movies.json')
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson.movies);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  static fetchEvents(limit: number, userId: string) {
+    return fetch(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/events?limit=${limit}&userId=${userId}`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
       })
       .catch((error) => {
         console.error(error);
@@ -27,4 +38,5 @@ export default class Api {
       throw err.response;
     });
   }
+
 }

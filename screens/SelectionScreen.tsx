@@ -8,6 +8,7 @@ import Firebase from "../firebase";
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Api from "../api";
 
 const events = [
   { eventId: "event01", title: "野球イベント", uri: require('../assets/image/baseball.jpeg') },
@@ -49,7 +50,7 @@ const ReactionContainer = props => {
           // onPress={()=> {
           //   props.fetchCalendarEvents();
           // }}
-          onPress={() => {props.createEvent();}}
+          onPress={() => { props.createEvent(); }}
         />
         <Icon
           name='heart'
@@ -60,27 +61,27 @@ const ReactionContainer = props => {
           // onPress={()=> {
           //   props.fetchCalendarEvents();
           // }}
-          onPress={() => {props.createEvent();}}
+          onPress={() => { props.createEvent(); }}
         />
       </View>
-      <View style={{ position: "relative", right: 60}}>
+      <View style={{ position: "relative", right: 60 }}>
         <Icon
           name='circle'
           color="#FFFFFF"
           style={{ position: "absolute", top: 1, left: 1 }}
           size={68}
-          onPress={() => {props.handleDislikeSwipe();}}
+          onPress={() => { props.handleDislikeSwipe(); }}
         />
         <Icon
           name='times-circle'
           color="#4D7DF9"
           style={{ position: "absolute" }}
           size={70}
-          onPress={() => {props.handleDislikeSwipe();}}
+          onPress={() => { props.handleDislikeSwipe(); }}
         />
       </View>
     </View>
-    );
+  );
 }
 
 const LikeLabel = props => {
@@ -198,8 +199,8 @@ class SelectionScreen extends Component {
           Animated.spring(this.position, {
             toValue: { x: 0, y: 0 },
             friction: 4
-            }).start()
-          }
+          }).start()
+        }
       }
     });
     this.rotateAndTranslate = {
@@ -208,7 +209,7 @@ class SelectionScreen extends Component {
           rotate: this.rotate
         },
         ...this.position.getTranslateTransform()
-        ]
+      ]
     };
   }
 
@@ -236,6 +237,18 @@ class SelectionScreen extends Component {
 
   fetchCalendarEvents = () => {
     Firebase.fetchCalendarEvents();
+  }
+
+  fetchEvents = async () => {
+    try {
+      const events = await Api.fetchEvents(20, this.props.user.user.email);
+      // const events = await Api.fetchSample();
+      // const events = typeof Api;
+      console.log('events', events);
+      return events;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   createEvent = () => {
@@ -504,10 +517,11 @@ class SelectionScreen extends Component {
     console.log('selection user', this.props.user);
     const renderLastCard = this.state.currentIndex === events.length || this.state.currentIndex === events.length - 1;
     const renderReactionContainer = this.state.currentIndex !== events.length;
+    this.fetchEvents();
     return (
       <Wrapper>
         <View style={{ flex: 1, marginTop: 60 }}>
-          {renderLastCard && 
+          {renderLastCard &&
             <View
               style={{
                 height: SCREEN_HEIGHT - 210,

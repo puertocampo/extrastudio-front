@@ -1,5 +1,6 @@
 import {
-  UPDATE_USER
+  UPDATE_USER,
+  INITIALIZE_USER
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -22,6 +23,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state, user: action.payload
       };
+
+    case INITIALIZE_USER:
+      return {
+        ...state, user: INITIAL_STATE.user
+      }
 
     default:
       return state;

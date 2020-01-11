@@ -19,65 +19,35 @@ export default class Firebase {
     }
   }
 
-  static async handleLogIn(): Promise<firebase.auth.UserCredential> {
-    // await GoogleSignIn.initAsync({
-    //   clientId:
-    //     "324221214715-jqkk2f6qbnk0snqsqo9je6sb0nh15l0m.apps.googleusercontent.com"
-    // });
-    // const logInInfo = await GoogleSignIn.signInSilentlyAsync()
-    const logInInfo = await Google.logInAsync({
+  static async handleLogIn(): Promise<any> {
+    const result = await Google.logInAsync({
       behavior: "web",
       clientId:
         "324221214715-jqkk2f6qbnk0snqsqo9je6sb0nh15l0m.apps.googleusercontent.com",
       scopes: ["profile", "email"]
     })
-      .then(async result => {
-        if (result.type === "success") {
-          const { idToken, accessToken } = result;
-          const credential = firebase.auth.GoogleAuthProvider.credential(
-            idToken,
-            accessToken
-          );
-          const user = await firebase
-            .auth()
-            .signInWithCredential(credential)
-            .then(result => {
-              return result;
-            })
-            .catch(({ message }) => {
-              // dispatch({
-              //   type: "FAIL_AUTH_USER",
-              //   message
-              // });
-              throw {
-                status: 500,
-                code: "dame"
-              };
-            });
-          return user;
-        } else {
-          // dispatch({
-          //   type: "FAIL_AUTH_USER",
-          //   message: result.type
-          // });
-          throw {
-            status: 500,
-            code: "dame"
-          };
+    if (result.type !== "success") return { err: result };
+    const { idToken, accessToken } = result;
+    const credential = firebase.auth.GoogleAuthProvider.credential(
+      idToken,
+      accessToken
+    );
+
+    try {
+      const result = await firebase
+        .auth()
+        .signInWithCredential(credential)
+      return {
+        user: {
+          userId: result.user.uid,
+          email: result.user.email,
+          name: result.user.displayName,
+          iconUrl: result.user.photoURL
         }
-      })
-      .catch(e => {
-        console.log(e);
-        // dispatch({
-        //   type: "FAIL_AUTH_USER",
-        //   message
-        // });
-        throw {
-          status: 500,
-          code: "dame"
-        };
-      });
-    return logInInfo;
+      };
+    } catch (err) {
+      return { err };
+    }
   }
 
   /**

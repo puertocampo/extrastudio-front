@@ -3,7 +3,7 @@ import Firebase from "../firebase";
 import {
   LOGIN,
   LOGOUT
-} from '../actions/types';
+} from '../actions/types/user';
 import { updateUser, initializeUser } from "../actions";
 
 function* handleLogin() {

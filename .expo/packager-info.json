@@ -1,10 +1,1 @@
-{
-  "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19003,
-  "packagerPid": 86563,
-  "expoServerNgrokUrl": "https://2v-4dj.extrastudio.extrastudio-front.exp.direct",
-  "packagerNgrokUrl": "https://packager.2v-4dj.extrastudio.extrastudio-front.exp.direct",
-  "ngrokPid": 86588,
-  "webpackServerPort": null
-}
+{}

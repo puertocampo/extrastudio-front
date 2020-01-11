@@ -1,16 +1,15 @@
 import { createStore, compose, applyMiddleware } from 'redux';
-// import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from '../sagas';
+import reducers from '../reducers';
 
-import reducers from '../reducers'; // Reducerは後ほど作ります
+const sagaMiddleware = createSagaMiddleware()
 
+const store = createStore(
+    reducers,
+    applyMiddleware(sagaMiddleware)
+)
 
-const store = createStore( // storeを作成
-  reducers, // Reducerを適用
-  // {},
-  // compose(
-  //   applyMiddleware(thunk),
-  // )
-);
-
+sagaMiddleware.run(rootSaga)
 
 export default store;

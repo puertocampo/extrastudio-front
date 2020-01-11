@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, AsyncStorage } from "react-native";
 import { Button } from "react-native-elements";
-import Firebase from "../firebase";
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -40,7 +39,7 @@ class LoginScreen extends Component {
   // };
 
   render() {
-    const stateUser = this.props.user.user;
+    const stateUser = this.props.user;
     const isLoggedIn = !!stateUser.userId;
     return (
       <View style={styles.container} >

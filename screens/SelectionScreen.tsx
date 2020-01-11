@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Api from "../api";
+import { bindActionCreators } from 'redux';
 
 const events = [
   { eventId: "event01", title: "野球イベント", uri: require('../assets/image/baseball.jpeg') },
@@ -46,22 +47,14 @@ const ReactionContainer = props => {
           color="#FF5D5A"
           style={{ position: "absolute" }}
           size={70}
-          // onPress={() => {props.handleLikeSwipe();}}
-          // onPress={()=> {
-          //   props.fetchCalendarEvents();
-          // }}
-          onPress={() => { props.createEvent(); }}
+          onPress={props.handleLikeSwipe}
         />
         <Icon
           name='heart'
           color="#FFFFFF"
           style={{ position: "absolute", top: 20, left: 15 }}
           size={30}
-          // onPress={() => {props.handleLikeSwipe();}}
-          // onPress={()=> {
-          //   props.fetchCalendarEvents();
-          // }}
-          onPress={() => { props.createEvent(); }}
+          onPress={props.handleLikeSwipe}
         />
       </View>
       <View style={{ position: "relative", right: 60 }}>
@@ -242,9 +235,6 @@ class SelectionScreen extends Component {
   fetchEvents = async () => {
     try {
       const events = await Api.fetchEvents(20, this.props.user.user.email);
-      // const events = await Api.fetchSample();
-      // const events = typeof Api;
-      console.log('events', events);
       return events;
     } catch (err) {
       console.log(err);
@@ -514,10 +504,8 @@ class SelectionScreen extends Component {
   };
 
   render() {
-    console.log('selection user', this.props.user);
     const renderLastCard = this.state.currentIndex === events.length || this.state.currentIndex === events.length - 1;
     const renderReactionContainer = this.state.currentIndex !== events.length;
-    this.fetchEvents();
     return (
       <Wrapper>
         <View style={{ flex: 1, marginTop: 60 }}>
@@ -597,4 +585,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SelectionScreen);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectionScreen);

@@ -14,30 +14,6 @@ class LoginScreen extends Component {
   async componentDidMount() {
   }
 
-  // fetchCurrentLoggedInUser = () => {
-  //   Firebase.fetchCurrentUser().then(firebaseUser => {
-  //     this.setState({
-  //       isLoggedIn: !!firebaseUser,
-  //       user: {
-  //         email: firebaseUser ? firebaseUser.email : "",
-  //         name: firebaseUser ? firebaseUser.displayName : ""
-  //       }
-  //     });
-  //   });
-  // };
-
-  // handleLogout = () => {
-  //   Firebase.handleLogOut().then(() => {
-  //     this.setState({
-  //       isLoggedIn: false,
-  //       user: {
-  //         email: "",
-  //         name: ""
-  //       }
-  //     });
-  //   });
-  // };
-
   render() {
     const stateUser = this.props.user;
     const isLoggedIn = !!stateUser.userId;

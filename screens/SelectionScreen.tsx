@@ -177,6 +177,10 @@ class SelectionScreen extends Component {
     });
   }
 
+  componentDidMount() {
+    this.props.fetchEvents();
+  }
+
   componentWillMount() {
     this.PanResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -581,7 +585,8 @@ class SelectionScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    events: state.events
   };
 };
 

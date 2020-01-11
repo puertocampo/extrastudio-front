@@ -11,8 +11,3 @@ export const updateUser = (user: IUser) => {
 export const login = () => {
   return { type: LOGIN };
 }
-
-const initUser = {
-  email: "",
-  name: ""
-}

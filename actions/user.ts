@@ -1,7 +1,7 @@
 import {
   LOGIN,
   LOGOUT,
-  UPDATE_USER,
+  SET_USER,
   INITIALIZE_USER
 } from './types/user';
 import { IUser } from "../type/user";
@@ -14,8 +14,8 @@ export const logout = () => {
   return { type: LOGOUT };
 }
 
-export const updateUser = (user: IUser) => {
-  return { type: UPDATE_USER, payload: user };
+export const setUser = (user: IUser) => {
+  return { type: SET_USER, payload: user };
 }
 
 export const initializeUser = () => {

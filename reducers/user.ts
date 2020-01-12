@@ -1,5 +1,5 @@
 import {
-  UPDATE_USER,
+  SET_USER,
   INITIALIZE_USER
 } from '../actions/types/user';
 import { IUser } from "../type/user";
@@ -19,7 +19,7 @@ const INITIAL_STATE: IUser = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_USER:
+    case SET_USER:
       return {
         ...state, ...action.payload
       };

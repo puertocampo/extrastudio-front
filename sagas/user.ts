@@ -4,12 +4,12 @@ import {
   LOGIN,
   LOGOUT
 } from '../actions/types/user';
-import { updateUser, initializeUser } from "../actions";
+import { setUser, initializeUser } from "../actions";
 
 function* handleLogin() {
   const { user, err } = yield call(Firebase.handleLogIn);
   if (user) {
-    yield put(updateUser(user));
+    yield put(setUser(user));
   } else {
     console.log('err', err);
   }

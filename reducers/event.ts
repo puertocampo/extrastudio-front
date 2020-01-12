@@ -9,7 +9,7 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPDATE_EVENTS:
       return {
-        ...state, events: action.payload
+        ...state, ...action.payload
       };
 
     default:

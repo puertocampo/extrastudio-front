@@ -5,10 +5,12 @@ import {
   LOGOUT
 } from '../actions/types/user';
 import { setUser, initializeUser } from "../actions";
+import { setStorage } from "./asyncStorage";
 
 function* handleLogin() {
   const { user, err } = yield call(Firebase.handleLogIn);
   if (user) {
+    yield call(setStorage, { userId: user.userId, idToken: user.idToken });
     yield put(setUser(user));
   } else {
     console.log('err', err);

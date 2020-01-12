@@ -1,1 +1,0 @@
-export const getIdToken = state => state.user.idToken;

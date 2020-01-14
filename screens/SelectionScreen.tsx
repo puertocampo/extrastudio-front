@@ -178,7 +178,7 @@ class SelectionScreen extends Component {
   }
 
   componentDidMount() {
-    // this.props.fetchEvents();
+    this.props.fetchEvents();
   }
 
   componentWillMount() {
@@ -249,7 +249,8 @@ class SelectionScreen extends Component {
     Firebase.createEvent();
   }
 
-  renderEventCards = () => {
+  renderEventCards = (events: IEvent[]) => {
+    if (!events) return null;
     return events.map((item, index) => {
       if (index < this.state.currentIndex) {
         return null;
@@ -284,7 +285,7 @@ class SelectionScreen extends Component {
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20
               }}
-              source={item.uri}
+              source={{ uri: item.imagePath || "https://s3-ap-northeast-1.amazonaws.com/s3.techplay.jp/tp-images/event/1250/4a31e8e431a59931d54c5197cb65b907366c278e.jpg" }}
             />
             <View
               style={{
@@ -307,7 +308,7 @@ class SelectionScreen extends Component {
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {item.title}これは蛇足ですこれは蛇足ですこれは蛇足ですこれは蛇足です
+                {item.title}
               </Text>
               <View
                 style={{
@@ -335,7 +336,7 @@ class SelectionScreen extends Component {
                       fontWeight: "bold"
                     }}
                   >
-                    2020/01/01 00:00 ~ 2020/01/01 23:59
+                    {item.startedAt} ~ {item.endedAt}
                   </Text>
                 </View>
                 <View
@@ -362,7 +363,7 @@ class SelectionScreen extends Component {
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
-                    広島県広島市中区基町6-78 NTTクレド基町ビル11階広島県広島市中区基町6-78 NTTクレド基町ビル11階
+                    {item.address}
                   </Text>
                 </View>
                 <Text
@@ -375,7 +376,7 @@ class SelectionScreen extends Component {
                   numberOfLines={3}
                   ellipsizeMode="tail"
                 >
-                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。なぜそんな無闇をしたと聞く人があるかも知れぬ。別段深い理由でもない。新築の二階から首を出していたら、同級生の一人が冗談じょうだんに、いくら威張いばっても、そこから飛び降りる事は出来まい。弱虫やーい。と囃はやしたからである。小使こづかいに負ぶさって帰って来た時、おやじが大きな眼めをして二階ぐらいから飛び降りて腰を抜かす奴やつがあるかと云いったから、この次は抜かさずに飛んで見せますと答えた。
+                  {item.summary}
                 </Text>
               </View>
             </View>
@@ -404,7 +405,7 @@ class SelectionScreen extends Component {
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20
               }}
-              source={item.uri}
+              source={{ uri: item.imagePath || "https://s3-ap-northeast-1.amazonaws.com/s3.techplay.jp/tp-images/event/1250/4a31e8e431a59931d54c5197cb65b907366c278e.jpg" }}
             />
             <View
               style={{
@@ -427,7 +428,7 @@ class SelectionScreen extends Component {
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {item.title}これは蛇足ですこれは蛇足ですこれは蛇足ですこれは蛇足です
+                {item.title}
               </Text>
               <View
                 style={{
@@ -455,7 +456,7 @@ class SelectionScreen extends Component {
                       fontWeight: "bold"
                     }}
                   >
-                    2020/01/01 00:00 ~ 2020/01/01 23:59
+                    {item.startedAt} ~ {item.endedAt}
                   </Text>
                 </View>
                 <View
@@ -482,7 +483,7 @@ class SelectionScreen extends Component {
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
-                    広島県広島市中区基町6-78 NTTクレド基町ビル11階広島県広島市中区基町6-78 NTTクレド基町ビル11階
+                    {item.address}
                   </Text>
                 </View>
                 <Text
@@ -495,7 +496,7 @@ class SelectionScreen extends Component {
                   numberOfLines={3}
                   ellipsizeMode="tail"
                 >
-                  親譲りの無鉄砲で小供の時から損ばかりしている。小学校に居る時分学校の二階から飛び降りて一週間ほど腰を抜かした事がある。なぜそんな無闇をしたと聞く人があるかも知れぬ。別段深い理由でもない。新築の二階から首を出していたら、同級生の一人が冗談じょうだんに、いくら威張いばっても、そこから飛び降りる事は出来まい。弱虫やーい。と囃はやしたからである。小使こづかいに負ぶさって帰って来た時、おやじが大きな眼めをして二階ぐらいから飛び降りて腰を抜かす奴やつがあるかと云いったから、この次は抜かさずに飛んで見せますと答えた。
+                  {item.summary}
                 </Text>
               </View>
             </View>
@@ -508,7 +509,9 @@ class SelectionScreen extends Component {
   };
 
   render() {
-    const renderLastCard = this.state.currentIndex === events.length || this.state.currentIndex === events.length - 1;
+    const stateEvents = this.props.events;
+    const renderEventCards = !!stateEvents && !!Object.keys(stateEvents).length;
+    const renderLastCard = !renderEventCards || this.state.currentIndex === events.length || this.state.currentIndex === events.length - 1;
     const renderReactionContainer = this.state.currentIndex !== events.length;
     return (
       <Wrapper>
@@ -567,7 +570,7 @@ class SelectionScreen extends Component {
               />
             </View>
           }
-          {this.renderEventCards()}
+          {renderEventCards && this.renderEventCards(stateEvents)}
         </View>
         {renderReactionContainer &&
           <ReactionContainer

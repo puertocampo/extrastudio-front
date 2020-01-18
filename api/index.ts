@@ -94,7 +94,7 @@ export default class Api {
   // }
 
   static async fetchEvents(req: { userId: string, idToken: string }) {
-    const limit = 3;
+    const limit = 20;
     Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
     return Axios.get(`/events?limit=${limit}`)
       .then(({ data }) => {

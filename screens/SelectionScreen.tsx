@@ -178,13 +178,11 @@ class SelectionScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if ((prevProps.events || []).length === 0 && (this.props.events || []).length > 1) {
-      console.log('fetched event');
+    if (prevState.currentIndex === (prevProps.events || []).length && (this.props.events || []).length > 1) {
       this.setState({ currentEvent: this.props.events[0] });
     }
     if (prevState.currentIndex !== (this.props.events || []).length && this.state.currentIndex === (this.props.events || []).length) {
-      console.log('fetch event');
-      this.props.fetchEvents();
+      this.props.fetchEvents(this.props.user.userId);
       this.setState({ currentIndex: 0 });
     }
   }

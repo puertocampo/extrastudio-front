@@ -42,14 +42,14 @@ const ReactionContainer = props => {
           color="#FF5D5A"
           style={{ position: "absolute" }}
           size={isIos ? 70 : 60}
-          onPress={() => { props.handleLikeSwipe(props.currentEventId); }}
+          onPress={() => { props.handleLikeSwipe(props.currentEvent); }}
         />
         <Icon
           name='heart'
           color="#FFFFFF"
           style={{ position: "absolute", top: isIos ? 20 : 17, left: isIos ? 15 : 12 }}
           size={isIos ? 30 : 27}
-          onPress={() => { props.handleLikeSwipe(props.currentEventId); }}
+          onPress={() => { props.handleLikeSwipe(props.currentEvent); }}
         />
       </View>
       <View style={{ position: "relative", right: 60, top: isIos ? 0 : 20 }}>
@@ -58,14 +58,14 @@ const ReactionContainer = props => {
           color="#FFFFFF"
           style={{ position: "absolute", top: isIos ? 1 : 0.5, left: isIos ? 1 : 0.5 }}
           size={isIos ? 68 : 59}
-          onPress={() => { props.handleDislikeSwipe(props.currentEventId); }}
+          onPress={() => { props.handleDislikeSwipe(props.currentEvent); }}
         />
         <Icon
           name='times-circle'
           color="#4D7DF9"
           style={{ position: "absolute" }}
           size={isIos ? 70 : 60}
-          onPress={() => { props.handleDislikeSwipe(props.currentEventId); }}
+          onPress={() => { props.handleDislikeSwipe(props.currentEvent); }}
         />
       </View>
     </View>
@@ -144,7 +144,7 @@ class SelectionScreen extends Component {
     this.position = new Animated.ValueXY();
     this.state = {
       currentIndex: 0,
-      currentEventId: ""
+      currentEvent: {}
     };
     this.rotate = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -180,7 +180,7 @@ class SelectionScreen extends Component {
   componentDidUpdate(prevProps, prevState) {
     if ((prevProps.events || []).length === 0 && (this.props.events || []).length > 1) {
       console.log('fetched event');
-      this.setState({ currentEventId: this.props.events[0].eventId });
+      this.setState({ currentEvent: this.props.events[0] });
     }
     if (prevState.currentIndex !== (this.props.events || []).length && this.state.currentIndex === (this.props.events || []).length) {
       console.log('fetch event');
@@ -197,9 +197,9 @@ class SelectionScreen extends Component {
       },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx > 120) {
-          this.handleLikeSwipe(this.state.currentEventId, gestureState.dy);
+          this.handleLikeSwipe(this.state.currentEvent, gestureState.dy);
         } else if (gestureState.dx < -120) {
-          this.handleDislikeSwipe(this.state.currentEventId, gestureState.dy);
+          this.handleDislikeSwipe(this.state.currentEvent, gestureState.dy);
         } else {
           Animated.spring(this.position, {
             toValue: { x: 0, y: 0 },
@@ -218,30 +218,29 @@ class SelectionScreen extends Component {
     };
   }
 
-  handleLikeSwipe = (eventId: string, positionY: number) => {
+  handleLikeSwipe = (event: IEvent, positionY: number) => {
     Animated.spring(this.position, {
       toValue: { x: 1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
     }).start(() => {
-      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-        const nextEvent = this.props.events[this.state.currentIndex];
-        this.setState({ currentEventId: nextEvent ? nextEvent.eventId : "" });
+      const nextIndex = this.state.currentIndex + 1;
+      this.setState({ currentIndex: nextIndex, currentEvent: this.props.events[nextIndex] }, () => {
         this.position.setValue({ x: 0, y: 0 });
-        this.props.evaluateEvent({ userId: this.props.user.userId, eventId, evaluate: "LIKE" });
+        this.props.evaluateEvent({ event, userId: this.props.user.userId, email: this.props.user.email, evaluate: "LIKE" });
       })
     });
   }
 
-  handleDislikeSwipe = (eventId: string, positionY: number) => {
+  handleDislikeSwipe = (event: IEvent, positionY: number) => {
     Animated.spring(this.position, {
       toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
     }).start(() => {
-      this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-        const nextEvent = this.props.events[this.state.currentIndex];
-        this.setState({ currentEventId: nextEvent ? nextEvent.eventId : "" });
+      const nextIndex = this.state.currentIndex + 1;
+      this.setState({ currentIndex: nextIndex, currentEvent: this.props.events[nextIndex] }, () => {
+        this.setState({});
         this.position.setValue({ x: 0, y: 0 })
-        this.props.evaluateEvent({ userId: this.props.user.userId, eventId, evaluate: "NOPE" });
+        this.props.evaluateEvent({ event, userId: this.props.user.userId, email: this.props.user.email, evaluate: "NOPE" });
       })
     })
   }
@@ -621,7 +620,7 @@ class SelectionScreen extends Component {
         </View>
         {renderReactionContainer &&
           <ReactionContainer
-            currentEventId={this.state.currentEventId}
+            currentEvent={this.state.currentEvent}
             handleLikeSwipe={this.handleLikeSwipe}
             handleDislikeSwipe={this.handleDislikeSwipe}
             // fetchCalendarEvents={this.fetchCalendarEvents}

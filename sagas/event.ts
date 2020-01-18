@@ -1,5 +1,6 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import Api from "../api";
+import Firebase from "../firebase";
 import {
   FETCH_EVENTS, EVALUATE_EVENT
 } from '../actions/types/event';
@@ -20,6 +21,9 @@ function* fetchEvents(action) {
 function* evaluateEvent(action) {
   const { idToken } = yield call(getStorage, ['idToken']);
   yield call(Api.evaluateEvent, { ...action.payload, idToken });
+  if (action.payload.evaluate === "LIKE") {
+    yield call(Firebase.createCalendarEvent, { ...action.payload, idToken });
+  }
 }
 
 const watchEventAsync = [

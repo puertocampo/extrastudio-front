@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 import * as Google from "expo-google-app-auth";
 import * as Calendar from "expo-calendar";
 import moment from "moment";
+import { IEvent } from "../type/event";
 // import { GoogleSignIn } from "expo-google-sign-in";
 // import * as GoogleSignIn from "expo-google-sign-in";
 // import * as GoogleSignIn from "expo-google-sign-in";
@@ -20,33 +21,36 @@ export default class Firebase {
   }
 
   static async handleLogIn() {
-    const result = await Google.logInAsync({
-      behavior: "web",
-      clientId:
-        "324221214715-jqkk2f6qbnk0snqsqo9je6sb0nh15l0m.apps.googleusercontent.com",
-      scopes: ["profile", "email"]
-    })
-    if (result.type !== "success") return { err: result };
-    const { idToken, accessToken } = result;
-    const credential = firebase.auth.GoogleAuthProvider.credential(
-      idToken,
-      accessToken
-    );
-
     try {
-      const result = await firebase
+      const googleResult = await Google.logInAsync({
+        behavior: "web",
+        clientId:
+          "324221214715-jqkk2f6qbnk0snqsqo9je6sb0nh15l0m.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      })
+      console.log('result ok');
+      if (googleResult.type !== "success") return { err: googleResult };
+      const { idToken, accessToken } = googleResult;
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        idToken,
+        accessToken
+      );
+      console.log('credential ok');
+      const firebaseResult = await firebase
         .auth()
         .signInWithCredential(credential)
+      console.log('try ok');
       return {
         firebaseUser: {
-          userId: result.user.uid,
-          email: result.user.email,
-          name: result.user.displayName,
-          iconUrl: result.user.photoURL,
+          userId: firebaseResult.user.uid,
+          email: firebaseResult.user.email,
+          name: firebaseResult.user.displayName,
+          iconUrl: firebaseResult.user.photoURL,
           idToken
         }
       };
     } catch (err) {
+      console.log('try ng');
       return { err };
     }
   }
@@ -103,24 +107,16 @@ export default class Firebase {
     console.log(`Your new calendar ID is: ${newCalendarID}`);
   }
 
-  static async createEvent() {
-    console.log('createEvent');
+  static async createCalendarEvent(req: { event: IEvent, email: string }) {
     const calendars = await Calendar.getCalendarsAsync();
-    console.log('calendars', calendars);
-    // const defaultCalendar = calendars[0];
-    const defaultCalendar = calendars.filter(calendar => calendar.title === "puertocampo@gmail.com");
-    console.log(defaultCalendar);
+    const defaultCalendar = calendars.filter(calendar => calendar.title === req.email);
 
     await Calendar.createEventAsync(
       defaultCalendar[0].id,
       {
-        title: "EXPO EVENT!",
-        startDate: moment()
-          .add(moment.duration(0, "day"))
-          .toDate(),
-        endDate: moment()
-          .add(moment.duration(1, "day"))
-          .toDate()
+        title: req.event.title,
+        startDate: req.event.startedAt,
+        endDate: req.event.endedAt
       }
     ).then(eventId => {
       console.log(eventId);

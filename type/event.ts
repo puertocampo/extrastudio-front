@@ -21,7 +21,8 @@ export interface IEvent {
 }
 
 export interface IReqEvalEvent {
+  event: IEvent;
   userId: string;
-  eventId: string;
+  email: string;
   evaluate: string;
 }

@@ -1,6 +1,7 @@
 import {
   LOGIN,
   LOGOUT,
+  FETCH_USER,
   SET_USER,
   INITIALIZE_USER
 } from './types/user';
@@ -12,6 +13,10 @@ export const login = () => {
 
 export const logout = () => {
   return { type: LOGOUT };
+}
+
+export const fetchUser = () => {
+  return { type: FETCH_USER }
 }
 
 export const setUser = (user: IUser) => {

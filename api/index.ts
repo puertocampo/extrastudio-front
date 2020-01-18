@@ -1,14 +1,14 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 export default class Api {
-  static async fetchUser(userId: string, idToken: string) {
-    return axios.post(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/users/${userId}/login`, {
+  static async fetchUser(req: { userId: string, idToken: string }) {
+    return axios.post(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/users/${req.userId}/login`, {
       data: {
-        idToken
+        idToken: req.idToken
       },
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
-        Authorization: `Bearer ${idToken}`
+        Authorization: `Bearer ${req.idToken}`
       }
     })
       .then(({ data }) => {
@@ -30,37 +30,57 @@ export default class Api {
   //     });
   // }
 
-  static fetchEvents(idToken: string) {
-    // const limit = 20;
-    return fetch(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/events`, {
+  // static fetchEvents(idToken: string) {
+  //   const limit = 20;
+  //   return fetch(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/events?limit=${limit}`, {
+  //     headers: {
+  //       "Content-Type": "application/json; charset=UTF-8",
+  //       Authorization: `Bearer ${idToken}`
+  //     }
+  //   })
+  //     .then(response => {
+  //       console.log('response', response.json());
+  //       console.log(Object.keys(response.json()));
+  //       return response.json()
+  //     })
+  //     .then(events => {
+  //       console.log(typeof events);
+  //       return { events }
+  //     })
+  //     .catch(err => {
+  //       console.log('err', err);
+  //       return { err };
+  //     });
+  // }
+
+  // static async fetchEvents(idToken: string) {
+  //   const limit = 20;
+  //   return this.fetch({ url: `https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/events?limit=${limit}`, params: { idToken } })
+  //     .then(({ data }) => {
+  //       console.log('data', data);
+  //       return { events: data };
+  //     })
+  //     .catch((error) => {
+  //       console.log('err', error);
+  //       return { err: error };
+  //     });
+  // }
+
+  static async fetchEvents(idToken: string) {
+    const limit = 20;
+    return axios.get(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/events?limit=${limit}`, {
       headers: {
         "Content-Type": "application/json; charset=UTF-8",
         Authorization: `Bearer ${idToken}`
       }
     })
-      // .then((response) => response.json())
-      .then(responseJson => {
-        console.log('json', responseJson);
-        return { events: responseJson };
+      .then(({ data }) => {
+        return { events: data };
       })
       .catch(err => {
-        console.error('err', err);
         return { err };
       });
   }
-
-  // static async fetchEvents(idToken: string) {
-  //   const limit = 20;
-  //   console.log('api idToken', idToken);
-  //   return this.fetch({ url: `/events?limit=${limit}`, params: { idToken } })
-  //     .then((response) => response.json())
-  //     .then((responseJson) => {
-  //       console.log(responseJson);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
 
   static fetch(config: AxiosRequestConfig): Promise<AxiosResponse> {
     console.log('fetch');

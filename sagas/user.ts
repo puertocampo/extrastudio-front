@@ -1,30 +1,50 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
+import Api from "../api";
 import Firebase from "../firebase";
 import {
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  FETCH_USER
 } from '../actions/types/user';
 import { setUser, initializeUser } from "../actions";
-import { setStorage } from "./asyncStorage";
+import { getStorage, setStorage } from "./asyncStorage";
 
-function* handleLogin() {
-  const { user, err } = yield call(Firebase.handleLogIn);
+function* login() {
+  const { firebaseUser, err } = yield call(Firebase.handleLogIn);
+  if (!firebaseUser) {
+    return;
+  }
+  const fetchUserResult = yield call(Api.fetchUser, { userId: firebaseUser.userId, idToken: firebaseUser.idToken })
+  if (!fetchUserResult.user) {
+    yield put(setUser(firebaseUser));
+    return;
+  }
+  yield put(setUser(fetchUserResult.user));
+}
+
+function* logout() {
+  yield call(Firebase.handleLogOut);
+  yield put(initializeUser());
+}
+
+function* fetchUser() {
+  const { userId, idToken } = yield call(getStorage, ['userId', 'idToken']);
+  if (!userId || !idToken) {
+    yield put(initializeUser());
+    return;
+  }
+  const { user, err } = yield call(Api.fetchUser, { userId, idToken })
   if (user) {
-    yield call(setStorage, { userId: user.userId, idToken: user.idToken });
     yield put(setUser(user));
   } else {
     console.log('err', err);
   }
 }
 
-function* handleLogout() {
-  yield call(Firebase.handleLogOut);
-  yield put(initializeUser());
-}
-
 const watchUserAsync = [
-  takeLatest(LOGIN, handleLogin),
-  takeLatest(LOGOUT, handleLogout)
+  takeLatest(LOGIN, login),
+  takeLatest(LOGOUT, logout),
+  takeLatest(FETCH_USER, fetchUser)
 ];
 
 export default watchUserAsync;

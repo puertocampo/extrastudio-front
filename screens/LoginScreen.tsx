@@ -12,6 +12,16 @@ class LoginScreen extends Component {
   }
 
   async componentDidMount() {
+    this.props.fetchUser();
+  }
+
+  async componentDidUpdate() {
+    if (this.props.user.profession) {
+      this.props.navigation.navigate('selection');
+    }
+    if (this.props.user.userId) {
+      this.props.navigation.navigate('register');
+    }
   }
 
   render() {

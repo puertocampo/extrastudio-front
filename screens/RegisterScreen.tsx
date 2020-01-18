@@ -12,7 +12,7 @@ class RegisterScreen extends Component {
   }
 
   async componentDidMount() {
-    console.log('register');
+    this.props.registerUser();
     this.props.navigation.navigate('selection');
   }
 

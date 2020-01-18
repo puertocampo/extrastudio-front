@@ -1,8 +1,28 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { IUser } from "../type/user";
+
+const Axios = axios.create({
+  baseURL: 'https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1',
+  headers: {
+    "Content-Type": "application/json; charset=UTF-8"
+  }
+});
 
 export default class Api {
+  static async postUser(req: { user: IUser, idToken: string }) {
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
+    return Axios.post(`/users`, req.user)
+      .then(({ data }) => {
+        return { user: data };
+      })
+      .catch(err => {
+        return { err };
+      });
+  }
+
   static async fetchUser(req: { userId: string, idToken: string }) {
-    return axios.post(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/users/${req.userId}/login`, {
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
+    return Axios.post(`/users/${req.userId}/login`, {
       data: {
         idToken: req.idToken
       },

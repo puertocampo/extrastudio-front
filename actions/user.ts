@@ -1,6 +1,7 @@
 import {
   LOGIN,
   LOGOUT,
+  REGISTER_USER,
   FETCH_USER,
   SET_USER,
   INITIALIZE_USER
@@ -13,6 +14,10 @@ export const login = () => {
 
 export const logout = () => {
   return { type: LOGOUT };
+}
+
+export const registerUser = () => {
+  return { type: REGISTER_USER };
 }
 
 export const fetchUser = () => {

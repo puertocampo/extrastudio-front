@@ -16,6 +16,7 @@ class LoginScreen extends Component {
   }
 
   async componentDidUpdate() {
+    console.log('this.props.user.userId', this.props.user.userId);
     if (this.props.user.profession) {
       this.props.navigation.navigate('selection');
     }

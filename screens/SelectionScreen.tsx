@@ -252,6 +252,8 @@ class SelectionScreen extends Component {
   renderEventCards = (events: IEvent[]) => {
     if (!events) return null;
     return events.map((item, index) => {
+      const startDate = moment(item.startedAt).format("YYYY/MM/DD HH:mm");
+      const endDate = moment(item.endedAt).format("YYYY/MM/DD HH:mm");
       if (index < this.state.currentIndex) {
         return null;
       } else if (index === this.state.currentIndex) {

@@ -77,10 +77,10 @@ const LikeLabel = props => {
     <Animated.View
       style={{
         opacity: props.opacity,
-        transform: [{ rotate: "-20deg" }],
+        transform: [{ rotate: "20deg" }],
         position: "absolute",
         top: "47%",
-        left: "20%",
+        right: "20%",
         width: 190,
         zIndex: 1000
       }}
@@ -110,10 +110,10 @@ const DislikeLabel = props => {
     <Animated.View
       style={{
         opacity: props.opacity,
-        transform: [{ rotate: "20deg" }],
+        transform: [{ rotate: "-20deg" }],
         position: "absolute",
         top: "47%",
-        right: "20%",
+        left: "20%",
         width: 190,
         zIndex: 1000
       }}
@@ -153,12 +153,12 @@ class SelectionScreen extends Component {
     });
     this.likeOpacity = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      outputRange: [0, 0, 1],
+      outputRange: [1, 0, 0],
       extrapolate: 'clamp'
     });
     this.dislikeOpacity = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      outputRange: [1, 0, 0],
+      outputRange: [0, 0, 1],
       extrapolate: 'clamp'
     });
     this.nextCardOpacity = this.position.x.interpolate({
@@ -195,9 +195,9 @@ class SelectionScreen extends Component {
       },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx > 120) {
-          this.handleLikeSwipe(this.state.currentEvent, gestureState.dy);
-        } else if (gestureState.dx < -120) {
           this.handleDislikeSwipe(this.state.currentEvent, gestureState.dy);
+        } else if (gestureState.dx < -120) {
+          this.handleLikeSwipe(this.state.currentEvent, gestureState.dy);
         } else {
           Animated.spring(this.position, {
             toValue: { x: 0, y: 0 },
@@ -218,7 +218,7 @@ class SelectionScreen extends Component {
 
   handleLikeSwipe = (event: IEvent, positionY: number) => {
     Animated.spring(this.position, {
-      toValue: { x: 1.5 * SCREEN_WIDTH, y: positionY || 60 },
+      toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
     }).start(() => {
       const nextIndex = this.state.currentIndex + 1;
@@ -231,7 +231,7 @@ class SelectionScreen extends Component {
 
   handleDislikeSwipe = (event: IEvent, positionY: number) => {
     Animated.spring(this.position, {
-      toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
+      toValue: { x: 1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
     }).start(() => {
       const nextIndex = this.state.currentIndex + 1;

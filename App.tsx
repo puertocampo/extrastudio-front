@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 import SelectionScreen from "./screens/SelectionScreen";
 
 import { IUser } from "./type/user";
@@ -20,6 +21,7 @@ export default class App extends Component<any, IState> {
     const NavigatorTab = createAppContainer(
       createSwitchNavigator({
         login: { screen: LoginScreen },
+        register: { screen: RegisterScreen },
         selection: { screen: SelectionScreen }
       })
     );

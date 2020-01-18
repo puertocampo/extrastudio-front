@@ -1,6 +1,24 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 export default class Api {
+  static async fetchUser(userId: string, idToken: string) {
+    return axios.post(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/users/${userId}/login`, {
+      data: {
+        idToken
+      },
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${idToken}`
+      }
+    })
+      .then(({ data }) => {
+        return { user: data };
+      })
+      .catch(err => {
+        return { err };
+      });
+  }
+
   // static fetchSample() {
   //   return fetch('https://facebook.github.io/react-native/movies.json')
   //     .then((response) => response.json())

@@ -25,10 +25,6 @@ export default class Api {
     return Axios.post(`/users/${req.userId}/login`, {
       data: {
         idToken: req.idToken
-      },
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        Authorization: `Bearer ${req.idToken}`
       }
     })
       .then(({ data }) => {

@@ -10,17 +10,8 @@ import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Api from "../api";
 import { bindActionCreators } from 'redux';
 import { IEvent } from "../type/event";
-
-const events = [
-  { eventId: "event01", title: "野球イベント", uri: require('../assets/image/baseball.jpeg') },
-  { eventId: "event02", title: "サッカーイベント", uri: require('../assets/image/soccer.jpeg') },
-  { eventId: "event03", title: "映画イベント", uri: require('../assets/image/theater.jpeg') },
-  { eventId: "event04", title: "陶芸教室イベント", uri: require('../assets/image/togei.jpeg') },
-  { eventId: "event05", title: "ハロウィンイベント", uri: require('../assets/image/halloween.jpeg') }
-];
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;

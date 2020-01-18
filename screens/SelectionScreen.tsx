@@ -4,12 +4,15 @@ import { css } from 'styled-components'
 import { StyleSheet, Text, View, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
 import { Button } from "react-native-elements";
 import Firebase from "../firebase";
+import moment from "moment";
+import { Platform } from 'react-native';
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Api from "../api";
 import { bindActionCreators } from 'redux';
+import { IEvent } from "../type/event";
 
 const events = [
   { eventId: "event01", title: "野球イベント", uri: require('../assets/image/baseball.jpeg') },
@@ -21,6 +24,7 @@ const events = [
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const isIos = Platform.OS === 'ios'
 
 const Wrapper = styled.View`
   flex: 1;
@@ -40,36 +44,36 @@ const ButtonContainer = styled.View`
 
 const ReactionContainer = props => {
   return (
-    <View style={{ height: 130, width: "100%", justifyContent: "space-between", paddingLeft: "30%", paddingRight: "30%", flexDirection: 'row' }}>
-      <View style={{ position: "relative", left: 0 }} >
+    <View style={{ height: SCREEN_HEIGHT * 0.16, width: "100%", justifyContent: "space-between", paddingLeft: "30%", paddingRight: "30%", flexDirection: 'row' }}>
+      <View style={{ position: "relative", left: 0, top: isIos ? 0 : 20 }} >
         <Icon
           name='circle'
           color="#FF5D5A"
           style={{ position: "absolute" }}
-          size={70}
+          size={isIos ? 70 : 60}
           onPress={() => { props.handleLikeSwipe(); }}
         />
         <Icon
           name='heart'
           color="#FFFFFF"
-          style={{ position: "absolute", top: 20, left: 15 }}
-          size={30}
+          style={{ position: "absolute", top: isIos ? 20 : 17, left: isIos ? 15 : 12 }}
+          size={isIos ? 30 : 27}
           onPress={() => { props.handleLikeSwipe(); }}
         />
       </View>
-      <View style={{ position: "relative", right: 60 }}>
+      <View style={{ position: "relative", right: 60, top: isIos ? 0 : 20 }}>
         <Icon
           name='circle'
           color="#FFFFFF"
-          style={{ position: "absolute", top: 1, left: 1 }}
-          size={68}
+          style={{ position: "absolute", top: isIos ? 1 : 0.5, left: isIos ? 1 : 0.5 }}
+          size={isIos ? 68 : 59}
           onPress={() => { props.handleDislikeSwipe(); }}
         />
         <Icon
           name='times-circle'
           color="#4D7DF9"
           style={{ position: "absolute" }}
-          size={70}
+          size={isIos ? 70 : 60}
           onPress={() => { props.handleDislikeSwipe(); }}
         />
       </View>
@@ -98,7 +102,7 @@ const LikeLabel = props => {
           color: "#FF5D5A",
           backgroundColor: "#ffffff",
           overflow: "hidden",
-          fontSize: 32,
+          fontSize: isIos ? 32 : 24,
           fontWeight: "800",
           textAlign: "center",
           padding: 10
@@ -131,7 +135,7 @@ const DislikeLabel = props => {
           color: "#0094D5",
           backgroundColor: "#ffffff",
           overflow: "hidden",
-          fontSize: 32,
+          fontSize: isIos ? 32 : 24,
           fontWeight: "800",
           textAlign: "center",
           padding: 10
@@ -179,6 +183,11 @@ class SelectionScreen extends Component {
 
   componentDidMount() {
     this.props.fetchEvents();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // if (prevProps.events.length)
+    //   this.props.fetchEvents();
   }
 
   componentWillMount() {
@@ -264,7 +273,7 @@ class SelectionScreen extends Component {
             style={[
               this.rotateAndTranslate,
               {
-                height: SCREEN_HEIGHT - 190,
+                height: isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80,
                 width: SCREEN_WIDTH,
                 padding: 10,
                 position: "absolute",
@@ -278,7 +287,7 @@ class SelectionScreen extends Component {
             <DislikeLabel
               opacity={this.dislikeOpacity}
             />
-            <Image
+            {item.imagePath ? <Image
               style={{
                 flex: 3,
                 height: null,
@@ -287,8 +296,28 @@ class SelectionScreen extends Component {
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20
               }}
-              source={{ uri: item.imagePath || "https://s3-ap-northeast-1.amazonaws.com/s3.techplay.jp/tp-images/event/1250/4a31e8e431a59931d54c5197cb65b907366c278e.jpg" }}
-            />
+              source={{ uri: item.imagePath }}
+            /> :
+              <View
+                style={{
+                  flex: 3,
+                  height: null,
+                  width: null,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  backgroundColor: "#f5f5f5",
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Icon
+                  name='image'
+                  color="rgba(0, 0, 0, 0.4)"
+                  // style={{ position: "absolute", top: 50, left: 50 }}
+                  size={SCREEN_WIDTH / 2}
+                />
+              </View>}
             <View
               style={{
                 flex: 2,
@@ -300,7 +329,7 @@ class SelectionScreen extends Component {
               <Text
                 style={{
                   flex: 1,
-                  fontSize: 24,
+                  fontSize: isIos ? 24 : 17,
                   fontWeight: "bold",
                   padding: 12,
                   justifyContent: "center",
@@ -338,7 +367,7 @@ class SelectionScreen extends Component {
                       fontWeight: "bold"
                     }}
                   >
-                    {item.startedAt} ~ {item.endedAt}
+                    {startDate} ~ {endDate}
                   </Text>
                 </View>
                 <View
@@ -358,7 +387,7 @@ class SelectionScreen extends Component {
                   />
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: isIos ? 14 : 12,
                       paddingRight: 20,
                       fontWeight: "bold"
                     }}
@@ -370,10 +399,10 @@ class SelectionScreen extends Component {
                 </View>
                 <Text
                   style={{
-                    flex: 3,
-                    fontSize: 14,
+                    flex: isIos ? 3 : 8,
+                    fontSize: isIos ? 14 : 10,
                     padding: 10,
-                    lineHeight: 24
+                    lineHeight: isIos ? 24 : 18
                   }}
                   numberOfLines={3}
                   ellipsizeMode="tail"
@@ -391,14 +420,14 @@ class SelectionScreen extends Component {
             style={{
               opacity: this.nextCardOpacity,
               transform: [{ scale: this.nextCardScale }],
-              height: SCREEN_HEIGHT - 190,
+              height: isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80,
               width: SCREEN_WIDTH,
               padding: 10,
               position: "absolute",
               left: 0
             }}
           >
-            <Image
+            {item.imagePath ? <Image
               style={{
                 flex: 3,
                 height: null,
@@ -407,8 +436,28 @@ class SelectionScreen extends Component {
                 borderTopLeftRadius: 20,
                 borderTopRightRadius: 20
               }}
-              source={{ uri: item.imagePath || "https://s3-ap-northeast-1.amazonaws.com/s3.techplay.jp/tp-images/event/1250/4a31e8e431a59931d54c5197cb65b907366c278e.jpg" }}
-            />
+              source={{ uri: item.imagePath }}
+            /> :
+              <View
+                style={{
+                  flex: 3,
+                  height: null,
+                  width: null,
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  backgroundColor: "#f5f5f5",
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Icon
+                  name='image'
+                  color="rgba(0, 0, 0, 0.4)"
+                  // style={{ position: "absolute", top: 50, left: 50 }}
+                  size={SCREEN_WIDTH / 2}
+                />
+              </View>}
             <View
               style={{
                 flex: 2,
@@ -420,7 +469,7 @@ class SelectionScreen extends Component {
               <Text
                 style={{
                   flex: 1,
-                  fontSize: 24,
+                  fontSize: isIos ? 24 : 17,
                   fontWeight: "bold",
                   padding: 12,
                   justifyContent: "center",
@@ -458,7 +507,7 @@ class SelectionScreen extends Component {
                       fontWeight: "bold"
                     }}
                   >
-                    {item.startedAt} ~ {item.endedAt}
+                    {startDate} ~ {endDate}
                   </Text>
                 </View>
                 <View
@@ -478,7 +527,7 @@ class SelectionScreen extends Component {
                   />
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: isIos ? 14 : 12,
                       paddingRight: 20,
                       fontWeight: "bold"
                     }}
@@ -490,10 +539,10 @@ class SelectionScreen extends Component {
                 </View>
                 <Text
                   style={{
-                    flex: 3,
-                    fontSize: 14,
+                    flex: isIos ? 3 : 8,
+                    fontSize: isIos ? 14 : 10,
                     padding: 10,
-                    lineHeight: 24
+                    lineHeight: isIos ? 24 : 18
                   }}
                   numberOfLines={3}
                   ellipsizeMode="tail"
@@ -517,11 +566,11 @@ class SelectionScreen extends Component {
     const renderReactionContainer = this.state.currentIndex !== events.length;
     return (
       <Wrapper>
-        <View style={{ flex: 1, marginTop: 60 }}>
+        <View style={{ flex: 1, marginTop: SCREEN_HEIGHT * 0.07 }}>
           {renderLastCard &&
             <View
               style={{
-                height: SCREEN_HEIGHT - 210,
+                height: SCREEN_HEIGHT * (isIos ? 0.77 : 0.8) - 30,
                 width: SCREEN_WIDTH - 20,
                 padding: 32,
                 paddingTop: "50%",
@@ -535,7 +584,7 @@ class SelectionScreen extends Component {
             >
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: isIos ? 18 : 12,
                   fontWeight: "bold",
                   textAlign: "center",
                   marginBottom: 20
@@ -545,7 +594,7 @@ class SelectionScreen extends Component {
               </Text>
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: isIos ? 16 : 10,
                   textAlign: "center",
                   marginBottom: 40,
                   lineHeight: 25
@@ -583,11 +632,25 @@ class SelectionScreen extends Component {
           // fetchEvents={this.props.fetchEvents}
           />
         }
+        {/* <Button
+          title="Go back to login"
+          style={{ marginBottom: 20 }}
+          buttonStyle={{
+            width: 200,
+            height: 50,
+            backgroundColor: "#00FF00",
+            borderRadius: 25,
+            justifyContent: "center",
+          }}
+          titleStyle={{
+            fontWeight: "bold"
+          }}
+          onPress={() => this.props.navigation.navigate('login')}
+        /> */}
       </Wrapper>
     );
   }
 }
-
 
 const mapStateToProps = (state) => {
   return {

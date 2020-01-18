@@ -110,19 +110,24 @@ export default class Firebase {
   static async createCalendarEvent(req: { event: IEvent, email: string }) {
     const calendars = await Calendar.getCalendarsAsync();
     const defaultCalendar = calendars.filter(calendar => calendar.title === req.email);
+    if (!defaultCalendar.length) {
+      console.error(`No calendar: ${req.email}`)
+    }
 
     await Calendar.createEventAsync(
       defaultCalendar[0].id,
       {
         title: req.event.title,
         startDate: req.event.startedAt,
-        endDate: req.event.endedAt
+        endDate: req.event.endedAt,
+        location: req.event.address,
+        url: req.event.eventUrl,
+        notes: req.event.summary
       }
     ).then(eventId => {
       console.log(eventId);
     }).catch(err => {
       console.log(err);
     })
-
   }
 }

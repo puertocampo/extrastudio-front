@@ -19,3 +19,9 @@ export interface IEvent {
   updatedAt: Date;
   imagePath: string;
 }
+
+export interface IReqEvalEvent {
+  userId: string;
+  eventId: string;
+  evaluate: string;
+}

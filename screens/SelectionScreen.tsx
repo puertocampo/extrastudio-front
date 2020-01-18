@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useState, useEffect } from "react";
 import styled from 'styled-components/native'
 import { css } from 'styled-components'
 import { StyleSheet, Text, View, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
@@ -42,14 +42,14 @@ const ReactionContainer = props => {
           color="#FF5D5A"
           style={{ position: "absolute" }}
           size={isIos ? 70 : 60}
-          onPress={() => { props.handleLikeSwipe(); }}
+          onPress={() => { props.handleLikeSwipe(props.currentEventId); }}
         />
         <Icon
           name='heart'
           color="#FFFFFF"
           style={{ position: "absolute", top: isIos ? 20 : 17, left: isIos ? 15 : 12 }}
           size={isIos ? 30 : 27}
-          onPress={() => { props.handleLikeSwipe(); }}
+          onPress={() => { props.handleLikeSwipe(props.currentEventId); }}
         />
       </View>
       <View style={{ position: "relative", right: 60, top: isIos ? 0 : 20 }}>
@@ -58,14 +58,14 @@ const ReactionContainer = props => {
           color="#FFFFFF"
           style={{ position: "absolute", top: isIos ? 1 : 0.5, left: isIos ? 1 : 0.5 }}
           size={isIos ? 68 : 59}
-          onPress={() => { props.handleDislikeSwipe(); }}
+          onPress={() => { props.handleDislikeSwipe(props.currentEventId); }}
         />
         <Icon
           name='times-circle'
           color="#4D7DF9"
           style={{ position: "absolute" }}
           size={isIos ? 70 : 60}
-          onPress={() => { props.handleDislikeSwipe(); }}
+          onPress={() => { props.handleDislikeSwipe(props.currentEventId); }}
         />
       </View>
     </View>
@@ -143,7 +143,8 @@ class SelectionScreen extends Component {
     super();
     this.position = new Animated.ValueXY();
     this.state = {
-      currentIndex: 0
+      currentIndex: 0,
+      currentEventId: ""
     };
     this.rotate = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -173,12 +174,19 @@ class SelectionScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchEvents();
+    this.props.fetchEvents(this.props.user.userId);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (prevProps.events.length)
-    //   this.props.fetchEvents();
+    if ((prevProps.events || []).length === 0 && (this.props.events || []).length > 1) {
+      console.log('fetched event');
+      this.setState({ currentEventId: this.props.events[0].eventId });
+    }
+    if (prevState.currentIndex !== (this.props.events || []).length && this.state.currentIndex === (this.props.events || []).length) {
+      console.log('fetch event');
+      this.props.fetchEvents();
+      this.setState({ currentIndex: 0 });
+    }
   }
 
   componentWillMount() {
@@ -189,9 +197,9 @@ class SelectionScreen extends Component {
       },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx > 120) {
-          this.handleLikeSwipe(gestureState.dy);
+          this.handleLikeSwipe(this.state.currentEventId, gestureState.dy);
         } else if (gestureState.dx < -120) {
-          this.handleDislikeSwipe(gestureState.dy);
+          this.handleDislikeSwipe(this.state.currentEventId, gestureState.dy);
         } else {
           Animated.spring(this.position, {
             toValue: { x: 0, y: 0 },
@@ -210,39 +218,36 @@ class SelectionScreen extends Component {
     };
   }
 
-  handleLikeSwipe = (positionY: number) => {
+  handleLikeSwipe = (eventId: string, positionY: number) => {
     Animated.spring(this.position, {
       toValue: { x: 1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
     }).start(() => {
       this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-        this.position.setValue({ x: 0, y: 0 })
+        const nextEvent = this.props.events[this.state.currentIndex];
+        this.setState({ currentEventId: nextEvent ? nextEvent.eventId : "" });
+        this.position.setValue({ x: 0, y: 0 });
+        this.props.evaluateEvent({ userId: this.props.user.userId, eventId, evaluate: "LIKE" });
       })
     });
   }
 
-  handleDislikeSwipe = (positionY: number) => {
+  handleDislikeSwipe = (eventId: string, positionY: number) => {
     Animated.spring(this.position, {
       toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
     }).start(() => {
       this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+        const nextEvent = this.props.events[this.state.currentIndex];
+        this.setState({ currentEventId: nextEvent ? nextEvent.eventId : "" });
         this.position.setValue({ x: 0, y: 0 })
+        this.props.evaluateEvent({ userId: this.props.user.userId, eventId, evaluate: "NOPE" });
       })
     })
   }
 
   fetchCalendarEvents = () => {
     Firebase.fetchCalendarEvents();
-  }
-
-  fetchEvents = async () => {
-    try {
-      const events = await Api.fetchEvents(20, this.props.user.user.email);
-      return events;
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   createEvent = () => {
@@ -553,8 +558,8 @@ class SelectionScreen extends Component {
   render() {
     const stateEvents = this.props.events;
     const renderEventCards = !!stateEvents && !!Object.keys(stateEvents).length;
-    const renderLastCard = !renderEventCards || this.state.currentIndex === events.length || this.state.currentIndex === events.length - 1;
-    const renderReactionContainer = this.state.currentIndex !== events.length;
+    const renderLastCard = !renderEventCards || this.state.currentIndex === stateEvents.length || this.state.currentIndex === stateEvents.length - 1;
+    const renderReactionContainer = this.state.currentIndex !== stateEvents.length;
     return (
       <Wrapper>
         <View style={{ flex: 1, marginTop: SCREEN_HEIGHT * 0.07 }}>
@@ -616,6 +621,7 @@ class SelectionScreen extends Component {
         </View>
         {renderReactionContainer &&
           <ReactionContainer
+            currentEventId={this.state.currentEventId}
             handleLikeSwipe={this.handleLikeSwipe}
             handleDislikeSwipe={this.handleDislikeSwipe}
             // fetchCalendarEvents={this.fetchCalendarEvents}

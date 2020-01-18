@@ -1,14 +1,15 @@
-import { takeLatest, call, put, select } from 'redux-saga/effects';
+import { takeLatest, call, put } from 'redux-saga/effects';
 import Api from "../api";
 import {
-  FETCH_EVENTS
+  FETCH_EVENTS, EVALUATE_EVENT
 } from '../actions/types/event';
 import { updateEvents } from "../actions";
 import { getStorage } from "./asyncStorage";
 
-function* fetchEvents() {
+function* fetchEvents(action) {
+  const userId = action.payload.userId;
   const { idToken } = yield call(getStorage, ['idToken']);
-  const { events, err } = yield call(Api.fetchEvents, idToken);
+  const { events, err } = yield call(Api.fetchEvents, { userId, idToken });
   if (events && events.length) {
     yield put(updateEvents(events));
   } else {
@@ -16,8 +17,14 @@ function* fetchEvents() {
   }
 }
 
+function* evaluateEvent(action) {
+  const { idToken } = yield call(getStorage, ['idToken']);
+  yield call(Api.evaluateEvent, { ...action.payload, idToken });
+}
+
 const watchEventAsync = [
-  takeLatest(FETCH_EVENTS, fetchEvents)
+  takeLatest(FETCH_EVENTS, fetchEvents),
+  takeLatest(EVALUATE_EVENT, evaluateEvent)
 ];
 
 export default watchEventAsync;

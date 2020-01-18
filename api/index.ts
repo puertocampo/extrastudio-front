@@ -23,12 +23,23 @@ export default class Api {
   static async fetchUser(req: { userId: string, idToken: string }) {
     Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
     return Axios.post(`/users/${req.userId}/login`, {
-      data: {
-        idToken: req.idToken
-      }
+      idToken: req.idToken
     })
       .then(({ data }) => {
         return { user: data };
+      })
+      .catch(err => {
+        return { err };
+      });
+  }
+
+  static async evaluateEvent(req: { userId: string, eventId: string, evaluate: string, idToken: string }) {
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
+    return Axios.put(`/users/${req.userId}/events/${req.eventId}`, {
+      evaluate: req.evaluate
+    })
+      .then(({ data }) => {
+        return { event: data };
       })
       .catch(err => {
         return { err };
@@ -82,18 +93,17 @@ export default class Api {
   //     });
   // }
 
-  static async fetchEvents(idToken: string) {
-    const limit = 20;
-    return axios.get(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/events?limit=${limit}`, {
-      headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        Authorization: `Bearer ${idToken}`
-      }
-    })
+  static async fetchEvents(req: { userId: string, idToken: string }) {
+    const limit = 3;
+    console.log('fetch events req', req);
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
+    return Axios.post(`/events?limit=${limit}&userId=${req.userId}`)
       .then(({ data }) => {
+        console.log('fetch events data', data[0]);
         return { events: data };
       })
       .catch(err => {
+        console.log('fetch events err', err.status)
         return { err };
       });
   }

@@ -1,4 +1,4 @@
-import { put, call, select, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import Api from "../api";
 import Firebase from "../firebase";
 import {
@@ -13,7 +13,7 @@ import { getUser } from "../selectors";
 
 function* login() {
   const { firebaseUser, err } = yield call(Firebase.handleLogIn);
-  if (!firebaseUser) {
+  if (!firebaseUser || err) {
     return;
   }
   const fetchUserResult = yield call(Api.fetchUser, { userId: firebaseUser.userId, idToken: firebaseUser.idToken })
@@ -30,15 +30,14 @@ function* logout() {
   yield put(initializeUser());
 }
 
-function* registerUser() {
-  const stateUser = yield select(getUser);
-  const { user, err } = yield call(Api.postUser, { user: stateUser, idToken: stateUser.idToken })
+function* registerUser(action) {
+  const reqUser = action.payload;
+  const { user, err } = yield call(Api.postUser, { user: reqUser, idToken: reqUser.idToken })
   if (!user) {
-    console.log('err', err);
     return;
   }
   yield put(setUser(user));
-  yield call(setStorage, { userId: stateUser.userId, idToken: stateUser.idToken })
+  yield call(setStorage, { userId: user.userId, idToken: user.idToken })
 }
 
 function* fetchUser() {

@@ -16,8 +16,8 @@ export const logout = () => {
   return { type: LOGOUT };
 }
 
-export const registerUser = () => {
-  return { type: REGISTER_USER };
+export const registerUser = (user: IUser) => {
+  return { type: REGISTER_USER, payload: user };
 }
 
 export const fetchUser = () => {

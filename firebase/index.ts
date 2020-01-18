@@ -38,7 +38,7 @@ export default class Firebase {
         .auth()
         .signInWithCredential(credential)
       return {
-        user: {
+        firebaseUser: {
           userId: result.user.uid,
           email: result.user.email,
           name: result.user.displayName,

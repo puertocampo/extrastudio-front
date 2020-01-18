@@ -108,6 +108,10 @@ export default class Firebase {
   }
 
   static async createCalendarEvent(req: { event: IEvent, email: string }) {
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status === 'denied') {
+      return;
+    }
     const calendars = await Calendar.getCalendarsAsync();
     const defaultCalendar = calendars.filter(calendar => calendar.title === req.email);
     if (!defaultCalendar.length) {

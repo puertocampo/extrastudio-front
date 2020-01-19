@@ -185,6 +185,10 @@ class SelectionScreen extends Component {
       this.props.fetchEvents(this.props.user.userId);
       this.setState({ currentIndex: 0 });
     }
+
+    if (prevProps.user.userId && !this.props.user.userId) {
+      this.props.navigation.navigate('login');
+    }
   }
 
   componentWillMount() {
@@ -559,6 +563,12 @@ class SelectionScreen extends Component {
     const renderReactionContainer = this.state.currentIndex !== stateEvents.length;
     return (
       <Wrapper>
+        <Icon
+          name='sign-out'
+          style={{ position: "absolute", top: 30, right: 10 }}
+          size={35}
+          onPress={this.props.logout}
+        />
         <View style={{ flex: 1, marginTop: SCREEN_HEIGHT * 0.07 }}>
           {renderLastCard &&
             <View

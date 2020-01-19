@@ -8,7 +8,7 @@ import {
   FETCH_USER
 } from '../actions/types/user';
 import { setUser, initializeUser } from "../actions";
-import { getStorage, setStorage } from "./asyncStorage";
+import { getStorage, setStorage, removeStorage } from "./asyncStorage";
 import { getUser } from "../selectors";
 
 function* login() {
@@ -28,6 +28,7 @@ function* login() {
 function* logout() {
   yield call(Firebase.handleLogOut);
   yield put(initializeUser());
+  yield call(removeStorage, ['userId', 'idToken']);
 }
 
 function* registerUser(action) {

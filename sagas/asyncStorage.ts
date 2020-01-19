@@ -11,3 +11,7 @@ export const getStorage = async (itemList: string[]) => {
   dataList.forEach((data, index) => { storageObj[itemList[index]] = data[1] });
   return storageObj;
 }
+
+export const removeStorage = async (itemList: string[]) => {
+  await AsyncStorage.multiRemove(itemList);
+}

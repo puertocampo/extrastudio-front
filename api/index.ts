@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { IUser } from "../type/user";
+import { IEvent } from "../type/event";
 
 const Axios = axios.create({
   baseURL: 'https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1',
@@ -33,9 +34,9 @@ export default class Api {
       });
   }
 
-  static async evaluateEvent(req: { userId: string, eventId: string, evaluate: string, idToken: string }) {
+  static async evaluateEvent(req: { userId: string, event: IEvent, evaluate: string, idToken: string }) {
     Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
-    return Axios.put(`/users/${req.userId}/events/${req.eventId}`, {
+    return Axios.put(`/users/${req.userId}/events/${req.event.eventId}`, {
       evaluate: req.evaluate
     })
       .then(({ data }) => {
@@ -96,7 +97,7 @@ export default class Api {
   static async fetchEvents(req: { userId: string, idToken: string }) {
     const limit = 20;
     Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
-    return Axios.get(`/events?limit=${limit}`)
+    return Axios.get(`/events?limit=${limit}&userId=${req.userId}`)
       .then(({ data }) => {
         return { events: data };
       })

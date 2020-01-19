@@ -6,6 +6,7 @@ import { Button } from "react-native-elements";
 import Firebase from "../firebase";
 import moment from "moment";
 import { Platform } from 'react-native';
+import * as _ from "lodash";
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -177,13 +178,20 @@ class SelectionScreen extends Component {
     this.props.fetchEvents(this.props.user.userId);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.currentIndex === (prevProps.events || []).length && (this.props.events || []).length > 1) {
+  async componentDidUpdate(prevProps, prevState) {
+    // 初期読み込み時
+    if (!(prevProps.events || []).length && (this.props.events || []).length > 0) {
       this.setState({ currentEvent: this.props.events[0] });
     }
+
+    // コースカードが全てスワイプされた時
     if (prevState.currentIndex !== (this.props.events || []).length && this.state.currentIndex === (this.props.events || []).length) {
-      this.props.fetchEvents(this.props.user.userId);
-      this.setState({ currentIndex: 0 });
+      await this.props.fetchEvents(this.props.user.userId);
+    }
+
+    // 新しくイベントが読み込まれた時
+    if (!_.isEqual(prevProps.events, this.props.events)) {
+      this.setState({ currentIndex: 0, currentEvent: this.props.events[0] });
     }
 
     // ログアウト時

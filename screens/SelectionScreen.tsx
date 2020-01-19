@@ -186,6 +186,7 @@ class SelectionScreen extends Component {
       this.setState({ currentIndex: 0 });
     }
 
+    // ログアウト時
     if (prevProps.user.userId && !this.props.user.userId) {
       this.props.navigation.navigate('login');
     }

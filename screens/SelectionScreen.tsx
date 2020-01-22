@@ -572,11 +572,16 @@ class SelectionScreen extends Component {
     const renderReactionContainer = this.state.currentIndex !== stateEvents.length;
     return (
       <Wrapper>
-        <Icon
-          name='sign-out'
-          style={{ position: "absolute", top: 30, right: 10 }}
-          size={35}
+        <Button
+          buttonStyle={{
+            backgroundColor: "transparent"
+          }}
+          style={{ position: "absolute", top: 20, right: 10 }}
           onPress={this.props.logout}
+          icon={<Icon
+            name='sign-out'
+            size={35}
+          />}
         />
         <View style={{ flex: 1, marginTop: SCREEN_HEIGHT * 0.07 }}>
           {renderLastCard &&

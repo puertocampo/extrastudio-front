@@ -1,9 +1,6 @@
-import React, { Component, useState, useEffect } from "react";
-import styled from 'styled-components/native'
-import { css } from 'styled-components'
-import { StyleSheet, Text, View, AsyncStorage, Dimensions, Animated, Image, PanResponder } from "react-native";
+import React, { Component } from "react";
+import { Text, View, Dimensions, Animated, Image, PanResponder } from "react-native";
 import { Button } from "react-native-elements";
-import Firebase from "../firebase";
 import moment from "moment";
 import { Platform } from 'react-native';
 import * as _ from "lodash";
@@ -12,7 +9,10 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { bindActionCreators } from 'redux';
+import { IUser } from "../type/user";
 import { IEvent } from "../type/event";
+
+import { withNavigationFocus } from 'react-navigation';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -139,7 +139,21 @@ const DislikeLabel = props => {
   )
 }
 
-class SelectionScreen extends Component {
+interface IProps {
+  user: IUser;
+  events: IEvent[];
+  fetchEvents(userId: string): IEvent[];
+  navigation: any;
+  evaluateEvent(): void;
+  logout(): void;
+}
+
+interface IState {
+  currentIndex: number;
+  currentEvent: IEvent;
+}
+
+class SelectionScreen extends Component<IProps, IState> {
   constructor() {
     super();
     this.position = new Animated.ValueXY();
@@ -178,7 +192,7 @@ class SelectionScreen extends Component {
     this.props.fetchEvents(this.props.user.userId);
   }
 
-  async componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
     // 初期読み込み時
     if (!(prevProps.events || []).length && (this.props.events || []).length > 0) {
       this.setState({ currentEvent: this.props.events[0] });
@@ -186,7 +200,7 @@ class SelectionScreen extends Component {
 
     // コースカードが全てスワイプされた時
     if (prevState.currentIndex !== (this.props.events || []).length && this.state.currentIndex === (this.props.events || []).length) {
-      await this.props.fetchEvents(this.props.user.userId);
+      this.props.fetchEvents(this.props.user.userId);
     }
 
     // 新しくイベントが読み込まれた時
@@ -254,14 +268,6 @@ class SelectionScreen extends Component {
         this.props.evaluateEvent({ event, userId: this.props.user.userId, email: this.props.user.email, evaluate: "NOPE" });
       })
     })
-  }
-
-  fetchCalendarEvents = () => {
-    Firebase.fetchCalendarEvents();
-  }
-
-  createEvent = () => {
-    Firebase.createEvent();
   }
 
   renderEventCards = (events: IEvent[]) => {
@@ -682,3 +688,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectionScreen);
+
+// export default withNavigationFocus(SelectionScreen);

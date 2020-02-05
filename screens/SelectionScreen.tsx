@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styled from "styled-components/native";
 import { Text, View, Dimensions, Animated, Image, PanResponder } from "react-native";
 import { Button } from "react-native-elements";
 import moment from "moment";
@@ -627,7 +628,6 @@ class SelectionScreen extends Component<IProps, IState> {
               </Text>
               <Button
                 title="OK"
-                color="#FFFFFF"
                 buttonStyle={{
                   width: 160,
                   height: 50,
@@ -636,6 +636,7 @@ class SelectionScreen extends Component<IProps, IState> {
                   justifyContent: "center",
                 }}
                 titleStyle={{
+                  color: "#FFFFFF",
                   fontWeight: "bold"
                 }}
                 onPress={() => {
@@ -651,8 +652,8 @@ class SelectionScreen extends Component<IProps, IState> {
             currentEvent={this.state.currentEvent}
             handleLikeSwipe={this.handleLikeSwipe}
             handleDislikeSwipe={this.handleDislikeSwipe}
-            // fetchCalendarEvents={this.fetchCalendarEvents}
-            createEvent={this.createEvent}
+          // fetchCalendarEvents={this.fetchCalendarEvents}
+          // createEvent={this.createEvent}
           // fetchEvents={this.props.fetchEvents}
           />
         }

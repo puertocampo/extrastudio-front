@@ -618,21 +618,6 @@ class SelectionScreen extends Component<IProps, IState> {
             handleDislikeSwipe={this.handleDislikeSwipe}
           />
         }
-        {/* <Button
-          title="Go back to login"
-          style={{ marginBottom: 20 }}
-          buttonStyle={{
-            width: 200,
-            height: 50,
-            backgroundColor: "#00FF00",
-            borderRadius: 25,
-            justifyContent: "center",
-          }}
-          titleStyle={{
-            fontWeight: "bold"
-          }}
-          onPress={() => this.props.navigation.navigate('login')}
-        /> */}
       </Wrapper>
     );
   }

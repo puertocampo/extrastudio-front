@@ -337,29 +337,7 @@ class SelectionScreen extends Component<IProps, IState> {
                   borderTopColor: "#BBC3CE",
                   borderTopWidth: 0.2,
                 }}>
-                <View
-                  style={{
-                    flex: 1,
-                    padding: 10,
-                    flexDirection: "row",
-                    alignItems: "center"
-                  }}
-                >
-                  <Icon
-                    name="clock-o"
-                    color="#000000"
-                    style={{ marginRight: 7 }}
-                    size={20}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    {startDate} ~ {endDate}
-                  </Text>
-                </View>
+                <EventDate startAt={item.startedAt} endAt={item.endedAt} />
                 <View
                   style={{
                     flex: 1,
@@ -477,29 +455,7 @@ class SelectionScreen extends Component<IProps, IState> {
                   borderTopColor: "#BBC3CE",
                   borderTopWidth: 0.2,
                 }}>
-                <View
-                  style={{
-                    flex: 1,
-                    padding: 10,
-                    flexDirection: "row",
-                    alignItems: "center"
-                  }}
-                >
-                  <Icon
-                    name="clock-o"
-                    color="#000000"
-                    style={{ marginRight: 7 }}
-                    size={20}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    {startDate} ~ {endDate}
-                  </Text>
-                </View>
+                <EventDate startAt={item.startedAt} endAt={item.endedAt} />
                 <View
                   style={{
                     flex: 1,

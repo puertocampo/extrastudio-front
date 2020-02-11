@@ -259,9 +259,23 @@ class SelectionScreen extends Component<IProps, IState> {
           >
             <LikeLabel
               opacity={this.likeOpacity}
+              transform={[{ rotate: "20deg" }]}
+              width={190}
+              style={{
+                position: "absolute",
+                top: "47%",
+                right: "20%"
+              }}
             />
             <DislikeLabel
               opacity={this.dislikeOpacity}
+              transform={[{ rotate: "-20deg" }]}
+              width={190}
+              style={{
+                position: "absolute",
+                top: "47%",
+                left: "20%"
+              }}
             />
             {item.imagePath ? <Image
               style={{

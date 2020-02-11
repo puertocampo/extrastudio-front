@@ -5,6 +5,9 @@ const isIos = Platform.OS === 'ios'
 
 interface IProps {
   opacity?: number;
+  transform?: { rotate: string }[];
+  width?: number;
+  style?: any;
 }
 
 const LikeLabel = (props: IProps) => {
@@ -12,11 +15,9 @@ const LikeLabel = (props: IProps) => {
     <Animated.View
       style={{
         opacity: props.opacity,
-        transform: [{ rotate: "20deg" }],
-        position: "absolute",
-        top: "47%",
-        right: "20%",
-        width: 190,
+        transform: props.transform,
+        width: props.width,
+        ...props.style,
         zIndex: 1000
       }}
     >
@@ -41,7 +42,9 @@ const LikeLabel = (props: IProps) => {
 }
 
 LikeLabel.defaultProps = {
-  opacity: 0
+  opacity: 0,
+  transform: [{ rotate: "20deg" }],
+  width: 190
 };
 
 export default LikeLabel

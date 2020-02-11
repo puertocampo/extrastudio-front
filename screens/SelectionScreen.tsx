@@ -15,6 +15,8 @@ import { IEvent } from "../type/event";
 
 import { withNavigationFocus } from 'react-navigation';
 
+import { ReactionBar } from "../components/molecules";
+
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const isIos = Platform.OS === 'ios'
@@ -34,45 +36,6 @@ const ButtonContainer = styled.View`
   display: flex;
   position: relative;
 `;
-
-const ReactionContainer = props => {
-  return (
-    <View style={{ height: SCREEN_HEIGHT * 0.16, width: "100%", justifyContent: "space-between", paddingLeft: "30%", paddingRight: "30%", flexDirection: 'row' }}>
-      <View style={{ position: "relative", left: 0, top: isIos ? 0 : 20 }} >
-        <Icon
-          name='circle'
-          color="#FF5D5A"
-          style={{ position: "absolute" }}
-          size={isIos ? 70 : 60}
-          onPress={() => { props.handleLikeSwipe(props.currentEvent); }}
-        />
-        <Icon
-          name='heart'
-          color="#FFFFFF"
-          style={{ position: "absolute", top: isIos ? 20 : 17, left: isIos ? 15 : 12 }}
-          size={isIos ? 30 : 27}
-          onPress={() => { props.handleLikeSwipe(props.currentEvent); }}
-        />
-      </View>
-      <View style={{ position: "relative", right: 60, top: isIos ? 0 : 20 }}>
-        <Icon
-          name='circle'
-          color="#FFFFFF"
-          style={{ position: "absolute", top: isIos ? 1 : 0.5, left: isIos ? 1 : 0.5 }}
-          size={isIos ? 68 : 59}
-          onPress={() => { props.handleDislikeSwipe(props.currentEvent); }}
-        />
-        <Icon
-          name='times-circle'
-          color="#4D7DF9"
-          style={{ position: "absolute" }}
-          size={isIos ? 70 : 60}
-          onPress={() => { props.handleDislikeSwipe(props.currentEvent); }}
-        />
-      </View>
-    </View>
-  );
-}
 
 const LikeLabel = props => {
   return (
@@ -244,7 +207,7 @@ class SelectionScreen extends Component<IProps, IState> {
     };
   }
 
-  handleLikeSwipe = (event: IEvent, positionY: number) => {
+  handleLikeSwipe = (event: IEvent, positionY?: number) => {
     Animated.spring(this.position, {
       toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
@@ -648,13 +611,11 @@ class SelectionScreen extends Component<IProps, IState> {
           {renderEventCards && this.renderEventCards(stateEvents)}
         </View>
         {renderReactionContainer &&
-          <ReactionContainer
+          <ReactionBar
+            height={SCREEN_HEIGHT * 0.16}
             currentEvent={this.state.currentEvent}
             handleLikeSwipe={this.handleLikeSwipe}
             handleDislikeSwipe={this.handleDislikeSwipe}
-          // fetchCalendarEvents={this.fetchCalendarEvents}
-          // createEvent={this.createEvent}
-          // fetchEvents={this.props.fetchEvents}
           />
         }
         {/* <Button

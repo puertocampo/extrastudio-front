@@ -338,33 +338,7 @@ class SelectionScreen extends Component<IProps, IState> {
                   borderTopWidth: 0.2,
                 }}>
                 <EventDate startAt={item.startedAt} endAt={item.endedAt} />
-                <View
-                  style={{
-                    flex: 1,
-                    width: "100%",
-                    padding: 10,
-                    flexDirection: "row",
-                    alignItems: "center"
-                  }}
-                >
-                  <Icon
-                    name="map-marker"
-                    color="#000000"
-                    style={{ marginLeft: 2, marginRight: 9 }}
-                    size={23}
-                  />
-                  <Text
-                    style={{
-                      fontSize: isIos ? 14 : 12,
-                      paddingRight: 20,
-                      fontWeight: "bold"
-                    }}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.address}
-                  </Text>
-                </View>
+                <EventAddress address={item.address} />
                 <Text
                   style={{
                     flex: isIos ? 3 : 8,
@@ -456,33 +430,7 @@ class SelectionScreen extends Component<IProps, IState> {
                   borderTopWidth: 0.2,
                 }}>
                 <EventDate startAt={item.startedAt} endAt={item.endedAt} />
-                <View
-                  style={{
-                    flex: 1,
-                    width: "100%",
-                    padding: 10,
-                    flexDirection: "row",
-                    alignItems: "center"
-                  }}
-                >
-                  <Icon
-                    name="map-marker"
-                    color="#000000"
-                    style={{ marginLeft: 2, marginRight: 9 }}
-                    size={23}
-                  />
-                  <Text
-                    style={{
-                      fontSize: isIos ? 14 : 12,
-                      paddingRight: 20,
-                      fontWeight: "bold"
-                    }}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {item.address}
-                  </Text>
-                </View>
+                <EventAddress address={item.address} />
                 <Text
                   style={{
                     flex: isIos ? 3 : 8,

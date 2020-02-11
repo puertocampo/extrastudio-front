@@ -7,16 +7,16 @@ export interface IEvent {
   eventId: string;
   title: string;
   summary: string;
-  eventUrl: string;
+  eventUrl?: string;
   startedAt: Date;
   endedAt: Date;
-  limit: number;
+  limit?: number;
   address: string;
-  place: string;
-  lat: number;
-  lon: number;
-  owners: IOwner[];
-  updatedAt: Date;
+  place?: string;
+  lat?: number;
+  lon?: number;
+  owners?: IOwner[];
+  updatedAt?: Date;
   imagePath: string;
 }
 

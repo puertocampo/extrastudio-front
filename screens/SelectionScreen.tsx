@@ -13,9 +13,8 @@ import { bindActionCreators } from 'redux';
 import { IUser } from "../type/user";
 import { IEvent } from "../type/event";
 
-import { withNavigationFocus } from 'react-navigation';
-
 import { ReactionBar } from "../components/molecules";
+import { EventCard } from "../components/organisms";
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -31,77 +30,6 @@ const Wrapper = styled.View`
   left: 0;
   top: 0;
 `;
-
-const ButtonContainer = styled.View`
-  display: flex;
-  position: relative;
-`;
-
-const LikeLabel = props => {
-  return (
-    <Animated.View
-      style={{
-        opacity: props.opacity,
-        transform: [{ rotate: "20deg" }],
-        position: "absolute",
-        top: "47%",
-        right: "20%",
-        width: 190,
-        zIndex: 1000
-      }}
-    >
-      <Text
-        style={{
-          borderWidth: 5,
-          borderColor: "#FF5D5A",
-          borderRadius: 10,
-          color: "#FF5D5A",
-          backgroundColor: "#ffffff",
-          overflow: "hidden",
-          fontSize: isIos ? 32 : 24,
-          fontWeight: "800",
-          textAlign: "center",
-          padding: 10
-        }}
-      >
-        LIKE
-      </Text>
-    </Animated.View>
-  )
-}
-
-const DislikeLabel = props => {
-  return (
-    <Animated.View
-      style={{
-        opacity: props.opacity,
-        transform: [{ rotate: "-20deg" }],
-        position: "absolute",
-        top: "47%",
-        left: "20%",
-        width: 190,
-        zIndex: 1000
-      }}
-    >
-      <Text
-        style={{
-          borderWidth: 5,
-          borderColor: "#0094D5",
-          borderRadius: 10,
-          color: "#0094D5",
-          backgroundColor: "#ffffff",
-          overflow: "hidden",
-          fontSize: isIos ? 32 : 24,
-          fontWeight: "800",
-          textAlign: "center",
-          padding: 10
-        }}
-      >
-        NOPE
-      </Text>
-    </Animated.View>
-  )
-}
 
 interface IProps {
   user: IUser;
@@ -123,7 +51,15 @@ class SelectionScreen extends Component<IProps, IState> {
     this.position = new Animated.ValueXY();
     this.state = {
       currentIndex: 0,
-      currentEvent: {}
+      currentEvent: {
+        eventId: "",
+        title: "",
+        summary: "",
+        startedAt: new Date(),
+        endedAt: new Date(),
+        address: "",
+        imagePath: ""
+      }
     };
     this.rotate = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -236,216 +172,16 @@ class SelectionScreen extends Component<IProps, IState> {
 
   renderEventCards = (events: IEvent[]) => {
     if (!events) return null;
-    return events.map((item, index) => {
-      const startDate = moment(item.startedAt).format("YYYY/MM/DD HH:mm");
-      const endDate = moment(item.endedAt).format("YYYY/MM/DD HH:mm");
+    return events.map((event, index) => {
       if (index < this.state.currentIndex) {
         return null;
       } else if (index === this.state.currentIndex) {
         return (
-          <Animated.View
-            {...this.PanResponder.panHandlers}
-            key={item.eventId}
-            style={[
-              this.rotateAndTranslate,
-              {
-                height: isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80,
-                width: SCREEN_WIDTH,
-                padding: 10,
-                position: "absolute",
-                left: 0
-              }
-            ]}
-          >
-            <LikeLabel
-              opacity={this.likeOpacity}
-              transform={[{ rotate: "20deg" }]}
-              width={190}
-              style={{
-                position: "absolute",
-                top: "47%",
-                right: "20%"
-              }}
-            />
-            <DislikeLabel
-              opacity={this.dislikeOpacity}
-              transform={[{ rotate: "-20deg" }]}
-              width={190}
-              style={{
-                position: "absolute",
-                top: "47%",
-                left: "20%"
-              }}
-            />
-            {item.imagePath ? <Image
-              style={{
-                flex: 3,
-                height: null,
-                width: null,
-                resizeMode: "cover",
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20
-              }}
-              source={{ uri: item.imagePath }}
-            /> :
-              <View
-                style={{
-                  flex: 3,
-                  height: null,
-                  width: null,
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                  backgroundColor: "#f5f5f5",
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Icon
-                  name='image'
-                  color="rgba(0, 0, 0, 0.4)"
-                  // style={{ position: "absolute", top: 50, left: 50 }}
-                  size={SCREEN_WIDTH / 2}
-                />
-              </View>}
-            <View
-              style={{
-                flex: 2,
-                backgroundColor: "#FFFFFF",
-                borderBottomLeftRadius: 20,
-                borderBottomRightRadius: 20
-              }}
-            >
-              <Text
-                style={{
-                  flex: 1,
-                  fontSize: isIos ? 24 : 17,
-                  fontWeight: "bold",
-                  padding: 12,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  // lineHeight: "40%"
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {item.title}
-              </Text>
-              <View
-                style={{
-                  flex: 5,
-                  borderTopColor: "#BBC3CE",
-                  borderTopWidth: 0.2,
-                }}>
-                <EventDate startAt={item.startedAt} endAt={item.endedAt} />
-                <EventAddress address={item.address} />
-                <Text
-                  style={{
-                    flex: isIos ? 3 : 8,
-                    fontSize: isIos ? 14 : 10,
-                    padding: 10,
-                    lineHeight: isIos ? 24 : 18
-                  }}
-                  numberOfLines={3}
-                  ellipsizeMode="tail"
-                >
-                  {item.summary}
-                </Text>
-              </View>
-            </View>
-          </Animated.View>
+          <EventCard isNextCard={false} likeOpacity={this.likeOpacity} dislikeOpacity={this.dislikeOpacity} rotateAndTranslate={this.rotateAndTranslate} dndFunctions={this.PanResponder.panHandlers} height={isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80} width={SCREEN_WIDTH} event={event} />
         );
       } else if (index === this.state.currentIndex + 1) {
         return (
-          <Animated.View
-            key={item.eventId}
-            style={{
-              opacity: this.nextCardOpacity,
-              transform: [{ scale: this.nextCardScale }],
-              height: isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80,
-              width: SCREEN_WIDTH,
-              padding: 10,
-              position: "absolute",
-              left: 0
-            }}
-          >
-            {item.imagePath ? <Image
-              style={{
-                flex: 3,
-                height: null,
-                width: null,
-                resizeMode: "cover",
-                borderTopLeftRadius: 20,
-                borderTopRightRadius: 20
-              }}
-              source={{ uri: item.imagePath }}
-            /> :
-              <View
-                style={{
-                  flex: 3,
-                  height: null,
-                  width: null,
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                  backgroundColor: "#f5f5f5",
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Icon
-                  name='image'
-                  color="rgba(0, 0, 0, 0.4)"
-                  // style={{ position: "absolute", top: 50, left: 50 }}
-                  size={SCREEN_WIDTH / 2}
-                />
-              </View>}
-            <View
-              style={{
-                flex: 2,
-                backgroundColor: "#FFFFFF",
-                borderBottomLeftRadius: 20,
-                borderBottomRightRadius: 20
-              }}
-            >
-              <Text
-                style={{
-                  flex: 1,
-                  fontSize: isIos ? 24 : 17,
-                  fontWeight: "bold",
-                  padding: 12,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  // lineHeight: "40%"
-                }}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {item.title}
-              </Text>
-              <View
-                style={{
-                  flex: 5,
-                  borderTopColor: "#BBC3CE",
-                  borderTopWidth: 0.2,
-                }}>
-                <EventDate startAt={item.startedAt} endAt={item.endedAt} />
-                <EventAddress address={item.address} />
-                <Text
-                  style={{
-                    flex: isIos ? 3 : 8,
-                    fontSize: isIos ? 14 : 10,
-                    padding: 10,
-                    lineHeight: isIos ? 24 : 18
-                  }}
-                  numberOfLines={3}
-                  ellipsizeMode="tail"
-                >
-                  {item.summary}
-                </Text>
-              </View>
-            </View>
-          </Animated.View>
+          <EventCard isNextCard={true} opacity={this.nextCardOpacity} scale={this.nextCardScale} height={isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80} width={SCREEN_WIDTH} event={event} />
         );
       } else {
         return null;

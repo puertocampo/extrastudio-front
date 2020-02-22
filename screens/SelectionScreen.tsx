@@ -284,7 +284,6 @@ class SelectionScreen extends Component<IProps, IState> {
           />}
         />
         <Animated.View style={{ flex: 1, marginTop: this.state.expandAnim.cardMargin }}>
-          {/* <Animated.View style={{ flex: 1, marginTop: 0 }}> */}
           {renderLastCard &&
             <View
               style={{

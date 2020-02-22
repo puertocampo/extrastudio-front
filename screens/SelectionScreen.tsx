@@ -283,7 +283,6 @@ class SelectionScreen extends Component<IProps, IState> {
             size={35}
           />}
         />
-        {/* <View style={{ flex: 1, marginTop: SCREEN_HEIGHT * 0.07 }}> */}
         <Animated.View style={{ flex: 1, marginTop: this.state.expandAnim.cardMargin }}>
           {/* <Animated.View style={{ flex: 1, marginTop: 0 }}> */}
           {renderLastCard &&

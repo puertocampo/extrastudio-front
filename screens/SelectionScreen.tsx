@@ -24,7 +24,6 @@ const Wrapper = styled.View`
   flex: 1;
   width: 100%;
   height: 100%;
-  /* background-color: rgb(135, 135, 135); */
   background-color: rgba(0, 0, 0, 0.4);
   position: absolute;
   left: 0;
@@ -360,7 +359,6 @@ const expandAnimConstants = {
   },
   cardHeight: {
     expanded: SCREEN_HEIGHT,
-    // expanded: "auto",
     folded: isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80
   },
   cardMargin: {

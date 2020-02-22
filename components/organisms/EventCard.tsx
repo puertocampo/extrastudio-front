@@ -101,7 +101,6 @@ const EventCard = (props: IProps) => {
         <TouchableOpacity
           activeOpacity={1}
           style={{
-            // flex: 3,
             height: 360,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
@@ -114,7 +113,6 @@ const EventCard = (props: IProps) => {
         >
           {props.event.imagePath ? <Image
             style={{
-              // flex: 3,
               height: 360,
               resizeMode: "cover",
               borderTopLeftRadius: 20,

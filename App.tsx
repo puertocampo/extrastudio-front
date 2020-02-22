@@ -12,7 +12,7 @@ import SelectionScreen from "./screens/SelectionScreen";
 import { IUser } from "./type/user";
 
 interface IState {
-  isLoggedIn: Boolean;
+  isLoggedIn: boolean;
   user: IUser;
 }
 

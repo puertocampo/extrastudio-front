@@ -43,7 +43,8 @@ interface IProps {
 interface IState {
   currentIndex: number;
   currentEvent: IEvent;
-  isExpanded: Boolean;
+  canDrag: boolean;
+  canScroll: boolean;
   expandAnim: {
     cardWidth: Animated.Value;
     cardHeight: Animated.Value;
@@ -76,7 +77,8 @@ class SelectionScreen extends Component<IProps, IState> {
         address: "",
         imagePath: ""
       },
-      isExpanded: false,
+      canDrag: true,
+      canScroll: false,
       expandAnim: {
         cardWidth: new Animated.Value(expandAnimConstants.cardWidth.folded),
         cardHeight: new Animated.Value(expandAnimConstants.cardHeight.folded),
@@ -167,6 +169,7 @@ class SelectionScreen extends Component<IProps, IState> {
   }
 
   handleLikeSwipe = (event: IEvent, positionY?: number) => {
+    this.handleFoldCard();
     Animated.spring(this.position, {
       toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
@@ -180,6 +183,7 @@ class SelectionScreen extends Component<IProps, IState> {
   }
 
   handleDislikeSwipe = (event: IEvent, positionY: number) => {
+    this.handleFoldCard();
     Animated.spring(this.position, {
       toValue: { x: 1.5 * SCREEN_WIDTH, y: positionY || 60 },
       tension: 1
@@ -195,43 +199,44 @@ class SelectionScreen extends Component<IProps, IState> {
 
   handleExpandCard = () => {
     const { expandAnim } = this.state;
+    this.setState({ canDrag: false, canScroll: true });
     Animated.parallel([
       Animated.spring(expandAnim.cardWidth, {
         toValue: expandAnimConstants.cardWidth.expanded
       }),
       Animated.spring(expandAnim.cardHeight, {
         toValue: expandAnimConstants.cardHeight.expanded,
-        bounciness: 0
+        bounciness: 10
       }),
       Animated.spring(expandAnim.cardMargin, {
         toValue: expandAnimConstants.cardMargin.expanded,
-        bounciness: 0
+        bounciness: 10
       }),
       Animated.spring(expandAnim.cardPadding, {
         toValue: expandAnimConstants.cardPadding.expanded,
-        bounciness: 0
+        bounciness: 10
       })
-    ]).start(() => { this.setState({ isExpanded: true }); });
+    ]).start();
   }
 
   handleFoldCard = () => {
     const { expandAnim } = this.state;
-    this.setState({ isExpanded: false })
+    this.setState({ canDrag: true, canScroll: false });
     Animated.parallel([
       Animated.spring(expandAnim.cardWidth, {
         toValue: expandAnimConstants.cardWidth.folded
       }),
       Animated.spring(expandAnim.cardHeight, {
         toValue: expandAnimConstants.cardHeight.folded,
-        bounciness: 0
+        bounciness: 10
       }),
       Animated.spring(expandAnim.cardMargin, {
         toValue: expandAnimConstants.cardMargin.folded,
-        bounciness: 0
+        bounciness: 10
       }),
       Animated.spring(expandAnim.cardPadding, {
         toValue: expandAnimConstants.cardPadding.folded,
-        bounciness: 0
+        bounciness: 10
       })
     ]).start();
   }
@@ -244,11 +249,11 @@ class SelectionScreen extends Component<IProps, IState> {
         return null;
       } else if (index === this.state.currentIndex) {
         return (
-          <EventCard key={index} isNextCard={false} isExpanded={this.state.isExpanded} handleExpandCard={this.handleExpandCard} handleFoldCard={this.handleFoldCard} likeOpacity={this.likeOpacity} dislikeOpacity={this.dislikeOpacity} rotateAndTranslate={this.rotateAndTranslate} dndFunctions={this.PanResponder.panHandlers} height={expandAnim.cardHeight} width={expandAnim.cardWidth} padding={this.state.expandAnim.cardPadding} event={event} />
+          <EventCard key={index} isNextCard={false} canDrag={this.state.canDrag} canScroll={this.state.canScroll} handleExpandCard={this.handleExpandCard} handleFoldCard={this.handleFoldCard} likeOpacity={this.likeOpacity} dislikeOpacity={this.dislikeOpacity} rotateAndTranslate={this.rotateAndTranslate} dndFunctions={this.PanResponder.panHandlers} height={expandAnim.cardHeight} width={expandAnim.cardWidth} padding={this.state.expandAnim.cardPadding} event={event} />
         );
       } else if (index === this.state.currentIndex + 1) {
         return (
-          <EventCard key={index} isNextCard={true} opacity={this.nextCardOpacity} scale={this.nextCardScale} height={new Animated.Value(expandAnimConstants.cardHeight.folded)} width={new Animated.Value(expandAnimConstants.cardWidth.folded)} event={event} />
+          <EventCard key={index} isNextCard={true} canDrag={false} canScroll={false} opacity={this.nextCardOpacity} scale={this.nextCardScale} height={new Animated.Value(expandAnimConstants.cardHeight.folded)} width={new Animated.Value(expandAnimConstants.cardWidth.folded)} padding={new Animated.Value(expandAnimConstants.cardPadding.folded)} event={event} />
         );
       } else {
         return null;

@@ -43,6 +43,13 @@ interface IProps {
 interface IState {
   currentIndex: number;
   currentEvent: IEvent;
+  isExpanded: Boolean;
+  expandAnim: {
+    cardWidth: Animated.Value;
+    cardHeight: Animated.Value;
+    cardMargin: Animated.Value;
+    cardPadding: Animated.Value;
+  }
 }
 
 class SelectionScreen extends Component<IProps, IState> {
@@ -68,6 +75,13 @@ class SelectionScreen extends Component<IProps, IState> {
         endedAt: new Date(),
         address: "",
         imagePath: ""
+      },
+      isExpanded: false,
+      expandAnim: {
+        cardWidth: new Animated.Value(expandAnimConstants.cardWidth.folded),
+        cardHeight: new Animated.Value(expandAnimConstants.cardHeight.folded),
+        cardMargin: new Animated.Value(expandAnimConstants.cardMargin.folded),
+        cardPadding: new Animated.Value(expandAnimConstants.cardPadding.folded)
       }
     };
     this.rotate = this.position.x.interpolate({
@@ -179,18 +193,62 @@ class SelectionScreen extends Component<IProps, IState> {
     })
   }
 
+  handleExpandCard = () => {
+    const { expandAnim } = this.state;
+    Animated.parallel([
+      Animated.spring(expandAnim.cardWidth, {
+        toValue: expandAnimConstants.cardWidth.expanded
+      }),
+      Animated.spring(expandAnim.cardHeight, {
+        toValue: expandAnimConstants.cardHeight.expanded,
+        bounciness: 0
+      }),
+      Animated.spring(expandAnim.cardMargin, {
+        toValue: expandAnimConstants.cardMargin.expanded,
+        bounciness: 0
+      }),
+      Animated.spring(expandAnim.cardPadding, {
+        toValue: expandAnimConstants.cardPadding.expanded,
+        bounciness: 0
+      })
+    ]).start(() => { this.setState({ isExpanded: true }); });
+  }
+
+  handleFoldCard = () => {
+    const { expandAnim } = this.state;
+    this.setState({ isExpanded: false })
+    Animated.parallel([
+      Animated.spring(expandAnim.cardWidth, {
+        toValue: expandAnimConstants.cardWidth.folded
+      }),
+      Animated.spring(expandAnim.cardHeight, {
+        toValue: expandAnimConstants.cardHeight.folded,
+        bounciness: 0
+      }),
+      Animated.spring(expandAnim.cardMargin, {
+        toValue: expandAnimConstants.cardMargin.folded,
+        bounciness: 0
+      }),
+      Animated.spring(expandAnim.cardPadding, {
+        toValue: expandAnimConstants.cardPadding.folded,
+        bounciness: 0
+      })
+    ]).start();
+  }
+
   renderEventCards = (events: IEvent[]) => {
     if (!events) return null;
+    const { expandAnim } = this.state;
     return events.map((event, index) => {
       if (index < this.state.currentIndex) {
         return null;
       } else if (index === this.state.currentIndex) {
         return (
-          <EventCard isNextCard={false} likeOpacity={this.likeOpacity} dislikeOpacity={this.dislikeOpacity} rotateAndTranslate={this.rotateAndTranslate} dndFunctions={this.PanResponder.panHandlers} height={isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80} width={SCREEN_WIDTH} event={event} />
+          <EventCard key={index} isNextCard={false} isExpanded={this.state.isExpanded} handleExpandCard={this.handleExpandCard} handleFoldCard={this.handleFoldCard} likeOpacity={this.likeOpacity} dislikeOpacity={this.dislikeOpacity} rotateAndTranslate={this.rotateAndTranslate} dndFunctions={this.PanResponder.panHandlers} height={expandAnim.cardHeight} width={expandAnim.cardWidth} padding={this.state.expandAnim.cardPadding} event={event} />
         );
       } else if (index === this.state.currentIndex + 1) {
         return (
-          <EventCard isNextCard={true} opacity={this.nextCardOpacity} scale={this.nextCardScale} height={isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80} width={SCREEN_WIDTH} event={event} />
+          <EventCard key={index} isNextCard={true} opacity={this.nextCardOpacity} scale={this.nextCardScale} height={new Animated.Value(expandAnimConstants.cardHeight.folded)} width={new Animated.Value(expandAnimConstants.cardWidth.folded)} event={event} />
         );
       } else {
         return null;
@@ -216,7 +274,9 @@ class SelectionScreen extends Component<IProps, IState> {
             size={35}
           />}
         />
-        <View style={{ flex: 1, marginTop: SCREEN_HEIGHT * 0.07 }}>
+        {/* <View style={{ flex: 1, marginTop: SCREEN_HEIGHT * 0.07 }}> */}
+        <Animated.View style={{ flex: 1, marginTop: this.state.expandAnim.cardMargin }}>
+          {/* <Animated.View style={{ flex: 1, marginTop: 0 }}> */}
           {renderLastCard &&
             <View
               style={{
@@ -272,7 +332,7 @@ class SelectionScreen extends Component<IProps, IState> {
             </View>
           }
           {renderEventCards && this.renderEventCards(stateEvents)}
-        </View>
+        </Animated.View>
         {renderReactionContainer &&
           <ReactionBar
             height={SCREEN_HEIGHT * 0.16}
@@ -283,6 +343,26 @@ class SelectionScreen extends Component<IProps, IState> {
         }
       </Wrapper>
     );
+  }
+}
+
+const expandAnimConstants = {
+  cardWidth: {
+    expanded: SCREEN_WIDTH,
+    folded: SCREEN_WIDTH
+  },
+  cardHeight: {
+    expanded: SCREEN_HEIGHT,
+    // expanded: "auto",
+    folded: isIos ? SCREEN_HEIGHT * 0.77 : SCREEN_HEIGHT * 0.80
+  },
+  cardMargin: {
+    expanded: 0,
+    folded: SCREEN_HEIGHT * 0.07
+  },
+  cardPadding: {
+    expanded: 0,
+    folded: 10
   }
 }
 

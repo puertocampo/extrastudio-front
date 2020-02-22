@@ -26,9 +26,9 @@ function* evaluateEvent(action) {
   }
 }
 
-const watchEventAsync = [
+const eventSaga = [
   takeLatest(FETCH_EVENTS, fetchEvents),
   takeLatest(EVALUATE_EVENT, evaluateEvent)
 ];
 
-export default watchEventAsync;
+export default eventSaga;

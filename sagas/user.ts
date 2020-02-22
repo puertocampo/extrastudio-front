@@ -55,11 +55,11 @@ function* fetchUser() {
   }
 }
 
-const watchUserAsync = [
+const userSaga = [
   takeLatest(LOGIN, login),
   takeLatest(LOGOUT, logout),
   takeLatest(REGISTER_USER, registerUser),
   takeLatest(FETCH_USER, fetchUser)
 ];
 
-export default watchUserAsync;
+export default userSaga;

@@ -298,5 +298,3 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectionScreen);
-
-// export default withNavigationFocus(SelectionScreen);

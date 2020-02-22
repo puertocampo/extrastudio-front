@@ -168,6 +168,7 @@ class SelectionScreen extends Component<IProps, IState> {
     };
   }
 
+  // カードをLIKEするときの処理
   handleLikeSwipe = (event: IEvent, positionY?: number) => {
     this.handleFoldCard();
     Animated.spring(this.position, {
@@ -182,6 +183,7 @@ class SelectionScreen extends Component<IProps, IState> {
     });
   }
 
+  // カードをDISLIKEするときの処理
   handleDislikeSwipe = (event: IEvent, positionY: number) => {
     this.handleFoldCard();
     Animated.spring(this.position, {
@@ -197,6 +199,7 @@ class SelectionScreen extends Component<IProps, IState> {
     })
   }
 
+  // カードを展開するときの処理
   handleExpandCard = () => {
     const { expandAnim } = this.state;
     this.setState({ canDrag: false, canScroll: true });
@@ -219,6 +222,7 @@ class SelectionScreen extends Component<IProps, IState> {
     ]).start();
   }
 
+  // カードを縮小するときの処理
   handleFoldCard = () => {
     const { expandAnim } = this.state;
     this.setState({ canDrag: true, canScroll: false });

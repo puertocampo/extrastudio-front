@@ -36,7 +36,7 @@ interface IProps {
   events: IEvent[];
   fetchEvents(userId: string): IEvent[];
   navigation: any;
-  evaluateEvent(): void;
+  evaluateEvent(req: { userId: string, event: IEvent, email: string, evaluate: string }): void;
   logout(): void;
 }
 
@@ -46,8 +46,17 @@ interface IState {
 }
 
 class SelectionScreen extends Component<IProps, IState> {
-  constructor() {
-    super();
+  private position: any;
+  private rotate: string;
+  private likeOpacity: number;
+  private dislikeOpacity: number;
+  private nextCardOpacity: number;
+  private nextCardScale: number;
+  private rotateAndTranslate: any;
+  private PanResponder: any;
+
+  constructor(props: IProps) {
+    super(props);
     this.position = new Animated.ValueXY();
     this.state = {
       currentIndex: 0,

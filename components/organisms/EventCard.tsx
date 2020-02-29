@@ -165,6 +165,8 @@ const EventCard = (props: IProps) => {
                 lineHeight: isIos ? 24 : 18,
                 marginBottom: SCREEN_HEIGHT * 0.20
               }}
+              numberOfLines={props.canScroll ? null : 4}
+              ellipsizeMode="tail"
             >
               {props.event.summary}
             </Text>

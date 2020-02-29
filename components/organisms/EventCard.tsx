@@ -1,7 +1,7 @@
 import React from "react";
 import { Animated, View, Text, Dimensions, Image, Platform, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { EventDate, EventAddress } from "../molecules";
+import { EventDate, EventAddress, EventDescription } from "../molecules";
 import { LikeLabel, DislikeLabel } from "../atoms";
 import { IEvent } from "../../type/event";
 
@@ -21,6 +21,7 @@ interface IProps {
   width: Animated.Value;
   height: Animated.Value;
   padding: Animated.Value;
+  elementOpacity?: Animated.Value;
   likeOpacity: number;
   dislikeOpacity: number;
   event: IEvent;
@@ -157,19 +158,8 @@ const EventCard = (props: IProps) => {
             }}>
             <EventDate startAt={props.event.startedAt} endAt={props.event.endedAt} />
             <EventAddress address={props.event.address} />
-            <Text
-              style={{
-                flex: isIos ? 3 : 8,
-                fontSize: isIos ? 14 : 10,
-                padding: 10,
-                lineHeight: isIos ? 24 : 18,
-                marginBottom: SCREEN_HEIGHT * 0.20
-              }}
-              numberOfLines={props.canScroll ? null : 4}
-              ellipsizeMode="tail"
-            >
-              {props.event.summary}
-            </Text>
+            <EventDescription title="イベント概要" detail={props.event.summary} numberOfLines={props.canScroll ? null : 4} isShowing={props.canScroll} opacity={props.elementOpacity} />
+            <EventDescription title="URL" detail={props.event.eventUrl} isShowing={props.canScroll} opacity={props.elementOpacity} style={{ marginBottom: SCREEN_HEIGHT * 0.20 }} />
           </View>
         </View>
       </ScrollView >

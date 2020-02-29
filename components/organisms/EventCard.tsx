@@ -1,11 +1,13 @@
 import React from "react";
-import { Animated, View, Text, Dimensions, Image, Platform, TouchableOpacity, ScrollView } from "react-native";
+import { Animated, View, Text, Dimensions, Image, Platform, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
+import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { EventDate, EventAddress, EventDescription } from "../molecules";
 import { LikeLabel, DislikeLabel } from "../atoms";
 import { IEvent } from "../../type/event";
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
+const MAP_ZOOM_RATE = 0.020;
 const isIos = Platform.OS === 'ios'
 
 interface IProps {
@@ -24,6 +26,7 @@ interface IProps {
   elementOpacity?: Animated.Value;
   likeOpacity: number;
   dislikeOpacity: number;
+  isAnimationRunning?: boolean;
   event: IEvent;
 }
 
@@ -158,6 +161,36 @@ const EventCard = (props: IProps) => {
             }}>
             <EventDate startAt={props.event.startedAt} endAt={props.event.endedAt} />
             <EventAddress address={props.event.address} />
+            <Animated.View
+              style={{
+                opacity: props.elementOpacity,
+                display: props.canScroll ? "block" : "none"
+              }}
+            >
+              {props.isAnimationRunning
+                ? <View
+                  style={{ marginTop: 20, marginBottom: 20, height: 250, backgroundColor: "rgba(245, 237, 213, 0.5)", alignItems: "center", justifyContent: "center" }}
+                >
+                  <ActivityIndicator />
+                </View>
+                : <MapView
+                  style={{ marginTop: 20, marginBottom: 20, height: 250 }}
+                  initialRegion={{
+                    latitude: props.event.lat,
+                    longitude: props.event.lon,
+                    latitudeDelta: MAP_ZOOM_RATE,
+                    longitudeDelta: MAP_ZOOM_RATE * 2.25
+                  }}
+                  rotateEnabled={false}
+                  showsUserLocation
+                >
+                  <Marker
+                    coordinate={{ latitude: props.event.lat, longitude: props.event.lon }}
+                    title={props.event.place}
+                  />
+                </MapView>
+              }
+            </Animated.View>
             <EventDescription title="イベント概要" detail={props.event.summary} numberOfLines={props.canScroll ? null : 4} isShowing={props.canScroll} opacity={props.elementOpacity} />
             <EventDescription title="URL" detail={props.event.eventUrl} isShowing={props.canScroll} opacity={props.elementOpacity} style={{ marginBottom: SCREEN_HEIGHT * 0.20 }} />
           </View>
@@ -183,7 +216,8 @@ EventCard.defaultProps = {
     endedAt: new Date(),
     address: "",
     imagePath: ""
-  }
+  },
+  isAnimationRunning: false
 };
 
 export default EventCard

@@ -44,6 +44,8 @@ interface IState {
   currentEvent: IEvent;
   canDrag: boolean;
   canScroll: boolean;
+  isExpanding: boolean;
+  isFolding: boolean;
   expandAnim: {
     cardWidth: Animated.Value;
     cardHeight: Animated.Value;
@@ -79,6 +81,8 @@ class SelectionScreen extends Component<IProps, IState> {
       },
       canDrag: true,
       canScroll: false,
+      isExpanding: false,
+      isFolding: false,
       expandAnim: {
         cardWidth: new Animated.Value(expandAnimConstants.cardWidth.folded),
         cardHeight: new Animated.Value(expandAnimConstants.cardHeight.folded),
@@ -203,7 +207,7 @@ class SelectionScreen extends Component<IProps, IState> {
   // カードを展開するときの処理
   handleExpandCard = () => {
     const { expandAnim } = this.state;
-    this.setState({ canDrag: false, canScroll: true });
+    this.setState({ canDrag: false, canScroll: true, isExpanding: true });
     Animated.parallel([
       Animated.spring(expandAnim.cardWidth, {
         toValue: expandAnimConstants.cardWidth.expanded
@@ -224,13 +228,15 @@ class SelectionScreen extends Component<IProps, IState> {
         toValue: expandAnimConstants.elementOpacity.expanded,
         bounciness: 0
       })
-    ]).start();
+    ]).start(() => {
+      this.setState({ isExpanding: false });
+    });
   }
 
   // カードを縮小するときの処理
   handleFoldCard = () => {
     const { expandAnim } = this.state;
-    this.setState({ canDrag: true, canScroll: false });
+    this.setState({ canDrag: true, canScroll: false, isFolding: true });
     Animated.parallel([
       Animated.spring(expandAnim.cardWidth, {
         toValue: expandAnimConstants.cardWidth.folded
@@ -251,7 +257,9 @@ class SelectionScreen extends Component<IProps, IState> {
         toValue: expandAnimConstants.elementOpacity.folded,
         bounciness: 0
       })
-    ]).start();
+    ]).start(() => {
+      this.setState({ isFolding: false });
+    });
   }
 
   renderEventCards = (events: IEvent[]) => {
@@ -262,11 +270,39 @@ class SelectionScreen extends Component<IProps, IState> {
         return null;
       } else if (index === this.state.currentIndex) {
         return (
-          <EventCard key={index} isNextCard={false} canDrag={this.state.canDrag} canScroll={this.state.canScroll} handleExpandCard={this.handleExpandCard} handleFoldCard={this.handleFoldCard} likeOpacity={this.likeOpacity} dislikeOpacity={this.dislikeOpacity} rotateAndTranslate={this.rotateAndTranslate} dndFunctions={this.PanResponder.panHandlers} height={expandAnim.cardHeight} width={expandAnim.cardWidth} padding={this.state.expandAnim.cardPadding} elementOpacity={this.state.expandAnim.elementOpacity} event={event} />
+          <EventCard
+            key={index}
+            isNextCard={false}
+            canDrag={this.state.canDrag}
+            canScroll={this.state.canScroll}
+            handleExpandCard={this.handleExpandCard}
+            handleFoldCard={this.handleFoldCard}
+            likeOpacity={this.likeOpacity}
+            dislikeOpacity={this.dislikeOpacity}
+            rotateAndTranslate={this.rotateAndTranslate}
+            dndFunctions={this.PanResponder.panHandlers}
+            height={expandAnim.cardHeight}
+            width={expandAnim.cardWidth}
+            padding={this.state.expandAnim.cardPadding}
+            elementOpacity={this.state.expandAnim.elementOpacity}
+            isAnimationRunning={this.state.isExpanding || this.state.isFolding}
+            event={event}
+          />
         );
       } else if (index === this.state.currentIndex + 1) {
         return (
-          <EventCard key={index} isNextCard={true} canDrag={false} canScroll={false} opacity={this.nextCardOpacity} scale={this.nextCardScale} height={new Animated.Value(expandAnimConstants.cardHeight.folded)} width={new Animated.Value(expandAnimConstants.cardWidth.folded)} padding={new Animated.Value(expandAnimConstants.cardPadding.folded)} event={event} />
+          <EventCard
+            key={index}
+            isNextCard={true}
+            canDrag={false}
+            canScroll={false}
+            opacity={this.nextCardOpacity}
+            scale={this.nextCardScale}
+            height={new Animated.Value(expandAnimConstants.cardHeight.folded)}
+            width={new Animated.Value(expandAnimConstants.cardWidth.folded)}
+            padding={new Animated.Value(expandAnimConstants.cardPadding.folded)}
+            event={event}
+          />
         );
       } else {
         return null;

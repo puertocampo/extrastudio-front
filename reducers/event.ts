@@ -9,7 +9,6 @@ const INITIAL_STATE: IEvent[] = [];
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UPDATE_EVENTS:
-      // console.log('UPDATE_EVENTS', action.payload);
       return action.payload;
 
     default:

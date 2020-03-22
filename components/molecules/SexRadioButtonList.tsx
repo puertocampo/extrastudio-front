@@ -5,12 +5,13 @@ import { CheckBox } from "react-native-elements";
 interface IProps {
   sex: string;
   handleChangeSex: (sex: string) => void;
+  style?: any;
 }
 
 const SexRadioButtonList = (props: IProps) => {
   const { sex } = props;
   return (
-    <View style={styles.wrapper}>
+    <View style={{ ...props.style, ...styles.wrapper }}>
       <CheckBox
         title="男性"
         checkedIcon='dot-circle-o'

@@ -8,33 +8,38 @@ interface IProps {
   style?: any;
 }
 
+const sexItems = [
+  {
+    label: "男性",
+    value: "male"
+  },
+  {
+    label: "女性",
+    value: "female"
+  }
+]
+
 const SexRadioButtonList = (props: IProps) => {
   const { sex } = props;
   return (
     <View style={{ ...props.style, ...styles.wrapper }}>
-      <CheckBox
-        title="男性"
-        checkedIcon='dot-circle-o'
-        uncheckedIcon='circle-o'
-        checked={sex === "male"}
-        containerStyle={styles.formRadioButton}
-        checkedColor="#4D7DF9"
-        onPress={() => {
-          props.handleChangeSex("male")
-        }}
-      />
-      <CheckBox
-        title="女性"
-        right
-        checkedIcon='dot-circle-o'
-        uncheckedIcon='circle-o'
-        checked={sex === "female"}
-        containerStyle={styles.formRadioButton}
-        checkedColor="#4D7DF9"
-        onPress={() => {
-          props.handleChangeSex("female")
-        }}
-      />
+      {
+        sexItems.map(sexItem => {
+          return (
+            <CheckBox
+              title={sexItem.label}
+              checkedIcon='dot-circle-o'
+              uncheckedIcon='circle-o'
+              checked={sex === sexItem.value}
+              containerStyle={styles.formRadioButton}
+              checkedColor="#4D7DF9"
+              onPress={() => {
+                props.handleChangeSex(sexItem.value)
+              }}
+            />
+          )
+        })
+      }
     </View>
   );
 }

@@ -236,11 +236,6 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     marginBottom: 20
   },
-  formRadioButton: {
-    width: 100,
-    backgroundColor: "#fff",
-    borderColor: "#fff"
-  },
   formCheckBox: {
     width: 100,
     backgroundColor: "#fff",

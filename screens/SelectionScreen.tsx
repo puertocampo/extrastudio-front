@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components/native";
 import { Text, View, Dimensions, Animated, Image, PanResponder } from "react-native";
 import { Button } from "react-native-elements";
-import moment from "moment";
 import { Platform } from 'react-native';
 import * as _ from "lodash";
 

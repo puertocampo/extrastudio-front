@@ -320,10 +320,23 @@ class SelectionScreen extends Component<IProps, IState> {
           buttonStyle={{
             backgroundColor: "transparent"
           }}
+          style={{ position: "absolute", top: 20, left: 10 }}
+          onPress={this.props.logout}
+          icon={<Icon
+            name="bars"
+            color="#707070"
+            size={35}
+          />}
+        />
+        <Button
+          buttonStyle={{
+            backgroundColor: "transparent"
+          }}
           style={{ position: "absolute", top: 20, right: 10 }}
           onPress={this.props.logout}
           icon={<Icon
-            name='sign-out'
+            name="gear"
+            color="#707070"
             size={35}
           />}
         />

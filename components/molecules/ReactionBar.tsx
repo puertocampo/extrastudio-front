@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 
-import { LikeButton } from "../atoms";
-import { DislikeButton } from "../atoms";
+import { LikeButton, DislikeButton, SearchButton } from "../atoms";
 
 import { IEvent } from "../../type/event";
 
@@ -15,8 +14,9 @@ interface IProps {
 
 const ReactionBar = (props: IProps) => {
   return (
-    <View style={{ height: props.height, width: "100%", justifyContent: "space-between", paddingLeft: "30%", paddingRight: "30%", flexDirection: 'row' }}>
+    <View style={{ height: props.height, width: "100%", justifyContent: "space-between", paddingLeft: "20%", paddingRight: "20%", flexDirection: "row" }}>
       <LikeButton currentEvent={props.currentEvent} handleLikeSwipe={props.handleLikeSwipe} />
+      <SearchButton />
       <DislikeButton currentEvent={props.currentEvent} handleDislikeSwipe={props.handleDislikeSwipe} />
     </View>
   );

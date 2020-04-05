@@ -23,7 +23,7 @@ const SearchButton = props => {
         size={buttonSize}
       />
       <Icon
-        name="magnifying-glass"
+        name="search"
         color="#FFFFFF"
         style={{ position: "absolute" }}
         size={isIos ? 30 : 27}

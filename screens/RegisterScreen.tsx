@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, Picker, ScrollView, TouchableHighlight } from "react-native";
-import { Button, CheckBox } from "react-native-elements";
+import { Button } from "react-native-elements";
 import Constants from 'expo-constants';
 import { SexRadioButtonList, InterestCheckBoxList } from "../components/molecules";
 import DateTimePickerModal from "react-native-modal-datetime-picker";

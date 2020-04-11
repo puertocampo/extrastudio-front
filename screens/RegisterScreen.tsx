@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, Picker, ScrollView, TouchableHighlight } from "react-native";
 import { Button, CheckBox } from "react-native-elements";
 import Constants from 'expo-constants';
-import { SexRadioButtonList } from "../components/molecules";
+import { SexRadioButtonList, InterestCheckBoxList } from "../components/molecules";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ interface IState {
   birthDate: Date | null;
   sex: string;
   profession: string;
+  interests: any;
   isBirthDateModalOpening: boolean;
 }
 
@@ -46,6 +47,72 @@ const professionItems = [
   }
 ]
 
+enum InterestId {
+  family = "family",
+  date = "date",
+  child = "child",
+  alone = "alone",
+  free = "free",
+  business = "business",
+  learning = "learning",
+  grownup = "grownup",
+  encounter = "encounter",
+  instagenic = "instagenic",
+  women = "women",
+  music = "music"
+}
+
+const interestItems = [
+  {
+    label: "家族",
+    value: InterestId.family
+  },
+  {
+    label: "デート",
+    value: InterestId.date
+  },
+  {
+    label: "こども向け",
+    value: InterestId.child
+  },
+  {
+    label: "1人OK",
+    value: InterestId.alone
+  },
+  {
+    label: "無料",
+    value: InterestId.free
+  },
+  {
+    label: "ビジネス",
+    value: InterestId.business
+  },
+  {
+    label: "知る・学ぶ",
+    value: InterestId.learning
+  },
+  {
+    label: "大人",
+    value: InterestId.grownup
+  },
+  {
+    label: "出会い",
+    value: InterestId.encounter
+  },
+  {
+    label: "インスタ映え",
+    value: InterestId.instagenic
+  },
+  {
+    label: "女性向け",
+    value: InterestId.women
+  },
+  {
+    label: "音楽",
+    value: InterestId.music
+  }
+]
+
 class RegisterScreen extends Component<IProps, IState> {
   constructor(props) {
     super(props);
@@ -54,6 +121,20 @@ class RegisterScreen extends Component<IProps, IState> {
       birthDate: null,
       sex: "",
       profession: "",
+      interests: {
+        family: true,
+        date: false,
+        child: false,
+        alone: false,
+        free: false,
+        business: false,
+        learning: false,
+        grownup: false,
+        encounter: false,
+        instagenic: false,
+        women: false,
+        music: false
+      },
       isBirthDateModalOpening: false
     }
   }
@@ -80,6 +161,15 @@ class RegisterScreen extends Component<IProps, IState> {
     this.setState({ profession });
   }
 
+  handleCheckInterest = (interestId: InterestId, checked: boolean) => {
+    this.setState({
+      interests: {
+        ...this.state.interests,
+        [interestId]: checked
+      }
+    });
+  }
+
   openBirthDateModal = () => {
     this.setState({ isBirthDateModalOpening: true })
   }
@@ -89,7 +179,7 @@ class RegisterScreen extends Component<IProps, IState> {
   }
 
   render() {
-    const { name, birthDate, sex, profession, isBirthDateModalOpening } = this.state;
+    const { name, birthDate, sex, profession, interests, isBirthDateModalOpening } = this.state;
     const birthDateJa = birthDate ? `${birthDate.getFullYear()}年 ${birthDate.getMonth() + 1}月 ${birthDate.getDate()}日` : "日付を選択してください";
     const initialBirthDate = () => {
       let nowDate = new Date();
@@ -163,11 +253,11 @@ class RegisterScreen extends Component<IProps, IState> {
         >
           興味のあるジャンル
         </Text>
-        <CheckBox
-          title="家族"
-          checked={true}
-          containerStyle={styles.formCheckBox}
-          checkedColor="#4D7DF9"
+        <InterestCheckBoxList
+          style={{ marginBottom: 20 }}
+          interestItems={interestItems}
+          interestsState={interests}
+          handleCheckInterest={this.handleCheckInterest}
         />
         <Text
           style={styles.formTitle}

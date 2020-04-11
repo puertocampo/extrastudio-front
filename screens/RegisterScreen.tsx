@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, Picker, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, Picker, ScrollView, TouchableHighlight } from "react-native";
 import { Button, CheckBox } from "react-native-elements";
 import Constants from 'expo-constants';
 import { SexRadioButtonList } from "../components/molecules";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -14,9 +15,10 @@ interface IProps { };
 
 interface IState {
   name: string;
-  birthDate: Date;
+  birthDate: Date | null;
   sex: string;
   profession: string;
+  isBirthDateModalOpening: boolean;
 }
 
 enum ProfessionId {
@@ -49,9 +51,10 @@ class RegisterScreen extends Component<IProps, IState> {
     super(props);
     this.state = {
       name: "",
-      birthDate: new Date(),
+      birthDate: null,
       sex: "",
-      profession: ""
+      profession: "",
+      isBirthDateModalOpening: false
     }
   }
 
@@ -66,6 +69,7 @@ class RegisterScreen extends Component<IProps, IState> {
 
   handleChangeDate = (date: Date) => {
     this.setState({ birthDate: date });
+    this.closeBirthDateModal();
   }
 
   handleChangeSex = (sex: string) => {
@@ -76,9 +80,22 @@ class RegisterScreen extends Component<IProps, IState> {
     this.setState({ profession });
   }
 
+  openBirthDateModal = () => {
+    this.setState({ isBirthDateModalOpening: true })
+  }
+
+  closeBirthDateModal = () => {
+    this.setState({ isBirthDateModalOpening: false })
+  }
+
   render() {
-    const { name, birthDate, sex, profession } = this.state;
-    const birthDateJa = `${birthDate.getFullYear()}年 ${birthDate.getMonth() + 1}月 ${birthDate.getDate()}日`;
+    const { name, birthDate, sex, profession, isBirthDateModalOpening } = this.state;
+    const birthDateJa = birthDate ? `${birthDate.getFullYear()}年 ${birthDate.getMonth() + 1}月 ${birthDate.getDate()}日` : "日付を選択してください";
+    const initialBirthDate = () => {
+      let nowDate = new Date();
+      nowDate.setFullYear(nowDate.getFullYear() - 20);
+      return nowDate;
+    }
     return (
       <ScrollView style={styles.wrapper}>
         <Text
@@ -91,29 +108,26 @@ class RegisterScreen extends Component<IProps, IState> {
           onChangeText={this.handleChangeName}
           value={name}
           placeholder="入力してください"
+          placeholderTextColor="#CDD6DD"
         />
         <Text
           style={styles.formTitle}
         >
           生年月日
         </Text>
-        <TextInput
-          style={styles.formInput}
-          value={birthDateJa}
-          placeholder="日付を選択してください"
-          onFocus={() => {
-            console.log("focus");
-          }}
+        <Text
+          style={birthDate ? styles.formInput : styles.formInputPlaceholder}
+          onPress={this.openBirthDateModal}
+        > {birthDateJa}
+        </Text>
+        <DateTimePickerModal
+          isVisible={isBirthDateModalOpening}
+          mode="date"
+          locale="ja"
+          date={initialBirthDate()}
+          onConfirm={this.handleChangeDate}
+          onCancel={this.closeBirthDateModal}
         />
-        {
-          isIos ?
-            <DatePickerIOS
-              date={birthDate}
-              onDateChange={this.handleChangeDate}
-              mode="date"
-              locale="ja"
-            /> : null
-        }
         <Text
           style={styles.formTitle}
         >
@@ -232,8 +246,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#CDD6DD",
     paddingLeft: 20,
-    paddingTop: 12,
-    paddingBottom: 12,
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginBottom: 20
+  },
+  formInputPlaceholder: {
+    flex: 1,
+    fontSize: isIos ? 18 : 12,
+    color: "#CDD6DD",
+    width: "100%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#CDD6DD",
+    paddingLeft: 20,
+    paddingTop: 15,
+    paddingBottom: 15,
     marginBottom: 20
   },
   formCheckBox: {

@@ -12,7 +12,7 @@ interface IProps {
 const InterestCheckBoxList = (props: IProps) => {
   const { interestItems, interestsState } = props;
   return (
-    <View style={{ ...props.style, ...styles.wrapper, justifyContent: "space-around" }}>
+    <View style={{ ...props.style, ...styles.wrapper }}>
       {
         interestItems.map(interestItem => {
           return (
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     flexDirection: "row",
-    flexWrap: 'wrap'
+    flexWrap: "wrap",
+    justifyContent: "space-around"
   },
   formCheckBox: {
     width: 130,

@@ -9,4 +9,6 @@ export { default as EventDescription } from "./EventDescription";
 
 export { default as SexRadioButtonList } from "./SexRadioButtonList";
 
-export { default as GenreCheckBoxList } from "./GenreCheckBoxList"
+export { default as GenreCheckBoxList } from "./GenreCheckBoxList";
+
+export { default as KeywordsList } from "./KeywordsList";

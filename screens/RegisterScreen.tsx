@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, Picker, ScrollView, TouchableHighlight } from "react-native";
 import { Button } from "react-native-elements";
+import shortid from "shortid";
 import Constants from 'expo-constants';
-import { SexRadioButtonList, GenreCheckBoxList } from "../components/molecules";
+import { SexRadioButtonList, GenreCheckBoxList, KeywordsList } from "../components/molecules";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { connect } from 'react-redux';
@@ -19,6 +20,8 @@ interface IState {
   sex: string;
   profession: string;
   genres: any;
+  keywords: { label: string; value: string }[];
+  keywordInput: string;
   isBirthDateModalOpening: boolean;
 }
 
@@ -135,6 +138,8 @@ class RegisterScreen extends Component<IProps, IState> {
         women: false,
         music: false
       },
+      keywords: [],
+      keywordInput: "",
       isBirthDateModalOpening: false
     }
   }
@@ -178,8 +183,28 @@ class RegisterScreen extends Component<IProps, IState> {
     this.setState({ isBirthDateModalOpening: false })
   }
 
+  handleChangeKeywordInput = (keywordInput: string) => {
+    this.setState({ keywordInput });
+  }
+
+  handleAddKeyword = () => {
+    if (!this.state.keywordInput) {
+      return;
+    }
+    const keywordId = shortid.generate();
+    this.setState({
+      keywords: [...this.state.keywords, { label: this.state.keywordInput, value: keywordId }],
+      keywordInput: ""
+    });
+  }
+
+  handleDeleteKeyword = (keywordId: string) => {
+    const updatedKeywords = this.state.keywords.filter(_keyword => _keyword.value !== keywordId);
+    this.setState({ keywords: updatedKeywords });
+  }
+
   render() {
-    const { name, birthDate, sex, profession, genres, isBirthDateModalOpening } = this.state;
+    const { name, birthDate, sex, profession, genres, keywords, keywordInput, isBirthDateModalOpening } = this.state;
     const birthDateJa = birthDate ? `${birthDate.getFullYear()}年 ${birthDate.getMonth() + 1}月 ${birthDate.getDate()}日` : "日付を選択してください";
     const initialBirthDate = () => {
       let nowDate = new Date();
@@ -264,32 +289,35 @@ class RegisterScreen extends Component<IProps, IState> {
         >
           興味のあるワード
         </Text>
-        <View>
+        <View style={styles.formInputWithButton}>
           <TextInput
-            style={styles.formInput}
-            onChangeText={this.handleChangeName}
-            value={name}
+            style={styles.formInputHalf}
+            onChangeText={this.handleChangeKeywordInput}
+            value={keywordInput}
             placeholder="入力してください"
             placeholderTextColor="#CDD6DD"
           />
           <Button
             title="追加"
             buttonStyle={{
-              width: 160,
+              width: "60%",
               height: 50,
               backgroundColor: "#4D7DF9",
               borderRadius: 25,
+              marginLeft: 30
             }}
             titleStyle={{
               color: "#FFFFFF",
               fontWeight: "bold"
             }}
-            onPress={() => {
-              console.log('nice!');
-            }}
+            onPress={this.handleAddKeyword}
           />
         </View>
-
+        <KeywordsList
+          keywords={keywords}
+          handleDeleteKeyword={this.handleDeleteKeyword}
+          style={{ marginBottom: 20 }}
+        />
         <View style={styles.registerButtonContainer}>
           <Button
             title="登録"
@@ -355,6 +383,21 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     marginBottom: 20
+  },
+  formInputWithButton: {
+    width: "100%",
+    flexDirection: "row",
+    marginBottom: 20
+  },
+  formInputHalf: {
+    fontSize: isIos ? 18 : 12,
+    width: "60%",
+    height: 50,
+    borderWidth: 1,
+    borderColor: "#CDD6DD",
+    paddingLeft: 20,
+    paddingTop: 15,
+    paddingBottom: 15
   },
   formInputPlaceholder: {
     flex: 1,

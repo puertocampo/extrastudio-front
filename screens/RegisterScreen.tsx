@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, Picker, ScrollView, TouchableHighlight } from "react-native";
 import { Button } from "react-native-elements";
 import Constants from 'expo-constants';
-import { SexRadioButtonList, InterestCheckBoxList } from "../components/molecules";
+import { SexRadioButtonList, GenreCheckBoxList } from "../components/molecules";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ interface IState {
   birthDate: Date | null;
   sex: string;
   profession: string;
-  interests: any;
+  genres: any;
   isBirthDateModalOpening: boolean;
 }
 
@@ -47,7 +47,7 @@ const professionItems = [
   }
 ]
 
-enum InterestId {
+enum GenreId {
   family = "family",
   date = "date",
   child = "child",
@@ -62,54 +62,54 @@ enum InterestId {
   music = "music"
 }
 
-const interestItems = [
+const genreItems = [
   {
     label: "家族",
-    value: InterestId.family
+    value: GenreId.family
   },
   {
     label: "デート",
-    value: InterestId.date
+    value: GenreId.date
   },
   {
     label: "こども向け",
-    value: InterestId.child
+    value: GenreId.child
   },
   {
     label: "1人OK",
-    value: InterestId.alone
+    value: GenreId.alone
   },
   {
     label: "無料",
-    value: InterestId.free
+    value: GenreId.free
   },
   {
     label: "ビジネス",
-    value: InterestId.business
+    value: GenreId.business
   },
   {
     label: "知る・学ぶ",
-    value: InterestId.learning
+    value: GenreId.learning
   },
   {
     label: "大人",
-    value: InterestId.grownup
+    value: GenreId.grownup
   },
   {
     label: "出会い",
-    value: InterestId.encounter
+    value: GenreId.encounter
   },
   {
     label: "インスタ映え",
-    value: InterestId.instagenic
+    value: GenreId.instagenic
   },
   {
     label: "女性向け",
-    value: InterestId.women
+    value: GenreId.women
   },
   {
     label: "音楽",
-    value: InterestId.music
+    value: GenreId.music
   }
 ]
 
@@ -121,7 +121,7 @@ class RegisterScreen extends Component<IProps, IState> {
       birthDate: null,
       sex: "",
       profession: "",
-      interests: {
+      genres: {
         family: true,
         date: false,
         child: false,
@@ -161,11 +161,11 @@ class RegisterScreen extends Component<IProps, IState> {
     this.setState({ profession });
   }
 
-  handleCheckInterest = (interestId: InterestId, checked: boolean) => {
+  handleCheckGenre = (genreId: GenreId, checked: boolean) => {
     this.setState({
-      interests: {
-        ...this.state.interests,
-        [interestId]: checked
+      genres: {
+        ...this.state.genres,
+        [genreId]: checked
       }
     });
   }
@@ -179,7 +179,7 @@ class RegisterScreen extends Component<IProps, IState> {
   }
 
   render() {
-    const { name, birthDate, sex, profession, interests, isBirthDateModalOpening } = this.state;
+    const { name, birthDate, sex, profession, genres, isBirthDateModalOpening } = this.state;
     const birthDateJa = birthDate ? `${birthDate.getFullYear()}年 ${birthDate.getMonth() + 1}月 ${birthDate.getDate()}日` : "日付を選択してください";
     const initialBirthDate = () => {
       let nowDate = new Date();
@@ -253,27 +253,43 @@ class RegisterScreen extends Component<IProps, IState> {
         >
           興味のあるジャンル
         </Text>
-        <InterestCheckBoxList
+        <GenreCheckBoxList
           style={{ marginBottom: 20 }}
-          interestItems={interestItems}
-          interestsState={interests}
-          handleCheckInterest={this.handleCheckInterest}
+          genreItems={genreItems}
+          genresState={genres}
+          handleCheckGenre={this.handleCheckGenre}
         />
         <Text
           style={styles.formTitle}
         >
           興味のあるワード
         </Text>
-        <Picker
-          selectedValue={profession}
-          onValueChange={this.handleChangeProfession}
-        >
-          {
-            professionItems.map(profession => {
-              return <Picker.Item label={profession.label} value={profession.value} />
-            })
-          }
-        </Picker>
+        <View>
+          <TextInput
+            style={styles.formInput}
+            onChangeText={this.handleChangeName}
+            value={name}
+            placeholder="入力してください"
+            placeholderTextColor="#CDD6DD"
+          />
+          <Button
+            title="追加"
+            buttonStyle={{
+              width: 160,
+              height: 50,
+              backgroundColor: "#4D7DF9",
+              borderRadius: 25,
+            }}
+            titleStyle={{
+              color: "#FFFFFF",
+              fontWeight: "bold"
+            }}
+            onPress={() => {
+              console.log('nice!');
+            }}
+          />
+        </View>
+
         <View style={styles.registerButtonContainer}>
           <Button
             title="登録"

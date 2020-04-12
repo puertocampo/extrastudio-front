@@ -13,7 +13,7 @@ const INITIAL_STATE: IUser = {
   sex: "male",
   profession: "",
   address: "",
-  interests: [],
+  genres: [],
   idToken: ""
 };
 

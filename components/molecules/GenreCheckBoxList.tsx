@@ -3,26 +3,26 @@ import { StyleSheet, View } from "react-native";
 import { CheckBox } from "react-native-elements";
 
 interface IProps {
-  interestItems: { label: string, value: string }[];
-  interestsState: any;
-  handleCheckInterest: (interestId: string, checked: boolean) => void;
+  genreItems: { label: string, value: string }[];
+  genresState: any;
+  handleCheckGenre: (genreId: string, checked: boolean) => void;
   style?: any;
 }
 
-const InterestCheckBoxList = (props: IProps) => {
-  const { interestItems, interestsState } = props;
+const GenreCheckBoxList = (props: IProps) => {
+  const { genreItems, genresState } = props;
   return (
     <View style={{ ...props.style, ...styles.wrapper }}>
       {
-        interestItems.map(interestItem => {
+        genreItems.map(genreItem => {
           return (
             <CheckBox
-              title={interestItem.label}
-              checked={interestsState[interestItem.value]}
+              title={genreItem.label}
+              checked={genresState[genreItem.value]}
               containerStyle={styles.formCheckBox}
               checkedColor="#4D7DF9"
               onPress={() => {
-                props.handleCheckInterest(interestItem.value, !interestsState[interestItem.value])
+                props.handleCheckGenre(genreItem.value, !genresState[genreItem.value])
               }}
             />
           )
@@ -32,12 +32,12 @@ const InterestCheckBoxList = (props: IProps) => {
   );
 }
 
-InterestCheckBoxList.defaultProps = {
-  interestItems: [],
-  interestsState: {}
+GenreCheckBoxList.defaultProps = {
+  genreItems: [],
+  genresState: {}
 };
 
-export default InterestCheckBoxList
+export default GenreCheckBoxList
 
 const styles = StyleSheet.create({
   wrapper: {

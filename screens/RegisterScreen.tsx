@@ -9,6 +9,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { bindActionCreators } from 'redux';
+import { GenreId, ProfessionId } from "../type/enum";
 
 const isIos = Platform.OS === 'ios'
 import ModalSelector from "react-native-modal-selector"
@@ -26,34 +27,12 @@ interface IState {
   isBirthDateModalOpening: boolean;
 }
 
-enum ProfessionId {
-  default = "",
-  a = "a",
-  b = "b",
-  c = "c"
-}
-
 const professionItems = [
   { key: ProfessionId.default, section: true, label: '職業を選択してください' },
   { key: ProfessionId.a, label: "すごい人" },
   { key: ProfessionId.b, label: "とてもすごい人" },
   { key: ProfessionId.c, label: "とっっってもすごい人" }
 ];
-
-enum GenreId {
-  family = "family",
-  date = "date",
-  child = "child",
-  alone = "alone",
-  free = "free",
-  business = "business",
-  learning = "learning",
-  grownup = "grownup",
-  encounter = "encounter",
-  instagenic = "instagenic",
-  women = "women",
-  music = "music"
-}
 
 const genreItems = [
   {

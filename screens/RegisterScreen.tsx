@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, Picker, ScrollView, TouchableHighlight } from "react-native";
+import { StyleSheet, Text, View, Platform, TextInput, DatePickerIOS, ScrollView, TouchableHighlight, Switch } from "react-native";
 import { Button } from "react-native-elements";
 import shortid from "shortid";
 import Constants from 'expo-constants';
@@ -11,6 +11,7 @@ import * as actions from '../actions';
 import { bindActionCreators } from 'redux';
 
 const isIos = Platform.OS === 'ios'
+import ModalSelector from "react-native-modal-selector"
 
 interface IProps { };
 
@@ -33,22 +34,11 @@ enum ProfessionId {
 }
 
 const professionItems = [
-  {
-    label: "選択してください",
-    value: ProfessionId.default
-  },
-  {
-    label: "すごい人",
-    value: ProfessionId.a
-  }, {
-    label: "とてもすごい人",
-    value: ProfessionId.b
-  },
-  {
-    label: "とっってもすごい人",
-    value: ProfessionId.c
-  }
-]
+  { key: ProfessionId.default, section: true, label: '職業を選択してください' },
+  { key: ProfessionId.a, label: "すごい人" },
+  { key: ProfessionId.b, label: "とてもすごい人" },
+  { key: ProfessionId.c, label: "とっっってもすごい人" }
+];
 
 enum GenreId {
   family = "family",
@@ -145,8 +135,6 @@ class RegisterScreen extends Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    // this.props.registerUser(this.props.user);
-    // this.props.navigation.navigate('selection');
   }
 
   handleChangeName = (name: string) => {
@@ -163,6 +151,7 @@ class RegisterScreen extends Component<IProps, IState> {
   }
 
   handleChangeProfession = (profession: string) => {
+    if (!profession) return;
     this.setState({ profession });
   }
 
@@ -212,7 +201,7 @@ class RegisterScreen extends Component<IProps, IState> {
       return nowDate;
     }
     return (
-      <ScrollView style={styles.wrapper}>
+      <ScrollView style={styles.wrapper} contentContainerStyle={{ flexGrow: 1 }}>
         <Text
           style={styles.formTitle}
         >
@@ -258,21 +247,25 @@ class RegisterScreen extends Component<IProps, IState> {
         >
           職業
         </Text>
-        <Picker
-          selectedValue={profession}
-          onValueChange={this.handleChangeProfession}
-        >
-          {
-            professionItems.map(profession => {
-              return <Picker.Item label={profession.label} value={profession.value} />
-            })
-          }
-        </Picker>
+        <ModalSelector
+          style={styles.formSelector}
+          data={professionItems}
+          initValue="職業を選択してください"
+          selectedKey={profession}
+          onChange={option =>
+            this.handleChangeProfession(option.key)
+          } />
         <Text
           style={styles.formTitle}
         >
           現在お住まいの都道府県
         </Text>
+        {/* <ModalSelector
+          style={styles.formSelector}
+          data={professionItems}
+          initValue="都道府県を選択してください"
+          onChange={option => this.handleChangeProfession(option.label)}
+        /> */}
         <Text
           style={styles.formTitle}
         >
@@ -355,7 +348,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
+    flexGrow: 1,
     width: "100%",
     height: "100%",
     backgroundColor: "#fff",
@@ -406,6 +399,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     borderWidth: 1,
+    borderColor: "#CDD6DD",
+    paddingLeft: 20,
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginBottom: 20
+  },
+  formSelector: {
+    fontSize: isIos ? 18 : 12,
+    borderWsidth: 1,
     borderColor: "#CDD6DD",
     paddingLeft: 20,
     paddingTop: 15,

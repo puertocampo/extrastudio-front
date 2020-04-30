@@ -9,7 +9,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { bindActionCreators } from 'redux';
-import { GenreId, ProfessionId } from "../type/enum";
+import { GenreId, ProfessionId, prefectureItems } from "../type/enum";
 
 const isIos = Platform.OS === 'ios'
 import ModalSelector from "react-native-modal-selector"
@@ -21,6 +21,7 @@ interface IState {
   birthDate: Date | null;
   sex: string;
   profession: string;
+  prefecture: string;
   genres: any;
   keywords: { label: string; value: string }[];
   keywordInput: string;
@@ -93,6 +94,7 @@ class RegisterScreen extends Component<IProps, IState> {
       birthDate: null,
       sex: "",
       profession: "",
+      prefecture: "",
       genres: {
         family: true,
         date: false,
@@ -132,6 +134,11 @@ class RegisterScreen extends Component<IProps, IState> {
   handleChangeProfession = (profession: string) => {
     if (!profession) return;
     this.setState({ profession });
+  }
+
+  handleChangePrefecture = (prefecture: string) => {
+    if (!prefecture) return;
+    this.setState({ prefecture });
   }
 
   handleCheckGenre = (genreId: GenreId, checked: boolean) => {
@@ -239,12 +246,12 @@ class RegisterScreen extends Component<IProps, IState> {
         >
           現在お住まいの都道府県
         </Text>
-        {/* <ModalSelector
+        <ModalSelector
           style={styles.formSelector}
-          data={professionItems}
+          data={prefectureItems}
           initValue="都道府県を選択してください"
-          onChange={option => this.handleChangeProfession(option.label)}
-        /> */}
+          onChange={option => this.handleChangePrefecture(option.label)}
+        />
         <Text
           style={styles.formTitle}
         >
@@ -386,7 +393,7 @@ const styles = StyleSheet.create({
   },
   formSelector: {
     fontSize: isIos ? 18 : 12,
-    borderWsidth: 1,
+    borderWidth: 1,
     borderColor: "#CDD6DD",
     paddingLeft: 20,
     paddingTop: 15,

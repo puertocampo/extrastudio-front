@@ -179,13 +179,15 @@ class RegisterScreen extends Component<IProps, IState> {
   }
 
   render() {
-    const { name, birthDate, sex, profession, genres, keywords, keywordInput, isBirthDateModalOpening } = this.state;
+    const { name, birthDate, sex, profession, prefecture, genres, keywords, keywordInput, isBirthDateModalOpening } = this.state;
     const birthDateJa = birthDate ? `${birthDate.getFullYear()}年 ${birthDate.getMonth() + 1}月 ${birthDate.getDate()}日` : "日付を選択してください";
     const initialBirthDate = () => {
       let nowDate = new Date();
       nowDate.setFullYear(nowDate.getFullYear() - 20);
       return nowDate;
     }
+    const selectedProfession = professionItems.find(profession => profession.key === this.state.profession);
+    const selectedPrefecture = prefectureItems.find(prefecture => prefecture.value === this.state.prefecture);
     return (
       <ScrollView style={styles.wrapper} contentContainerStyle={{ flexGrow: 1 }}>
         <Text
@@ -234,24 +236,34 @@ class RegisterScreen extends Component<IProps, IState> {
           職業
         </Text>
         <ModalSelector
-          style={styles.formSelector}
           data={professionItems}
-          initValue="職業を選択してください"
           selectedKey={profession}
           onChange={option =>
             this.handleChangeProfession(option.key)
-          } />
+          }>
+          <TextInput
+            style={profession ? styles.formInput : styles.formInputPlaceholder}
+            value={selectedProfession ? selectedProfession.label : ""}
+            placeholder="職業を選択してください"
+            placeholderTextColor="#CDD6DD"
+          />
+        </ModalSelector>
         <Text
           style={styles.formTitle}
         >
           現在お住まいの都道府県
         </Text>
         <ModalSelector
-          style={styles.formSelector}
           data={prefectureItems}
-          initValue="都道府県を選択してください"
-          onChange={option => this.handleChangePrefecture(option.label)}
-        />
+          selectedKey={prefecture}
+          onChange={option => this.handleChangePrefecture(option.value)}>
+          <TextInput
+            style={prefecture ? styles.formInput : styles.formInputPlaceholder}
+            value={selectedPrefecture ? selectedPrefecture.label : ""}
+            placeholder="都道府県を選択してください"
+            placeholderTextColor="#CDD6DD"
+          />
+        </ModalSelector>
         <Text
           style={styles.formTitle}
         >

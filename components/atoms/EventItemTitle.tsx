@@ -11,9 +11,9 @@ interface IProps {
 
 const EventItemTitle = (props: IProps) => {
   return (
+    props.isShowing &&
     <View style={{
-      ...props.style,
-      display: props.isShowing ? "block" : "none"
+      ...props.style
     }}>
       <Text
         style={{

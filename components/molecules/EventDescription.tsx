@@ -13,10 +13,9 @@ interface IProps {
 }
 
 const EventDescription = (props: IProps) => {
-  return (<View style={{ ...props.style, }}><Animated.View
+  return (props.isShowing && <View style={{ ...props.style, }}><Animated.View
     style={{
-      display: props.isShowing ? "block" : "none",
-      opacity: props.opacity,
+      opacity: props.opacity
     }}>
     <Text
       style={{

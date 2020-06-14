@@ -3,7 +3,7 @@ import { IUser } from "../type/user";
 import { IEvent } from "../type/event";
 
 const Axios = axios.create({
-  baseURL: 'https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1',
+  baseURL: 'https://extrastudio-dev.appspot.com/v1/',
   headers: {
     "Content-Type": "application/json; charset=UTF-8"
   }
@@ -47,53 +47,6 @@ export default class Api {
       });
   }
 
-  // static fetchSample() {
-  //   return fetch('https://facebook.github.io/react-native/movies.json')
-  //     .then((response) => response.json())
-  //     .then((responseJson) => {
-  //       console.log(responseJson.movies);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
-
-  // static fetchEvents(idToken: string) {
-  //   const limit = 20;
-  //   return fetch(`https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/events?limit=${limit}`, {
-  //     headers: {
-  //       "Content-Type": "application/json; charset=UTF-8",
-  //       Authorization: `Bearer ${idToken}`
-  //     }
-  //   })
-  //     .then(response => {
-  //       console.log('response', response.json());
-  //       console.log(Object.keys(response.json()));
-  //       return response.json()
-  //     })
-  //     .then(events => {
-  //       console.log(typeof events);
-  //       return { events }
-  //     })
-  //     .catch(err => {
-  //       console.log('err', err);
-  //       return { err };
-  //     });
-  // }
-
-  // static async fetchEvents(idToken: string) {
-  //   const limit = 20;
-  //   return this.fetch({ url: `https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1/events?limit=${limit}`, params: { idToken } })
-  //     .then(({ data }) => {
-  //       console.log('data', data);
-  //       return { events: data };
-  //     })
-  //     .catch((error) => {
-  //       console.log('err', error);
-  //       return { err: error };
-  //     });
-  // }
-
   static async fetchEvents(req: { userId: string, idToken: string }) {
     const limit = 20;
     Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
@@ -107,7 +60,6 @@ export default class Api {
   }
 
   static fetch(config: AxiosRequestConfig): Promise<AxiosResponse> {
-    console.log('fetch');
     return axios({
       method: config.method || "get",
       baseURL: "https://us-central1-extrastudio-dev.cloudfunctions.net/api/v1",

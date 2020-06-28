@@ -10,11 +10,15 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { bindActionCreators } from 'redux';
 import { GenreId, ProfessionId, prefectureItems } from "../type/enum";
+import { IUser } from "../type/user";
 
 const isIos = Platform.OS === 'ios'
 import ModalSelector from "react-native-modal-selector"
 
-interface IProps { };
+interface IProps {
+  registerUser(reqUser: IUser): void;
+  navigation: any;
+};
 
 interface IState {
   name: string;
@@ -22,7 +26,7 @@ interface IState {
   sex: string;
   profession: string;
   prefecture: string;
-  genres: any;
+  genres: string[];
   keywords: { label: string; value: string }[];
   keywordInput: string;
   isBirthDateModalOpening: boolean;
@@ -178,6 +182,15 @@ class RegisterScreen extends Component<IProps, IState> {
     this.setState({ keywords: updatedKeywords });
   }
 
+  postUser = () => {
+    const { name, birthDate, sex, profession, prefecture, genres, keywords } = this.state;
+    const reqUser = {
+      name, birthDate, sex, profession, prefecture, genres, keywords
+    };
+    this.props.registerUser(reqUser);
+    this.props.navigation.navigate('selection');
+  }
+
   render() {
     const { name, birthDate, sex, profession, prefecture, genres, keywords, keywordInput, isBirthDateModalOpening } = this.state;
     const birthDateJa = birthDate ? `${birthDate.getFullYear()}年 ${birthDate.getMonth() + 1}月 ${birthDate.getDate()}日` : "日付を選択してください";
@@ -322,9 +335,7 @@ class RegisterScreen extends Component<IProps, IState> {
               color: "#FFFFFF",
               fontWeight: "bold"
             }}
-            onPress={() => {
-              console.log('nice!');
-            }}
+            onPress={this.postUser}
           />
         </View >
       </ScrollView >

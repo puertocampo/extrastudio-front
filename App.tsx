@@ -5,6 +5,7 @@ import Firebase from "./firebase";
 import { Provider } from "react-redux";
 import store from "./store";
 
+import WelcomeScreen from "./screens/WelcomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import SelectionScreen from "./screens/SelectionScreen";
@@ -20,7 +21,8 @@ export default class App extends Component<any, IState> {
   render() {
     const NavigatorTab = createAppContainer(
       createSwitchNavigator({
-        login: { screen: LoginScreen },
+        // welcome: { screen: WelcomeScreen },
+        // login: { screen: LoginScreen },
         register: { screen: RegisterScreen },
         selection: { screen: SelectionScreen }
       })

@@ -7,6 +7,6 @@ export interface IUser {
   sex: string;
   profession: string;
   address: string;
-  interests: string[];
+  genres: string[];
   idToken: string;
 }

@@ -23,7 +23,7 @@ export default class App extends Component<any, IState> {
       createSwitchNavigator({
         // welcome: { screen: WelcomeScreen },
         // login: { screen: LoginScreen },
-        register: { screen: RegisterScreen },
+        // register: { screen: RegisterScreen },
         selection: { screen: SelectionScreen }
       })
     );

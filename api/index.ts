@@ -3,7 +3,10 @@ import { IUser } from "../type/user";
 import { IEvent } from "../type/event";
 
 const Axios = axios.create({
-  baseURL: 'https://extrastudio-dev.appspot.com/v1/',
+  // DEV環境
+  // baseURL: 'https://extrastudio-dev.appspot.com/v1/',
+  // モックデータ
+  baseURL: 'https://us-central1-extrastudio-tmp.cloudfunctions.net/api/',
   headers: {
     "Content-Type": "application/json; charset=UTF-8"
   }

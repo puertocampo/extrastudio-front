@@ -323,7 +323,8 @@ class SelectionScreen extends Component<IProps, IState> {
     return (
       <SideMenu menu={<SettingSideMenu />}
         // isOpen={this.state.isMenuOpening}
-        isOpen={true}
+        // isOpen={true}
+        isOpen={false}
       >
         <Wrapper>
           <Button

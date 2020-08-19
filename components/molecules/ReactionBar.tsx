@@ -16,7 +16,7 @@ const ReactionBar = (props: IProps) => {
   return (
     <View style={{ height: props.height, width: "100%", justifyContent: "space-between", paddingLeft: "20%", paddingRight: "20%", flexDirection: "row" }}>
       <LikeButton currentEvent={props.currentEvent} handleLikeSwipe={props.handleLikeSwipe} />
-      <SearchButton />
+      {/* <SearchButton /> */}
       <DislikeButton currentEvent={props.currentEvent} handleDislikeSwipe={props.handleDislikeSwipe} />
     </View>
   );

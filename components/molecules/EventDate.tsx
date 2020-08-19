@@ -4,13 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from "moment";
 
 interface IProps {
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
 }
 
 const EventDate = (props: IProps) => {
-  const startDate = moment(props.startAt).format("YYYY/MM/DD HH:mm");
-  const endDate = moment(props.endAt).format("YYYY/MM/DD HH:mm");
+  const startDate = moment(parseInt(props.startAt, 10)).format("YYYY/MM/DD HH:mm");
+  const endDate = moment(parseInt(props.endAt, 10)).format("YYYY/MM/DD HH:mm");
   return (
     <View
       style={{

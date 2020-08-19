@@ -321,13 +321,11 @@ class SelectionScreen extends Component<IProps, IState> {
     const renderLastCard = !renderEventCards || this.state.currentIndex === stateEvents.length || this.state.currentIndex === stateEvents.length - 1;
     const renderReactionContainer = this.state.currentIndex !== stateEvents.length;
     return (
-      <SideMenu menu={<SettingSideMenu />}
-        // isOpen={this.state.isMenuOpening}
-        // isOpen={true}
-        isOpen={false}
-      >
-        <Wrapper>
-          <Button
+      // <SideMenu menu={<SettingSideMenu />}
+      //   isOpen={false}
+      // >
+      <Wrapper>
+        {/* <Button
             buttonStyle={{
               backgroundColor: "transparent"
             }}
@@ -338,85 +336,85 @@ class SelectionScreen extends Component<IProps, IState> {
               color="#707070"
               size={35}
             />}
-          />
-          <Button
-            buttonStyle={{
-              backgroundColor: "transparent"
-            }}
-            style={{ position: "absolute", top: 20, right: 10 }}
-            onPress={this.props.logout}
-            icon={<Icon
-              name="gear"
-              color="#707070"
-              size={35}
-            />}
-          />
-          <Animated.View style={{ flex: 1, marginTop: this.state.expandAnim.cardMargin }}>
-            {renderLastCard &&
-              <View
+          /> */}
+        <Button
+          buttonStyle={{
+            backgroundColor: "transparent"
+          }}
+          style={{ position: "absolute", top: 20, right: 10 }}
+          onPress={this.props.logout}
+          icon={<Icon
+            name="gear"
+            color="#707070"
+            size={35}
+          />}
+        />
+        <Animated.View style={{ flex: 1, marginTop: this.state.expandAnim.cardMargin }}>
+          {renderLastCard &&
+            <View
+              style={{
+                height: SCREEN_HEIGHT * (isIos ? 0.77 : 0.8) - 30,
+                width: SCREEN_WIDTH - 20,
+                padding: 32,
+                paddingTop: "50%",
+                margin: 10,
+                backgroundColor: "#ffffff",
+                position: "absolute",
+                left: 0,
+                borderRadius: 20,
+                alignItems: "center"
+              }}
+            >
+              <Text
                 style={{
-                  height: SCREEN_HEIGHT * (isIos ? 0.77 : 0.8) - 30,
-                  width: SCREEN_WIDTH - 20,
-                  padding: 32,
-                  paddingTop: "50%",
-                  margin: 10,
-                  backgroundColor: "#ffffff",
-                  position: "absolute",
-                  left: 0,
-                  borderRadius: 20,
-                  alignItems: "center"
+                  fontSize: isIos ? 18 : 12,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  marginBottom: 20
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: isIos ? 18 : 12,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                    marginBottom: 20
-                  }}
-                >
-                  オススメできるコンテンツがありません！
+                オススメできるコンテンツがありません！
               </Text>
-                <Text
-                  style={{
-                    fontSize: isIos ? 16 : 10,
-                    textAlign: "center",
-                    marginBottom: 40,
-                    lineHeight: 25
-                  }}
-                >
-                  検索画面からコンテンツを検索していただくか、{"\n"}登録しているタグを変更するとオススメの{"\n"}コンテンツが見つかるかもしれません。
+              <Text
+                style={{
+                  fontSize: isIos ? 16 : 10,
+                  textAlign: "center",
+                  marginBottom: 40,
+                  lineHeight: 25
+                }}
+              >
+                検索画面からコンテンツを検索していただくか、{"\n"}登録しているタグを変更するとオススメの{"\n"}コンテンツが見つかるかもしれません。
               </Text>
-                <Button
-                  title="OK"
-                  buttonStyle={{
-                    width: 160,
-                    height: 50,
-                    backgroundColor: "#4D7DF9",
-                    borderRadius: 25,
-                    justifyContent: "center",
-                  }}
-                  titleStyle={{
-                    color: "#FFFFFF",
-                    fontWeight: "bold"
-                  }}
-                  onPress={() => {
-                    this.props.navigation.navigate('login');
-                  }}
-                />
-              </View>
-            }
-            {renderEventCards && this.renderEventCards(stateEvents)}
-          </Animated.View>
-          {/* {renderReactionContainer && */}
-          <ReactionBar
-            height={SCREEN_HEIGHT * 0.16}
-            currentEvent={this.state.currentEvent}
-            handleLikeSwipe={this.handleLikeSwipe}
-            handleDislikeSwipe={this.handleDislikeSwipe}
-          />
-        </Wrapper>
-      </SideMenu >
+              <Button
+                title="OK"
+                buttonStyle={{
+                  width: 160,
+                  height: 50,
+                  backgroundColor: "#4D7DF9",
+                  borderRadius: 25,
+                  justifyContent: "center",
+                }}
+                titleStyle={{
+                  color: "#FFFFFF",
+                  fontWeight: "bold"
+                }}
+                onPress={() => {
+                  this.props.navigation.navigate('login');
+                }}
+              />
+            </View>
+          }
+          {renderEventCards && this.renderEventCards(stateEvents)}
+        </Animated.View>
+        {/* {renderReactionContainer && */}
+        <ReactionBar
+          height={SCREEN_HEIGHT * 0.16}
+          currentEvent={this.state.currentEvent}
+          handleLikeSwipe={this.handleLikeSwipe}
+          handleDislikeSwipe={this.handleDislikeSwipe}
+        />
+      </Wrapper>
+      // </SideMenu >
     );
   }
 }

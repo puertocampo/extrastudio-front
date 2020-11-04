@@ -9,8 +9,8 @@ interface IProps {
 }
 
 const EventDate = (props: IProps) => {
-  const startDate = moment(parseInt(props.startAt, 10)).format("YYYY/MM/DD HH:mm");
-  const endDate = moment(parseInt(props.endAt, 10)).format("YYYY/MM/DD HH:mm");
+  const startDate = moment(new Date(parseInt(props.startAt, 10))).format("YYYY/MM/DD HH:mm");
+  const endDate = moment(new Date(parseInt(props.endAt, 10))).format("YYYY/MM/DD HH:mm");
   return (
     <View
       style={{

@@ -113,17 +113,19 @@ export default class Firebase {
       return;
     }
     const calendars = await Calendar.getCalendarsAsync();
-    const defaultCalendar = calendars.filter(calendar => calendar.title === req.email);
+    const defaultCalendar = (calendars || []).filter(calendar => calendar.title === req.email);
     if (!defaultCalendar.length) {
       console.error(`No calendar: ${req.email}`)
+    } else {
+      // console.error('defaultCalendar', defaultCalendar);
     }
 
     await Calendar.createEventAsync(
       defaultCalendar[0].id,
       {
         title: req.event.title,
-        startDate: req.event.startedAt,
-        endDate: req.event.endedAt,
+        startDate: new Date(parseInt(req.event.startedAt, 10)),
+        endDate: new Date(parseInt(req.event.endedAt, 10)),
         location: req.event.address,
         url: req.event.eventUrl,
         notes: req.event.summary
@@ -131,7 +133,7 @@ export default class Firebase {
     ).then(eventId => {
       console.log(eventId);
     }).catch(err => {
-      console.log(err);
+      console.log('create event err', err);
     })
   }
 }

@@ -8,8 +8,8 @@ export interface IEvent {
   title: string;
   summary: string;
   eventUrl?: string;
-  startedAt: Date;
-  endedAt: Date;
+  startedAt: string;
+  endedAt: string;
   limit?: number;
   address: string;
   place?: string;

@@ -113,7 +113,8 @@ export default class Firebase {
       return;
     }
     const calendars = await Calendar.getCalendarsAsync();
-    const defaultCalendar = (calendars || []).filter(calendar => calendar.title === req.email);
+    // const defaultCalendar = (calendars || []).filter(calendar => calendar.title === req.email);
+    const defaultCalendar = calendars;
     if (!defaultCalendar.length) {
       console.error(`No calendar: ${req.email}`)
     } else {

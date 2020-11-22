@@ -4,9 +4,9 @@ import { IEvent } from "../type/event";
 
 const Axios = axios.create({
   // DEV環境
-  // baseURL: 'https://extrastudio-dev.appspot.com/v1/',
+  baseURL: 'https://extrastudio-dev.appspot.com/v1/',
   // モックデータ
-  baseURL: 'https://us-central1-extrastudio-tmp.cloudfunctions.net/api/',
+  // baseURL: 'https://us-central1-extrastudio-tmp.cloudfunctions.net/api/',
   headers: {
     "Content-Type": "application/json; charset=UTF-8"
   }
@@ -27,9 +27,11 @@ export default class Api {
   static async fetchUser(req: { userId: string, idToken: string }) {
     Axios.defaults.headers.common['Authorization'] = `Bearer ${req.idToken}`;
     return Axios.post(`/users/${req.userId}/login`, {
+      // return Axios.post(`/users/test_user_1/login`, {
       idToken: req.idToken
     })
       .then(({ data }) => {
+        console.log("fetched user", data);
         return { user: data };
       })
       .catch(err => {

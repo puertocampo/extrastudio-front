@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "react-native start",
+    "start": "expo start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "web": "expo start --web",
@@ -15,10 +15,12 @@
     "@react-native-community/datetimepicker": "^2.3.2",
     "axios": "^0.19.1",
     "expo": "~37.0.0",
-    "expo-calendar": "^8.0.0",
+    "expo-calendar": "^8.1.0",
+    "expo-cli": "^3.27.14",
     "expo-constants": "^8.0.0",
     "expo-google-app-auth": "^8.0.0",
     "expo-google-sign-in": "^8.0.0",
+    "expo-updates": "^0.3.5",
     "firebase": "^7.6.2",
     "moment": "^2.24.0",
     "react": "~16.9.0",

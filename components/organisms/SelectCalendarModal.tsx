@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Text, View, ScrollView, FlatList, NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Button as EleButton } from "react-native-elements";
 import Modal from 'react-native-modal';
 import Firebase from "../../firebase";
 import { ICalendar } from "../../type/calendar";
@@ -45,11 +46,16 @@ const SelectCalendarModal = (props: PropsFromRedux & OwnProps) => {
         >
           <Text
             style={{ fontSize: 20, fontWeight: "bold", color: "#000", lineHeight: 24, marginRight: 10 }}
-          >イベントを追加するカレンダーを選択してください</Text>
-          <Icon
-            name='times'
-            color="rgba(0, 0, 0, 0.4)"
-            size={25}
+          >
+            イベントを追加するカレンダーを選択してください
+          </Text>
+          <EleButton onPress={props.handleClose}
+            buttonStyle={{ backgroundColor: 'transparent' }}
+            icon={<Icon
+              name='times'
+              color="rgba(0, 0, 0, 0.4)"
+              size={25}
+            />}
           />
         </View>
         <ScrollView>

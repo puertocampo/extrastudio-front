@@ -107,6 +107,18 @@ export default class Firebase {
     console.log(`Your new calendar ID is: ${newCalendarID}`);
   }
 
+  static async fetchCalendarLists() {
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status === 'denied') {
+      return;
+    }
+    const calendars = await Calendar.getCalendarsAsync();
+    if (!calendars.length) {
+      return [];
+    }
+    return calendars;
+  }
+
   static async createCalendarEvent(req: { event: IEvent, email: string }) {
     const { status } = await Calendar.requestCalendarPermissionsAsync();
     if (status === 'denied') {

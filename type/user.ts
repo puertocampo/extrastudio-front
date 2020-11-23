@@ -8,5 +8,6 @@ export interface IUser {
   profession: string;
   address: string;
   genres: string[];
+  calendarId: string;
   idToken: string;
 }

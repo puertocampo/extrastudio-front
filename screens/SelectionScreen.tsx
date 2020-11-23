@@ -36,7 +36,7 @@ interface IProps {
   events: IEvent[];
   fetchEvents(userId: string): IEvent[];
   navigation: any;
-  evaluateEvent(req: { userId: string, event: IEvent, email: string, evaluate: string }): void;
+  evaluateEvent(req: { userId: string, event: IEvent, email: string, calendarId: string, evaluate: string }): void;
   logout(): void;
 }
 
@@ -54,6 +54,7 @@ interface IState {
     cardPadding: Animated.Value;
     elementOpacity: Animated.Value;
   }
+  isSelectCalendarModalOpening: boolean;
 }
 
 class SelectionScreen extends Component<IProps, IState> {
@@ -75,8 +76,8 @@ class SelectionScreen extends Component<IProps, IState> {
         eventId: "",
         title: "",
         summary: "",
-        startedAt: new Date(),
-        endedAt: new Date(),
+        startedAt: '',
+        endedAt: '',
         address: "",
         imagePath: ""
       },
@@ -91,7 +92,7 @@ class SelectionScreen extends Component<IProps, IState> {
         cardPadding: new Animated.Value(expandAnimConstants.cardPadding.folded),
         elementOpacity: new Animated.Value(expandAnimConstants.elementOpacity.folded)
       },
-      isMenuOpening: false,
+      isSelectCalendarModalOpening: false
     };
     this.rotate = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -177,6 +178,11 @@ class SelectionScreen extends Component<IProps, IState> {
 
   // カードをLIKEするときの処理
   handleLikeSwipe = (event: IEvent, positionY?: number) => {
+    if (!this.props.user.calendarId) {
+      this.setState({ isSelectCalendarModalOpening: true });
+      this.position.setValue({ x: 0, y: 0 })
+      return;
+    }
     this.handleFoldCard();
     Animated.spring(this.position, {
       toValue: { x: -1.5 * SCREEN_WIDTH, y: positionY || 60 },
@@ -185,7 +191,7 @@ class SelectionScreen extends Component<IProps, IState> {
       const nextIndex = this.state.currentIndex + 1;
       this.setState({ currentIndex: nextIndex, currentEvent: this.props.events[nextIndex] }, () => {
         this.position.setValue({ x: 0, y: 0 });
-        this.props.evaluateEvent({ event, userId: this.props.user.userId, email: this.props.user.email, evaluate: "LIKE" });
+        this.props.evaluateEvent({ event, userId: this.props.user.userId, email: this.props.user.email, calendarId: this.props.user.calendarId, evaluate: "LIKE" });
       })
     });
   }
@@ -201,7 +207,7 @@ class SelectionScreen extends Component<IProps, IState> {
       this.setState({ currentIndex: nextIndex, currentEvent: this.props.events[nextIndex] }, () => {
         this.setState({});
         this.position.setValue({ x: 0, y: 0 })
-        this.props.evaluateEvent({ event, userId: this.props.user.userId, email: this.props.user.email, evaluate: "NOPE" });
+        this.props.evaluateEvent({ event, userId: this.props.user.userId, email: this.props.user.email, calendarId: "", evaluate: "NOPE" });
       })
     })
   }
@@ -264,6 +270,10 @@ class SelectionScreen extends Component<IProps, IState> {
     });
   }
 
+  handleCloseSelectCalendarModalOpening = () => {
+    this.setState({ isSelectCalendarModalOpening: false });
+  }
+
   renderEventCards = (events: IEvent[]) => {
     if (!events) return null;
     const { expandAnim } = this.state;
@@ -312,10 +322,6 @@ class SelectionScreen extends Component<IProps, IState> {
     }).reverse();
   };
 
-  toggleMenu = () => {
-    this.setState({ isMenuOpening: !this.state.isMenuOpening });
-  }
-
   render() {
     const stateEvents = this.props.events;
     const renderEventCards = !!stateEvents && !!Object.keys(stateEvents).length;
@@ -324,18 +330,6 @@ class SelectionScreen extends Component<IProps, IState> {
     return (
       <>
         <Wrapper>
-          {/* <Button
-            buttonStyle={{
-              backgroundColor: "transparent"
-            }}
-            style={{ position: "absolute", top: 20, left: 10 }}
-            onPress={this.toggleMenu}
-            icon={<Icon
-              name="bars"
-              color="#707070"
-              size={35}
-            />}
-          /> */}
           <Button
             buttonStyle={{
               backgroundColor: "transparent"
@@ -405,7 +399,6 @@ class SelectionScreen extends Component<IProps, IState> {
             }
             {renderEventCards && this.renderEventCards(stateEvents)}
           </Animated.View>
-          {/* {renderReactionContainer && */}
           <ReactionBar
             height={SCREEN_HEIGHT * 0.16}
             currentEvent={this.state.currentEvent}
@@ -413,7 +406,7 @@ class SelectionScreen extends Component<IProps, IState> {
             handleDislikeSwipe={this.handleDislikeSwipe}
           />
         </Wrapper>
-        <SelectCalendarModal />
+        <SelectCalendarModal isOpen={this.state.isSelectCalendarModalOpening} handleClose={this.handleCloseSelectCalendarModalOpening} />
       </>
     );
   }

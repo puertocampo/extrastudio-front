@@ -119,22 +119,19 @@ export default class Firebase {
     return calendars;
   }
 
-  static async createCalendarEvent(req: { event: IEvent, email: string }) {
+  static async createCalendarEvent(req: { event: IEvent, email: string, calendarId: string }) {
     const { status } = await Calendar.requestCalendarPermissionsAsync();
     if (status === 'denied') {
       return;
     }
     const calendars = await Calendar.getCalendarsAsync();
-    // const defaultCalendar = (calendars || []).filter(calendar => calendar.title === req.email);
-    const defaultCalendar = calendars;
-    if (!defaultCalendar.length) {
-      console.error(`No calendar: ${req.email}`)
-    } else {
-      // console.error('defaultCalendar', defaultCalendar);
+    const targetCalendar = calendars.find(calendar => calendar.id === req.calendarId);
+    if (!targetCalendar) {
+      console.error(`Calendar not found: ${req.calendarId}`)
     }
 
     await Calendar.createEventAsync(
-      defaultCalendar[0].id,
+      targetCalendar.id,
       {
         title: req.event.title,
         startDate: new Date(parseInt(req.event.startedAt, 10)),
